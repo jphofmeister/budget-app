@@ -1,0 +1,84 @@
+:root {
+
+  /* primary colors */
+
+  /* #12203E */
+  --darkBlue: rgba(18, 32, 62, 1);
+  --darkBlue_05: rgba(18, 32, 62, .5);
+  --darkBlue_03: rgba(18, 32, 62, .3);
+  --darkBlue_01: rgba(18, 32, 62, .1);
+
+  /* #25417D */
+  --medBlue: rgba(37, 65, 125, 1);
+  --medBlue_05: rgba(37, 65, 125, .5);
+  --medBlue_03: rgba(37, 65, 125, .3);
+  --medBlue_01: rgba(37, 65, 125, .1);
+
+  /* #3561B5 */
+  --primaryBlue: rgba(53, 97, 181, 1);
+  --primaryBlue_05: rgba(53, 97, 181, .5);
+  --primaryBlue_03: rgba(53, 97, 181, .3);
+  --primaryBlue_01: rgba(53, 97, 181, .1);
+
+  /* secondary colors */
+
+  /* #d4dff2 */
+  --iceBlue: rgba(212, 223, 242, 1);
+  --iceBlue_05: rgba(212, 223, 242, .5);
+  --iceBlue_03: rgba(212, 223, 242, .3);
+  --iceBlue_01: rgba(212, 223, 242, .1);
+
+  /* #8594B1 */
+  --grayBlue: rgba(133, 148, 177, 1);
+  --grayBlue_05: rgba(133, 148, 177, .5);
+  --grayBlue_03: rgba(133, 148, 177, .3);
+  --grayBlue_01: rgba(133, 148, 177, .1);
+
+  /* #7F9ED9 */
+  --secondaryBlue: rgba(127, 158, 217, 1);
+  --secondaryBlue_05: rgba(127, 158, 217, .5);
+  --secondaryBlue_03: rgba(127, 158, 217, .3);
+  --secondaryBlue_01: rgba(127, 158, 217, .1);
+
+  /* #DE6B1B */
+  --orange: rgba(222, 107, 27, 1);
+  --orange_05: rgba(222, 107, 27, .5);
+  --orange_03: rgba(222, 107, 27, .3);
+  --orange_01: rgba(222, 107, 27, .1);
+
+  /* #049372 */
+  --green: rgba(4, 147, 114, 1);
+  --green_05: rgba(4, 147, 114, .5);
+  --green_03: rgba(4, 147, 114, .3);
+  --green_01: rgba(4, 147, 114, .1);
+
+  --darkerGreen: rgba(0, 124, 96, 1);
+  --darkerGreen_05: rgba(0, 124, 96, .5);
+  --darkerGreen_03: rgba(0, 124, 96, .3);
+  --darkerGreen_01: rgba(0, 124, 96, .1);
+
+  /* #3C3C3C */
+  --charcoal: rgba(60, 60, 60, 1);
+  --charcoal_05: rgba(60, 60, 60, .5);
+  --charcoal_03: rgba(60, 60, 60, .3);
+  --charcoal_01: rgba(60, 60, 60, .1);
+
+  /* #cc3645 */
+  --red: rgba(204, 54, 68, 1);
+  --red_05: rgba(204, 54, 68, .5);
+  --red_03: rgba(204, 54, 68, .3);
+  --red_01: rgba(204, 54, 68, .1);
+
+  /* #af343e */
+  --darkerRed: rgba(175, 52, 63, 1);
+  --darkerRed_05: rgba(175, 52, 63, .5);
+  --darkerRed_03: rgba(175, 52, 63, .3);
+  --darkerRed_01: rgba(175, 52, 63, .1);
+
+  --yellow: rgba(255, 165, 8, 1);
+
+
+  /* utilities */
+  /*==========================================================*/
+  --spacer: 1rem;
+}

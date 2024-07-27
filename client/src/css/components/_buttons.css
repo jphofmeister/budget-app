@@ -1,0 +1,335 @@
+.right-corner-buttons {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
+
+button {
+  font-family: var(--defaultFonts);
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.btn,
+a.btn,
+a.btn:visited {
+  display: inline-block;
+  color: rgba(255,255,255,1);
+  background-color: var(--darkBlue);
+  border: 1px solid var(--darkBlue);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+
+  &:hover:not(.disabled, :disabled, .readonly), 
+  &:active:not(.disabled, :disabled, .readonly) {
+    background-color: var(--medBlue);
+    border-color: var(--medBlue);
+    text-decoration: none;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem var(--medBlue_05);
+  }
+
+  &.disabled,
+  &:disabled {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+    /* color: rgba(255,255,255,1); */
+    background-color: var(--darkBlue_03);
+    border-color: var(--darkBlue_01);
+    opacity: 1;
+
+    /* &:hover {
+      cursor: default;
+      background-color: var(--darkBlue_03);
+      border-color: var(--darkBlue_01);
+    } */
+  }
+
+  &.btn-danger {
+    background-color: var(--red);
+    border-color: var(--red);
+
+    &:hover:not(.disabled, :disabled, .readonly), 
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: var(--darkerRed);
+      border-color: var(--darkerRed);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem var(--darkerRed_05);
+    }
+
+    &.disabled,
+    &:disabled {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+      color: #fff;
+      background-color: var(--red_03);
+      border-color: var(--red_01);
+      opacity: 1;
+
+      /* &:hover {
+        cursor: default;
+        background-color: var(--red_03);
+        border-color: var(--red_01);
+      } */
+    }
+
+
+  }
+  
+  &.btn-success {
+    background-color: var(--green);
+    border-color: var(--green);
+
+    &:hover:not(.disabled, :disabled, .readonly), 
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: var(--darkerGreen);
+      border-color: var(--darkerGreen);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem var(--darkerGreen_05);
+    }
+
+    &.disabled,
+    &:disabled {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+    /* color: rgba(255,255,255,1); */
+      background-color: var(--green_03);
+      border-color: var(--green_01);
+      opacity: 1;
+
+      /* &:hover {
+        cursor: default;
+        background-color: var(--green_03);
+        border-color: var(--green_01);
+      } */
+    }
+
+
+  }
+
+  &.btn-primary {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+    /* color: rgba(255,255,255,1); */
+    background-color: var(--primaryBlue);
+    border-color: var(--primaryBlue);
+
+    &:hover:not(.disabled, :disabled, .readonly), 
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: var(--medBlue); /* needed to override bootstrap... */
+      border-color: var(--medBlue);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem var(--medBlue_05);
+    }
+
+    &.disabled,
+    &:disabled {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+    /* color: rgba(255,255,255,1); */
+      background-color: var(--primaryBlue_03);
+      border-color: var(--primaryBlue_01);
+      opacity: 1;
+
+      /* &:hover {
+        cursor: default;
+        background-color: var(--primaryBlue_03);
+        border-color: var(--primaryBlue_01);
+      } */
+    }
+  }
+
+  &.btn-dark-gray {
+    color: rgba(255,255,255,1);
+    background-color: rgba(82,76,76,1);
+    border-color: rgba(82,76,76,1);
+
+    &:hover:not(.disabled, :disabled, .readonly),
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: rgba(46,40,40,1);
+      border-color: rgba(46,40,40,1);
+      color: #fff;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(46,40,40,.5);
+    }
+
+    &.disabled {
+      background-color: rgba(82,76,76,.3);
+      border-color: rgba(82,76,76,.1);
+      color: rgba(255,255,255,1);
+      opacity: 1;
+
+      /* &:hover {
+        background-color: rgba(82,76,76,.3);
+        border-color: rgba(82,76,76,.1);
+      } */
+    }
+  }
+
+  &.btn-light-gray {
+    color: var(--darkBlue);
+    background-color: rgba(230,230,230,1);
+    border-color: rgba(230,230,230,1);
+
+    &:hover:not(.disabled, :disabled, .readonly),
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: rgba(209,209,209,1);
+      border-color: rgba(209,209,209,1);
+      color: var(--darkBlue);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(209,209,209,.5);
+    }
+
+    &.disabled,
+    &:disabled {
+      background-color: rgba(230,230,230,.3);
+      border-color: rgba(230,230,230,.1);
+      color: var(--darkBlue_03);
+      opacity: 1;
+
+      /* &:hover {
+        background-color: rgba(230,230,230,.3);
+        border-color: rgba(230,230,230,.1);
+      } */
+    }
+
+  }
+
+  &.btn-transparent {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+    /* color: rgba(0, 0, 0, 0.5); */
+    color: var(--primaryBlue);
+    background-color: rgba(255,255,255,0);
+    border-color: rgba(255,255,255,0);
+
+    &:hover:not(.disabled, :disabled, .readonly), 
+    &:active:not(.disabled, :disabled, .readonly) {
+      color: var(--darkBlue);
+      background-color: rgba(255,255,255,0); /* needed to override bootstrap... */
+      border-color: rgba(255,255,255,0);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem var(--medBlue_05);
+    }
+
+    &.disabled,
+    &:disabled {
+      /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+      background-color: rgba(255,255,255,0);
+      border-color: rgba(255,255,255,0);
+      opacity: .5;
+
+      /* &:hover {
+        cursor: default;
+        background-color: rgba(255,255,255,0);
+        border-color: rgba(255,255,255,0);
+      } */
+    }
+
+    /* * uses most of the same properties as btn-transparent, just changes the color to red -- 10/13/2023 JH  */
+    &.btn-transparent-danger {
+      color: var(--red);
+
+      &:hover:not(.disabled, :disabled, .readonly),
+      &:active:not(.disabled, :disabled, .readonly) {
+        color: var(--darkerRed);
+      }
+    }
+  }
+
+  &.btn-outline {
+    background-color: rgba(255,255,255, 1);
+    border-color: rgba(108, 117, 125, 1);
+    color: rgba(0,0,0, 1);
+
+    &:hover:not(.disabled, :disabled, .readonly),
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: rgba(239,239,239, 1);
+      border-color: rgba(108, 117, 125, 1);
+      color: rgba(0,0,0, 1);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(108, 117, 125,.5);
+    }
+
+    &.disabled {
+      background-color: rgba(255,255,255, .3);
+      border-color: rgba(108, 117, 125, .3);
+      color: rgba(0,0,0,.3);
+      opacity: 1;
+
+      /* &:hover {
+        background-color: rgba(255,255,255, .3);
+        border-color: rgba(108, 117, 125, .3);
+        color: rgba(0,0,0,.3);
+      } */
+    }
+  }
+
+  &.icon-button {
+    padding: 0;
+    color: var(--primaryBlue);
+    background-color: transparent;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    font-weight: 400;
+    font-size: .875rem;
+
+    &:hover:not(.disabled, :disabled, .readonly), 
+    &:active:not(.disabled, :disabled, .readonly) {
+      background-color: transparent;
+      color: var(--medBlue);
+      border: none;
+    }
+    
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem var(--medBlue_05);
+    }
+
+    &.disabled,
+    &:disabled {
+    /* * The color property is the same as one defined for button, btn. -- 03/16/2023 MF */
+    /* color: rgba(255,255,255,1); */
+      background-color: transparent;
+      color: var(--medBlue);
+      border: none;
+      opacity: .5;
+      cursor: default;
+
+      /* &:hover {
+        background-color: transparent;
+        color: var(--medBlue);
+        border: none;
+      } */
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid red;
+  }
+}
+
+a.btn {
+  line-height: 1;
+}

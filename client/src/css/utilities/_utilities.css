@@ -1,0 +1,134 @@
+/* hidden content for screen readers */
+.sr-only {
+  position: absolute;
+  clip: rect(1px 1px 1px 1px);
+  /* for Internet Explorer */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+/* * copying the way bootstrap does things by adding !important to utility classes -- 10/19/2023 JH */
+
+.hide-element {
+  display: none !important;
+}
+
+.no-visibility {
+  visibility: hidden !important;
+}
+
+.red-text {
+  color: var(--red) !important;
+}
+
+.yellow-text {
+  color: var(--yellow) !important;
+}
+
+.green-text {
+  color: var(--green) !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.pointer-cursor {
+  cursor: pointer !important;
+}
+
+.width-100 {
+  width: 100% !important;
+}
+
+
+/* margin utilities copied from bootstrap */
+/*==========================================================*/
+
+/* $spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+); */
+
+.m-0 {
+  margin: 0 !important;
+}
+.m-1 {
+  margin: calc(var(--spacer) * .25) !important;
+}
+.m-2 {
+  margin: calc(var(--spacer) * .5) !important;
+}
+.m-3 {
+  margin: var(--spacer) !important;
+}
+.m-4 {
+  margin: calc(var(--spacer) * 1.5) !important;
+}
+.m-5 {
+  margin: calc(var(--spacer) * 3) !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+.mt-1 {
+  margin-top: calc(var(--spacer) * .25) !important;
+}
+.mt-2 {
+  margin-top: calc(var(--spacer) * .5) !important;
+}
+.mt-3 {
+  margin-top: var(--spacer) !important;
+}
+.mt-4 {
+  margin-top: calc(var(--spacer) * 1.5) !important;
+}
+.mt-5 {
+  margin-top: calc(var(--spacer) * 3) !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+.mb-1 {
+  margin-bottom: calc(var(--spacer) * .25) !important;
+}
+.mb-2 {
+  margin-bottom: calc(var(--spacer) * .5) !important;
+}
+.mb-3 {
+  margin-bottom: var(--spacer) !important;
+}
+.mb-4 {
+  margin-bottom: calc(var(--spacer) * 1.5) !important;
+}
+.mb-5 {
+  margin-bottom: calc(var(--spacer) * 3) !important;
+}
+
+/* TODO remove -- 11/21/2023 JH */
+.mt-1rem {
+  margin-top: 1rem !important;
+}
+
+/* TODO remove -- 11/21/2023 JH */
+.mb-1rem {
+  margin-bottom: 1rem !important;
+}

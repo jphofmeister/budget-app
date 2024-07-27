@@ -1,0 +1,106 @@
+.button-dropdown-container {
+  position: relative;
+
+  &.dropdown-open {
+    z-index: 11;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 1.5rem;
+      z-index: 12;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid #fff;
+      border-color: transparent transparent #fff transparent;
+    }
+    
+    &:after {
+      content: "";
+      position: absolute;
+      top: 1.25rem;
+      z-index: 10;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      border: 12px solid #ddd;
+      border-color: transparent transparent #ddd transparent;
+    }
+  }
+
+  .dropdown-button {
+    position: relative;
+  }
+  
+  .button-dropdown {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px 0 rgba(0,0,0,.4);
+    position: absolute;
+    padding: .75rem 0 0 0;
+    z-index: 11;
+    overflow: hidden;
+    width: 225px;
+    top: 110%;
+
+    .button-dropdown__list {
+      text-align: left;
+      list-style-type: none;
+      height: auto;
+      overflow: auto;
+      padding: 0 0 .75rem 0;
+      margin: 0;
+      margin-bottom: 63px;
+
+      button.button-dropdown__list-item__button {
+        background-color: #fff;
+        border: none;
+        color: #333;
+        text-align: left;
+        border-radius: 0;
+        font-weight: normal;
+        width: 100%;
+        display: block;
+        align-items: flex-start;
+        padding: 8px 1.25rem;
+      
+        &:is(button,.btn,a.btn,a.btn:visited):hover, 
+        &:is(button,.btn,a.btn,a.btn:visited):active {
+          border: none;
+          background-color: #ddd;
+        }
+      }
+    }
+
+    &.input-open .button-dropdown__list {
+      margin-bottom: 145px;
+    }
+
+    .button-dropdown__sticky-bottom {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      background-color: #fff;
+      padding: .75rem 0;
+      border-top: 1px solid #ddd;
+      z-index: 12;
+      /* box-shadow: 0 -2px 6px 0 rgba(0,0,0,.2); */
+    }
+
+    .btn.btn-primary.create-new-list-button {
+      margin: .5rem 1.25em;
+      width: calc(100% - 2.5rem);
+    }
+
+    .button-dropdown__list-item-input {
+      width: 100%;
+      padding: 0 1.25rem 5px 1.25rem;
+      
+
+      .form-group {
+        margin-bottom: .5rem;
+      }
+    }
+
+  }
+}

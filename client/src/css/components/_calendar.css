@@ -1,0 +1,358 @@
+.calendar {
+  width: 100%;
+  border: 1px solid #ddd;
+  margin: 0;
+
+  td {
+    padding: 0;
+    vertical-align: top;
+    position: relative;
+  }
+  
+  &__cell {
+    padding: .5rem;
+    min-height: 100px;
+    z-index: 10;
+
+    &__date {
+      margin-bottom: .5rem;
+      text-align: right;
+    }
+
+    &__events {
+      position: relative;
+    }
+
+    &--heading {
+      min-height: unset;
+      text-align: center;
+      background-color: #f2f2f2;
+    }
+
+    &--not-current-month {
+      .calendar__grid__cell__date {
+        color: rgba(51, 51, 51, .5);
+        font-weight: normal;
+      }
+    }
+
+    &--today {
+      background-color: var(--iceBlue_05);
+      position: absolute;
+      width: 100%;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.event-item-container {
+  position: absolute;
+  left: 0;
+  z-index: 15;
+  height: 55px;
+  padding: 5px 5px;
+  margin: 0 0 .5rem 0;
+
+  .event-item {
+    display: block;
+    position: relative;
+    left: 0;
+    z-index: 15;
+    height: 55px;
+    padding: 5px;
+
+    border-style: solid;
+    border-width: 1px 1px 1px 8px;
+    background-color: #fff;
+    white-space: wrap;
+    overflow: hidden;
+
+    .event-item__title {
+      font-size: .8rem;
+      margin-bottom: 5px;
+    }
+
+    .event-item__info {
+      font-size: .7rem;
+      height: auto;
+    }
+
+    &--partial-start {
+      border-width: 1px 0 1px 8px;
+    }
+
+    &--partial-end {
+      border-width: 1px 1px 1px 0;
+    }
+  }
+
+  &.multi-month-item {
+    position: relative;
+    height: auto;
+    padding: 0;
+    margin: 1rem 0;
+    
+    .event-item {
+      position: relative;
+      height: auto;
+      border: none;
+
+      .event-item__title {
+        font-size: .8rem;
+        margin-bottom: 5px;
+
+        h2 {
+          font-size: 1rem;
+          margin-bottom: 0;
+        }
+      }
+
+      h3 {
+        font-size: .8rem;
+        margin-bottom: 5px;
+        font-weight: normal;
+      }
+  
+      .event-item__info {
+        font-size: .8rem;
+        height: auto;
+      }
+    }
+  }
+}
+
+.event-popover-container {
+  position: absolute;
+  top: -255px;
+  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+  .event-popover {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top-width: 10px;
+    border-radius: .5rem;
+    padding: 1rem;
+    width: 400px;
+    height: 250px;
+    position: relative;
+    z-index: 20;
+    box-shadow: 0 2px 6px 4px rgba(0,0,0,.4);
+    overflow: hidden;
+
+    &__heading {
+      font-size: 1rem;
+      margin: 0;
+      line-height: 1.2;
+    }
+    
+    &__subheading {
+      font-size: .875rem;
+      margin: .5rem 0;
+    }
+
+    &__info {
+      font-size: .875rem;
+
+      span {
+        margin-right: .5rem;
+      }
+    }
+
+  }
+
+  /* * used to add white arrow pointing up -- 11/16/2023 JH */
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: calc(-1.25rem + 1px);
+    z-index: 21;
+    margin-left: calc(2rem + 2px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border: 10px solid #fff;
+
+    /* * arrow pointing up: transparent transparent #color transparent -- 11/16/2023 JH */
+    /* * arrow pointing left: transparent #color transparent transparent -- 11/16/2023 JH */
+    /* * arrow pointing down: #color transparent transparent transparent -- 11/16/2023 JH */
+    /* * arrow pointing right: transparent transparent transparent #color -- 11/16/2023 JH */
+    border-color: #fff transparent transparent transparent;
+  }
+
+  /* * used to add gray border around arrow -- 11/16/2023 JH */
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: calc(-1.5rem + 2px);
+    z-index: 20;
+    margin-left: calc(2rem + 1px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border: 11px solid #ddd;
+    border-color: #ddd transparent transparent transparent;
+  }
+
+  &.demonstration {
+    top: -305px;
+
+    .event-popover {
+      height: 300px;
+    }
+  }
+
+}
+
+table.multi-month-table {
+  margin: 0;
+
+  thead {
+    tr {
+      position: sticky;
+      top: 0;
+      z-index: 16;
+      background-color: #f2f2f2;
+      border-left: 10px solid #f2f2f2;
+
+      th {
+        width: 20%;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: none;
+
+      &.last-row-border {
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        vertical-align: top;
+        font-weight: normal;
+        border-left-width: 10px;
+        border-left-style: solid;
+        /* position: sticky;
+        top: 2rem;
+        background-color: #fff; */
+      }
+
+      td {
+        position: relative;
+        vertical-align: top;
+        border-bottom: 1px solid #ddd;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+
+table.travel-dates-table {
+  margin-top: 1rem;
+  align-self: flex-end;
+  
+  thead, tbody {
+    tr {
+      border-left: none;
+      background-color: transparent;
+
+      th, td {
+        padding: .25rem .5rem;
+        text-align: center;
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+
+      th {
+        border-left: none;
+        border-bottom: 1px solid #ddd;
+        font-weight: 700;
+      }
+
+      td {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.calendar-header {
+  position: relative;
+  margin: 2rem 0 4rem 0;
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: .5rem;
+    width: 100%;
+    pointer-events: none;
+
+    button, .btn {
+      pointer-events: all;
+    }
+    
+    &--absolute {
+      position: absolute;
+      justify-content: space-between;
+
+      @media (max-width: 864px) {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+    }
+
+    &--center {
+      justify-content: center;
+    }
+
+  }
+
+}
+
+.key-list-container {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: .25rem;
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+
+  .key-list {
+    columns: 2;
+    margin: 0;
+    padding: 0;
+    
+    .key-list__item {
+      list-style-type: none;
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      margin-bottom: .5rem;
+
+      .key-list__item__color {
+        background-color: #000;
+        height: 1rem;
+        width: 1rem;
+      }
+      
+      .key-list__item__name { }
+    }
+  }
+}
