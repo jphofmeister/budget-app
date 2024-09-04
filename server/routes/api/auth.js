@@ -12,7 +12,7 @@ const { Pool } = require("pg");
 const pool = new Pool({
   user: dbUsername,
   host: "localhost",
-  database: "color-picker",
+  database: "budget-calendar",
   password: dbPassword,
   port: 5432
 });

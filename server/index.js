@@ -10,11 +10,10 @@ const cookieParser = require("cookie-parser");
 
 const auth = require("./routes/api/auth");
 const users = require("./routes/api/users");
-const colors = require("./routes/api/colors");
-const colorGroups = require("./routes/api/colorGroups");
-const colorInColorGroup = require("./routes/api/colorInColorGroup");
-const userColor = require("./routes/api/userColor");
-const userColorGroup = require("./routes/api/userColorGroup");
+const bills = require("./routes/api/bills");
+const income = require("./routes/api/income");
+const userBills = require("./routes/api/userBills");
+const userIncome = require("./routes/api/userIncome");
 
 const app = express();
 
@@ -39,11 +38,10 @@ app.use(require("./middleware/headers"));
 // * Use Routes -- 09/25/2023 JH
 app.use('/api/auth', auth);
 app.use('/api/users', users);
-app.use('/api/colors', colors);
-app.use('/api/colorGroups', colorGroups);
-app.use('/api/colorInColorGroup', colorInColorGroup);
-app.use('/api/userColor', userColor);
-app.use('/api/userColorGroup', userColorGroup);
+app.use('/api/bills', bills);
+app.use('/api/income', income);
+app.use('/api/userBills', userBills);
+app.use('/api/userIncome', userIncome);
 
 // * serve static assets in production
 // if (process.env.NODE_ENV === 'production') {

@@ -41,15 +41,89 @@ CREATE TABLE IF NOT EXISTS public.bills
 (
     bill_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     bill_name character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    bill_amount numeric NOT NULL,
+    bill_date timestamp without time zone NOT NULL,
     created_on timestamp without time zone NOT NULL,
     updated_on timestamp without time zone,
     active boolean,
-    bill_amount numeric NOT NULL,
-    bill_date timestamp without time zone NOT NULL,
     CONSTRAINT bills_pkey PRIMARY KEY (bill_id)
 )
 
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.bills
+    OWNER to postgres;
+
+-- Table: public.income
+
+-- DROP TABLE IF EXISTS public.income;
+
+CREATE TABLE IF NOT EXISTS public.income
+(
+    income_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    income_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    income_amount numeric NOT NULL,
+    created_on timestamp without time zone NOT NULL,
+    updated_on timestamp without time zone,
+    active boolean NOT NULL,
+    CONSTRAINT income_pkey PRIMARY KEY (income_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.income
+    OWNER to postgres;
+
+-- Table: public.user_bills
+
+-- DROP TABLE IF EXISTS public.user_bills;
+
+CREATE TABLE IF NOT EXISTS public.user_bills
+(
+    user_id integer NOT NULL,
+    bill_id integer NOT NULL,
+    created_on timestamp without time zone NOT NULL,
+    updated_on timestamp without time zone,
+    active boolean NOT NULL,
+    CONSTRAINT user_bills_pkey PRIMARY KEY (user_id, bill_id),
+    CONSTRAINT fk_bill_id FOREIGN KEY (bill_id)
+        REFERENCES public.bills (bill_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+        REFERENCES public.users (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.user_bills
+    OWNER to postgres;
+
+-- Table: public.user_income
+
+-- DROP TABLE IF EXISTS public.user_income;
+
+CREATE TABLE IF NOT EXISTS public.user_income
+(
+    user_id integer NOT NULL,
+    income_id integer NOT NULL,
+    created_on timestamp without time zone NOT NULL,
+    updated_on timestamp without time zone,
+    active boolean NOT NULL,
+    CONSTRAINT user_income_pkey PRIMARY KEY (user_id, income_id),
+    CONSTRAINT fk_income_id FOREIGN KEY (income_id)
+        REFERENCES public.income (income_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+        REFERENCES public.users (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.user_income
     OWNER to postgres;

@@ -12,7 +12,7 @@ const { Pool } = require("pg");
 const pool = new Pool({
   user: dbUsername,
   host: "localhost",
-  database: "color-picker",
+  database: "budget-calendar",
   password: dbPassword,
   port: 5432
 });
@@ -29,7 +29,7 @@ router.get("/", /*authenticateToken,*/(request, response) => {
     })
     .catch((error) => {
       if (error) {
-        console.error("Here is an error!", error);
+        console.error("error", error);
         response.status(500).send(error);
       };
     });
@@ -48,7 +48,7 @@ router.get("/", /*authenticateToken,*/(request, response) => {
 //     })
 //     .catch((error) => {
 //       if (error) {
-//         console.error("Here is an error!", error);
+//         console.error("error", error);
 //         response.status(500).send(error);
 //       };
 //     });
@@ -98,7 +98,7 @@ router.put("/update/:userID", (request, response) => {
     })
     .catch((error) => {
       if (error) {
-        console.error("Here is an error!", error);
+        console.error("error", error);
         response.status(500).send(error);
       };
     });
@@ -116,7 +116,7 @@ router.put("/softDelete/:userID", (request, response) => {
     })
     .catch((error) => {
       if (error) {
-        console.error("Here is an error!", error);
+        console.error("error", error);
         response.status(500).send(error);
       };
     });
@@ -133,7 +133,7 @@ router.delete("/delete/:userID", (request, response) => {
     })
     .catch((error) => {
       if (error) {
-        console.error("Here is an error!", error);
+        console.error("error", error);
         response.status(500).send(error);
       };
     });
