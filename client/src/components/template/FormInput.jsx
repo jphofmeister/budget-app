@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import classnames from "classnames";
-import { noFunctionAvailable, isEmpty, getDateTime } from "../../utilities/sharedFunctions";
-import { parse } from "../../utilities/applicationFunctions";
+import { noFunctionAvailable, isEmpty, getDateTime, parse } from "../../utilities/sharedFunctions";
 
 const FormInput = (props) => {
 
-  // * Available props:
-  // * Properties: formInputID, labelText, srOnly, isRequired, inputType, placeholderText, inputValue, inputDisabled, inputHint, textareaRows, textareaColumns, inputMin, inputMax, inputStep
-  // * Functions: onChange
+  // * Available props: -- 06/21/2023
+  // * Properties: formInputID, labelText, srOnly, isRequired, inputType, placeholderText, inputValue, inputDisabled, inputHint, textareaRows, textareaColumns, inputMin, inputMax, inputStep -- 06/21/2023
+  // * Functions: onChange -- 06/21/2023
 
-  let componentName = "FormInput";
+  const componentName = "FormInput";
 
   let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
   let labelText = isEmpty(props) === false && isEmpty(props.labelText) === false ? props.labelText : "";
@@ -37,7 +36,7 @@ const FormInput = (props) => {
 
   const [showPassword, setShowPassword] = useState("password");
 
-  // * If srOnly is set to true, then the form item label is only visible to screen readers. -- 06/21/2023 JH
+  // * If srOnly is set to true, then the form item label is only visible to screen readers. -- 06/21/2023
   let labelClasses = classnames("", {
     "sr-only": srOnly === true,
     "input-addon": useInputAddon === true
@@ -92,9 +91,18 @@ const FormInput = (props) => {
         : null}
 
       {/* // TODO add other input types -- 08/07/2023 JH */}
-      {inputType !== "textarea" && inputType !== "toggle" && inputType !== "password" ?
+      {inputType !== "textarea" && inputType !== "toggle" && inputType !== "password" && inputType !== "color" ?
 
         <input type={inputType} id={formInputID} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} min={inputMin} max={inputMax} step={inputStep} list={datalistName} />
+
+        : null}
+
+      {inputType === "color" ?
+
+        <div className="color-input-container">
+          <input type={inputType} id={formInputID} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} />
+          {inputValue}
+        </div>
 
         : null}
 

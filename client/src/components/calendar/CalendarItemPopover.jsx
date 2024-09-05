@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import { noFunctionAvailable, isEmpty, displayDate, isNonEmptyArray, convertYesNoTrueFalse } from "shared-functions";
+import { noFunctionAvailable, isEmpty, displayDate, isNonEmptyArray, convertYesNoTrueFalse } from "../../utilities/sharedFunctions";
 
 const CalendarItemPopover = (props) => {
 

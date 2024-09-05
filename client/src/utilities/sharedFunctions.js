@@ -1,3 +1,5 @@
+import parseHTML from "html-react-parser";
+
 const componentName = "shared-functions";
 
 export const noFunctionAvailable = () => {
@@ -9,10 +11,24 @@ export const noFunctionAvailable = () => {
 
 export const isEmpty = (value) => {
 
-  // * https://stackoverflow.com/questions/4597900/checking-something-isempty-in-javascript
-  // * https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
+  // * https://stackoverflow.com/questions/4597900/checking-something-isempty-in-javascript -- 03/06/2021
+  // * https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in -- 03/06/2021
 
   return value === undefined || value === null || (typeof value === "object" && Object.keys(value).length === 0) || (typeof value === "string" && value.trim().length === 0);
+
+  // * Returns true -- 03/06/2021
+  // console.log(componentName, getDateTime(), "isEmpty(\"\")", isEmpty(""));
+  // console.log(componentName, getDateTime(), "isEmpty(null)", isEmpty(null));
+  // console.log(componentName, getDateTime(), "isEmpty(undefined)", isEmpty(undefined));
+  // console.log(componentName, getDateTime(), "isEmpty([])", isEmpty([]));
+  // console.log(componentName, getDateTime(), "isEmpty({})", isEmpty({}));
+
+  // * Returns false -- 03/06/2021
+  // console.log(componentName, getDateTime(), "isEmpty(\"test\")", isEmpty("test"));
+  // console.log(componentName, getDateTime(), "isEmpty(5)", isEmpty(5));
+  // console.log(componentName, getDateTime(), "isEmpty(true)", isEmpty(true));
+  // console.log(componentName, getDateTime(), "isEmpty([\"test\"])", isEmpty(["test"]));
+  // console.log(componentName, getDateTime(), "isEmpty({test: \"test\"})", isEmpty({ test: "test" }));
 
 };
 
@@ -52,13 +68,28 @@ export const getFirstItem = (arrayItem) => {
 
   let firstItem = null;
 
-  if (isEmpty(arrayItem) === false && isEmpty(arrayItem[0]) === false) {
+  if (isNonEmptyArray(arrayItem) === true && isEmpty(arrayItem[0]) === false) {
 
     firstItem = arrayItem[0];
 
   };
 
   return firstItem;
+
+};
+
+
+export const getLastItem = (arrayItem) => {
+
+  let lastItem = null;
+
+  if (isNonEmptyArray(arrayItem) === true && isEmpty(arrayItem[arrayItem.length - 1]) === false) {
+
+    lastItem = arrayItem[arrayItem.length - 1];
+
+  };
+
+  return lastItem;
 
 };
 
@@ -137,7 +168,7 @@ export const tryParseJSON = (jsonString) => {
 
     // * Handle non-exception-throwing cases: -- 03/05/2021
     // * Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking, -- 03/05/2021
-    // * but... JSON.parse(null) returns null, and typeof null === "object",  -- 03/05/2021
+    // * but... JSON.parse(null) returns null, and typeof null === "object", -- 03/05/2021
     // * so we must check for that, too. Thankfully, null is falsey, so this suffices: -- 03/05/2021
     if (jsonData && typeof jsonData === "object") {
 
@@ -147,8 +178,10 @@ export const tryParseJSON = (jsonString) => {
 
   }
   catch (error) {
-    // ! Don't display this error in the console. This function is already returning false if the JSON file is not in the correct format. -- 03/06/2021
+
+    // * Don't display this error in the console. This function is already returning false if the JSON file is not in the correct format. -- 03/06/2021
     // console.log(componentName, getDateTime(), "tryParseJSON error", error);
+
   };
 
   return false;
@@ -294,21 +327,51 @@ export const displayObjectDataXML = (ObjectData) => {
 
 export const getCurrentDay = () => {
 
-  return new Date().getDate();
+  // * Time returned does not consider the time zone without adjustments. -- 08/09/2021
+  // * https://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes -- 08/09/2021
+
+  // * https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local -- 08/09/2021
+  let timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+
+  // return new Date().toLocaleString();
+  // return new Date().toLocaleString().slice(0, 19).replace("T", " ");
+  // return new Date().toISOString().slice(0, 19).replace("T", " ");
+  // return new Date().getDate();
+  return new Date(new Date() - timezoneOffset).getDate();
 
 };
 
 
 export const getCurrentMonth = () => {
 
-  return new Date().getMonth() + 1;
+  // * Time returned does not consider the time zone without adjustments. -- 08/09/2021
+  // * https://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes -- 08/09/2021
+
+  // * https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local -- 08/09/2021
+  let timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+
+  // return new Date().toLocaleString();
+  // return new Date().toLocaleString().slice(0, 19).replace("T", " ");
+  // return new Date().toISOString().slice(0, 19).replace("T", " ");
+  // return new Date().getMonth() + 1;
+  return new Date(new Date() - timezoneOffset).getMonth() + 1;
 
 };
 
 
 export const getCurrentYear = () => {
 
-  return new Date().getFullYear();
+  // * Time returned does not consider the time zone without adjustments. -- 08/09/2021
+  // * https://usefulangle.com/post/30/javascript-get-date-time-with-offset-hours-minutes -- 08/09/2021
+
+  // * https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local -- 08/09/2021
+  let timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+
+  // return new Date().toLocaleString();
+  // return new Date().toLocaleString().slice(0, 19).replace("T", " ");
+  // return new Date().toISOString().slice(0, 19).replace("T", " ");
+  // return new Date().getFullYear();
+  return new Date(new Date() - timezoneOffset).getFullYear();
 
 };
 
@@ -422,8 +485,9 @@ export const daysSince = (dateToCompare) => {
 };
 
 
-// * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures or to see if the object has a property available with a value. -- 06/09/2022
 export const hasNonEmptyProperty = (objectItem, propertyName) => {
+
+  // * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures or to see if the object has a property available with a value. -- 06/09/2022
 
   let nonEmptyProperty = false;
 
@@ -442,8 +506,9 @@ export const hasNonEmptyProperty = (objectItem, propertyName) => {
 };
 
 
-// * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures. -- 06/09/2022
 export const hasEqualsProperty = (objectItem, propertyName, value) => {
+
+  // * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures. -- 06/09/2022
 
   let equalsProperty = false;
 
@@ -462,8 +527,9 @@ export const hasEqualsProperty = (objectItem, propertyName, value) => {
 };
 
 
-// * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures. -- 06/09/2022
 export const hasTrueProperty = (objectItem, propertyName) => {
+
+  // * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures. -- 06/09/2022
 
   let trueProperty = false;
 
@@ -482,8 +548,9 @@ export const hasTrueProperty = (objectItem, propertyName) => {
 };
 
 
-// * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures. -- 06/09/2022
 export const hasFalseProperty = (objectItem, propertyName) => {
+
+  // * This function is intended for use in ternary statements so that there aren't lines and lines of if statement structures. -- 06/09/2022
 
   let falseProperty = false;
 
@@ -627,7 +694,7 @@ export const convertTemperature = (temperatureScale, temperature) => {
   let temperatureFloat = parseFloat(temperature);
   let temperatureConverted = null;
 
-  if (isNaN(temperatureFloat) === false && isEmpty(temperatureFloat) === false) {
+  if (isEmpty(temperatureFloat) === false && isNaN(temperatureFloat) === false) {
 
     if (formatLowerCase(temperatureScale) === "celsius") {
 
@@ -735,8 +802,8 @@ export const convertEnableDisableTrueFalse = (value) => {
 
 export const convertNullEmptyString = (value) => {
 
-  // TODO: Change this function so that it can handle if there are already empty string values in the database. -- 03/19/2021
-  // ! This can't be done in one function like this to handle both conversions because what if the database value is set to an empty string. -- 07/09/2021
+  // * TODO: Change this function so that it can handle if there are already empty string values in the database. -- 03/19/2021
+  // * This can't be done in one function like this to handle both conversions because what if the database value is set to an empty string. -- 07/09/2021
 
   if (value === null) {
 
@@ -773,7 +840,8 @@ export const convertNullEmptyString = (value) => {
 
 export const isWholeNumber = (value) => {
 
-  if (isNaN(formatTrim(value)) === true) {
+  // * Make sure that the value isn't empty. isNaN counts empty values as a number. -- 09/11/2023
+  if (isEmpty(value) === true || isNaN(formatTrim(value)) === true) {
 
     return false;
 
@@ -784,8 +852,7 @@ export const isWholeNumber = (value) => {
 
       return false;
 
-    }
-    else {
+    } else {
 
       return true;
 
@@ -798,7 +865,8 @@ export const isWholeNumber = (value) => {
 
 export const hasDecimalPlaces = (value, decimalPlaces) => {
 
-  if (isNaN(formatTrim(value)) === true) {
+  // * Make sure that the value isn't empty. isNaN counts empty values as a number. -- 09/11/2023
+  if (isEmpty(value) === true || isNaN(formatTrim(value)) === true) {
 
     return false;
 
@@ -825,7 +893,7 @@ export const hasDecimalPlaces = (value, decimalPlaces) => {
 
     };
 
-    if (isNaN(valueToTest) === true || (isEmpty(currentDecimalPlaces) === false && valueDecimals.length > currentDecimalPlaces)) {
+    if (isEmpty(valueToTest) === true || isNaN(valueToTest) === true || (isEmpty(currentDecimalPlaces) === false && valueDecimals.length > currentDecimalPlaces)) {
 
       return false;
 
@@ -904,7 +972,7 @@ export const formatTitle = (title) => {
   if (isEmpty(title) === false && title !== "iSBAR" && title !== "iSBARs" && title !== "iSBAREnable") {
 
     // * iSBARs is the special case that is difficult to make work in regex. -- 08/16/2021
-    formattedTitle = title.replace(/(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])/g, " $1").replace(/\b\w/g, c => c.toUpperCase());
+    formattedTitle = title.replace(/(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])/g, "$1").replace(/\b\w/g, c => c.toUpperCase());
 
   } else if (isEmpty(title) === false && title === "iSBAR") {
 
@@ -960,7 +1028,7 @@ export const getObjectArrayUniqueProperty = (objectArray, uniqueProperty) => {
 
   if (Array.isArray(uniqueArray) === true) {
 
-    uniqueArray = [...new Set(objectArray.map(item => item[uniqueProperty]))];
+    uniqueArray = [...new Set(objectArray.map((item) => item[uniqueProperty]))];
 
     if (typeof uniqueArray[0] === "number") {
 
@@ -1024,11 +1092,34 @@ export const sortObjectArrayByProperty = (objectArray, sortProperty, direction) 
 
     } else {
 
-      sortedArray.sort((a, b) => (a[sortProperty] > b[sortProperty]) ? 1 : -1);
+      // * sortedArray.sort((a, b) => (removeArticlesFromBeginning(a[sortProperty]) > removeArticlesFromBeginning(b[sortProperty])) ? 1 : -1);
+      sortedArray.sort((a, b) => {
 
-      // sortedArray.sort((a, b) => (formatLowerCase(a[sortProperty]).replace("the ", "").replace("a ", "") > formatLowerCase(b[sortProperty]).replace("the ", "").replace("a ", "")) ? 1 : -1);
+        let aProperty = removeArticlesFromBeginning(a[sortProperty]);
+        let bProperty = removeArticlesFromBeginning(b[sortProperty]);
 
-      // sortedArray.sort((a, b) => (formatLowerCase(a[sortProperty]).replace(/^(a\.)/, "").replace(/^(the\.)/, "") > formatLowerCase(b[sortProperty]).replace(/^(a\.)/, "").replace(/^(the\.)/, "") ? 1 : -1));
+        // * Put null values at the end of the array: https://stackoverflow.com/a/29829361 -- 11/30/2023 JH
+        if (aProperty === bProperty) {
+
+          return 0;
+
+        };
+
+        if (isEmpty(aProperty) === true) {
+
+          return 1;
+
+        };
+
+        if (isEmpty(bProperty) === true) {
+
+          return -1;
+
+        };
+
+        return aProperty > bProperty ? 1 : -1;
+
+      });
 
     };
 
@@ -1047,7 +1138,7 @@ export const sortObjectArrayByProperty = (objectArray, sortProperty, direction) 
 
 export const sortObjectArrayByTwoProperties = (objectArray, sortPropertyOne, sortPropertyTwo, direction) => {
 
-  // TODO: The sorting for two object properties isn't working correctly. -- 06/16/2022
+  // ? TODO: The sorting for two object properties isn't working correctly? -- 06/16/2022
   // * https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/ -- 05/07/2022
   // * https://stackoverflow.com/questions/6913512/how-to-sort-an-array-of-objects-by-multiple-fields -- 03/06/2021
 
@@ -1176,7 +1267,7 @@ export const compareObjectProperties = (originalObject, comparisonObject) => {
 
 export const groupObjectArrayByProperties = (objectArray, ...keys) => {
 
-  // * From https://gist.github.com/robmathers/1830ce09695f759bf2c4df15c29dd22d?permalink_comment_id=3646957#gistcomment-3646957 -- 04/04/2022 KH
+  // * From https://gist.github.com/robmathers/1830ce09695f759bf2c4df15c29dd22d?permalink_comment_id=3646957#gistcomment-3646957 -- 04/04/2022
 
   const getGroupFromItem = (item, keys) => {
 
@@ -1334,8 +1425,7 @@ export const removeNonAlphanumericCharacters = (text) => {
 
   if (isEmpty(text) === false) {
 
-    // formatedText = text.replace(/[^a-zA-Z0-9\. ]/g, "");
-    formatedText = text.replace(/[^a-zA-Z0-9 ]/g, "");
+    formatedText = text.replace(/[^a-zA-Z0-9\. ]/g, "");
 
   };
 
@@ -1348,16 +1438,537 @@ export const replaceSmartCharacters = (jsonData) => {
 
   let newJSON = jsonData;
 
-  newJSON = newJSON.replaceAll("’", "'");
+  if (isEmpty(newJSON) === false) {
 
-  // newJSON = newJSON.replaceAll("–", "--");
-  newJSON = newJSON.replaceAll("–", "-");
+    newJSON = newJSON.replaceAll("’", "'");
 
-  newJSON = newJSON.replaceAll(" ", " ");
+    // newJSON = newJSON.replaceAll("–", "--");
+    newJSON = newJSON.replaceAll("–", "-");
 
-  newJSON = newJSON.replaceAll("“", "\"");
-  newJSON = newJSON.replaceAll("”", "\"");
+    newJSON = newJSON.replaceAll(" ", " ");
+
+    newJSON = newJSON.replaceAll("“", "\"");
+    newJSON = newJSON.replaceAll("”", "\"");
+
+  };
 
   return newJSON;
+
+};
+
+
+export const getQueryStringData = () => {
+
+  let queryStringData = {};
+
+  // * Retreive the queryString values if there are any. -- 01/22/2023
+  if (typeof window !== "undefined") {
+
+    let queryStrings = new URLSearchParams(window.location.search);
+
+    queryStringData.parametersURL = queryStrings.toString();
+
+    // * From https://medium.com/swlh/urlsearchparams-in-javascript-df524f705317 -- 01/22/2023
+    queryStrings.forEach(function (value, key) {
+
+      // console.log(componentName, getDateTime(), "key", key);
+      // console.log(componentName, getDateTime(), "value", value);
+
+      queryStringData[key] = value;
+
+    });
+
+  };
+
+  return queryStringData;
+
+};
+
+
+export const addLog = (baseURL, fetchAuthorization, databaseAvailable, allowLogging, logObject) => {
+
+  let logResult = "Add log not attempted due to parameter values.";
+
+  if (allowLogging === true && databaseAvailable !== false) {
+
+    let operationValue = "Add Log";
+
+    let url = `${baseURL}logs/`;
+    let response = "";
+    let data = "";
+
+    fetch(url, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json", "Authorization": fetchAuthorization
+      }),
+      body: JSON.stringify({ recordObject: logObject })
+    })
+      .then(results => {
+
+        response = results;
+
+        if (response.ok !== true) {
+
+          addErrorLog(baseURL, databaseAvailable, { operation: `${operationValue} SQL Server`, componentName: componentName, transactionData: { url: url, response: { ok: response.ok, redirected: response.redirected, status: response.status, statusText: response.statusText, type: response.type, url: response.url }, data: data, logObject: logObject }, errorData: { message: `${response.status} ${response.statusText} ${response.url}` }, dateEntered: getDateTime() });
+
+          // throw Error(`${response.status} ${response.statusText} ${response.url}`);
+
+          logResult = `${operationValue}: ${response.status} ${response.statusText} ${response.url}`;
+
+        } else {
+
+          if (response.status === 200) {
+
+            return response.json();
+
+          } else {
+
+            return response.status;
+
+          };
+
+        };
+
+      })
+      .then(results => {
+
+        data = results;
+
+        logResult = data;
+
+      })
+      .catch((error) => {
+
+        // console.error(componentName, getDateTime(), "addLog error", error);
+        // console.error(componentName, getDateTime(), "addLog error.name", error.name);
+        // console.error(componentName, getDateTime(), "addLog error.message", error.message);
+        // console.error(componentName, getDateTime(), "addLog error.stack", error.stack);
+
+        // // dispatch(addErrorMessage(`${operationValue}: ${error.name}: ${error.message}`));
+        // dispatch(addErrorMessage(`${operationValue}: ${convertSpecialCharacters(error.name)}: ${convertSpecialCharacters(error.message)}`));
+
+        addErrorLog(baseURL, databaseAvailable, { operation: operationValue, componentName: componentName, transactionData: { url: url, response: { ok: response.ok, redirected: response.redirected, status: response.status, statusText: response.statusText, type: response.type, url: response.url }, data: data, logObject: logObject }, errorData: { name: error.name, message: error.message, stack: error.stack }, dateEntered: getDateTime() });
+
+        logResult = `${operationValue}: ${convertSpecialCharacters(error.name)}: ${convertSpecialCharacters(error.message)}`;
+
+      });
+
+  };
+
+  return logResult;
+
+};
+
+
+export const addErrorLog = (baseURL, fetchAuthorization, databaseAvailable, allowLogging, errorObject) => {
+
+  let logErrorResult = "Add error log not attempted due to parameter values.";
+
+  if (allowLogging === true && databaseAvailable !== false) {
+
+    let operationValue = "Add Error Log";
+
+    let url = `${baseURL}errorLogs/`;
+    let response = "";
+    let data = "";
+
+    fetch(url, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json", "Authorization": fetchAuthorization
+      }),
+      body: JSON.stringify({ recordObject: errorObject })
+    })
+      .then(results => {
+
+        response = results;
+
+        if (response.ok !== true) {
+
+          // throw Error(`${response.status} ${response.statusText} ${response.url}`);
+
+          logErrorResult = `${operationValue}: ${response.status} ${response.statusText} ${response.url}`;
+
+        } else {
+
+          if (response.status === 200) {
+
+            return response.json();
+
+          } else {
+
+            return response.status;
+
+          };
+
+        };
+
+      })
+      .then(results => {
+
+        data = results;
+
+        logErrorResult = data;
+
+      })
+      .catch((error) => {
+
+        // console.error(componentName, getDateTime(), "addErrorLog error", error);
+        // console.error(componentName, getDateTime(), "addErrorLog error.name", error.name);
+        // console.error(componentName, getDateTime(), "addErrorLog error.message", error.message);
+
+        // // dispatch(addErrorMessage(`${operationValue}: ${error.name}: ${error.message}`));
+        // dispatch(addErrorMessage(`${operationValue}: ${convertSpecialCharacters(error.name)}: ${convertSpecialCharacters(error.message)}`));
+
+        logErrorResult = `${operationValue}: ${convertSpecialCharacters(error.name)}: ${convertSpecialCharacters(error.message)}`;
+
+      });
+
+  };
+
+  return logErrorResult;
+
+};
+
+
+export const addComputerLog = (computerLogOne, computerLogTwo) => {
+
+  let computerLog = { ...computerLogOne };
+
+  if (typeof computerLogItem === "object") {
+
+    // * From https://geolocation-db.com/json/ -- 09/27/2021
+    if (isEmpty(computerLogTwo.country_code) === false) {
+
+      computerLog.countryCode = computerLogTwo.country_code;
+
+    };
+
+    if (isEmpty(computerLogTwo.country_name) === false) {
+
+      computerLog.countryName = computerLogTwo.country_name;
+
+    };
+
+    if (isEmpty(computerLogTwo.city) === false) {
+
+      computerLog.city = computerLogTwo.city;
+
+    };
+
+    if (isEmpty(computerLogTwo.postal) === false) {
+
+      computerLog.postal = computerLogTwo.postal;
+
+    };
+
+    if (isEmpty(computerLogTwo.latitude) === false) {
+
+      computerLog.latitude = computerLogTwo.latitude;
+
+    };
+
+    if (isEmpty(computerLogTwo.longitude) === false) {
+
+      computerLog.longitude = computerLogTwo.longitude;
+
+    };
+
+    if (isEmpty(computerLogTwo.IPv4) === false) {
+
+      computerLog.ipAddress = computerLogTwo.IPv4;
+
+    };
+
+    if (isEmpty(computerLogTwo.state) === false) {
+
+      computerLog.state = computerLogTwo.state;
+
+    };
+
+    // * From https://api.db-ip.com/v2/free/self -- 09/27/2021
+    if (isEmpty(computerLogTwo.ipAddress) === false) {
+
+      computerLog.ipAddress = computerLogTwo.ipAddress;
+
+    };
+
+    if (isEmpty(computerLogTwo.continentCode) === false) {
+
+      computerLog.continentCode = computerLogTwo.continentCode;
+
+    };
+
+    if (isEmpty(computerLogTwo.continentName) === false) {
+
+      computerLog.continentName = computerLogTwo.continentName;
+
+    };
+
+    if (isEmpty(computerLogTwo.countryCode) === false) {
+
+      computerLog.countryCode = computerLogTwo.countryCode;
+
+    };
+
+    if (isEmpty(computerLogTwo.countryName) === false) {
+
+      computerLog.countryName = computerLogTwo.countryName;
+
+    };
+
+    if (isEmpty(computerLogTwo.stateProvCode) === false) {
+
+      computerLog.stateProvCode = computerLogTwo.stateProvCode;
+
+    };
+
+    if (isEmpty(computerLogTwo.stateProv) === false) {
+
+      computerLog.state = computerLogTwo.state;
+
+    };
+
+    if (isEmpty(computerLogTwo.city) === false) {
+
+      computerLog.city = computerLogTwo.city;
+
+    };
+
+  };
+
+  return computerLog;
+
+};
+
+
+export const parse = (value) => {
+
+  // * The parseHTML function from the npm package html-react-parser doesn't provide error handling if the value sent to it isn't a string. -- 03/09/2023
+
+  let newValue = value;
+
+  if (isEmpty(value) === false) {
+
+    newValue = parseHTML(value);
+
+  };
+
+  return newValue;
+
+};
+
+
+export const displayTime = (dateToDisplay, removeLeadingZeroes) => {
+
+  let newDisplayTime = "";
+
+  if (isEmpty(dateToDisplay) === false) {
+
+    // * Time
+    let time = formatToString(dateToDisplay).substring(11, 16);
+
+    newDisplayTime = time;
+
+    if (isEmpty(newDisplayTime) === false && removeLeadingZeroes === true) {
+
+      newDisplayTime = newDisplayTime.replace(/\b0/g, "");
+
+    };
+
+  };
+
+  return newDisplayTime;
+
+};
+
+
+export const convertMilitaryTimeToStandardTime = (timeEntered) => {
+
+  // * https://stackoverflow.com/questions/29206453/best-way-to-convert-military-time-to-standard-time-in-javascript. -- 09/18/2023
+
+  // * timeEntered must be a string in HH:MM format. -- 09/18/2023
+
+  let newTime = timeEntered;
+
+  let hours = "";
+  let minutes = "";
+  let modifier = "";
+
+  // * Split the time by : and " " -- 11/27/2023
+  newTime = newTime.split(/[\s: ]+/);
+
+  if (isEmpty(newTime[0]) === false) {
+
+    hours = Number(newTime[0]);
+
+  };
+
+  if (isEmpty(newTime[1]) === false) {
+
+    minutes = Number(newTime[1]);
+
+  };
+
+  if (isEmpty(newTime[2]) === false) {
+
+    modifier = Number(newTime[2]);
+
+  };
+
+  let standardTime = "";
+
+  if (hours > 0 && hours <= 12) {
+
+    standardTime = "" + hours;
+
+  } else if (hours > 12) {
+
+    standardTime = "" + (hours - 12);
+
+  } else if (hours == 0) {
+
+    standardTime = "12";
+
+  };
+
+  if (hours >= 12) {
+
+    modifier = " PM";
+
+  } else {
+
+    modifier = " AM";
+
+  };
+
+  standardTime += (minutes < 10) ? ":0" + minutes + modifier : ":" + minutes + modifier;
+
+  return standardTime;
+
+};
+
+
+export const convertStandardTimeToMilitaryTime = (timeEntered) => {
+
+  // * https://www.tutorialspoint.com/converting-12-hour-format-time-to-24-hour-format-in-javascript. -- 11/27/2023
+
+  // * timeEntered must be a string in HH:MM AM/PM format. -- 09/18/2023
+
+  let newTime = timeEntered;
+
+  let hours = "";
+  let minutes = "";
+  let modifier = "";
+
+  // * Split the time by : and " " -- 11/27/2023
+  newTime = newTime.split(/[\s: ]+/);
+
+  if (isEmpty(newTime[0]) === false) {
+
+    hours = Number(newTime[0]);
+    hours = (hours < 10) ? "0" + hours : hours;
+
+  };
+
+  if (isEmpty(newTime[1]) === false) {
+
+    minutes = Number(newTime[1]);
+    minutes = (minutes < 30) ? "0" + minutes : minutes;
+
+  };
+
+  if (isEmpty(newTime[2]) === false) {
+
+    modifier = newTime[2];
+
+  };
+
+  if (hours === '12') {
+
+    hours = '00';
+
+  };
+
+  if (modifier === 'PM') {
+
+    // * 10 indicates that the string is in base 10 (decimal notation). -- 11/27/2023
+    // * + 12 converts the 12-hour format to a 24-hour format. -- 11/27/2023
+    hours = parseInt(hours, 10) + 12;
+
+  };
+
+  return `${hours}:${minutes}`;
+
+};
+
+
+export const getNumberOfDaysBetweenDates = (startDate, endDate) => {
+
+  // * https://www.geeksforgeeks.org/how-to-calculate-the-number-of-days-between-two-dates-in-javascript/ -- 09/12/2023
+  // * https://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates/2627493#2627493 -- 09/12/2023
+
+  let newStartDate = new Date(startDate);
+  let newEndDate = new Date(endDate);
+  let numberOfDays = 1;
+
+  // * The function getTime() converts days to milliseconds to subtract the two dates. -- 08/31/2023  
+  // * The equation (1000 * 60 * 60 * 24) turns the values back into a day count. -- 08/31/2023  
+  // * The operation + 1 adds one day to account for 08/31/2023 - 08/31/2023 = 0 but should equal 1 day in order to account for running studentsPerDay amount of students that day. -- 08/31/2023  
+  numberOfDays = ((newEndDate.getTime() - newStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+  return numberOfDays;
+
+};
+
+
+export const convertTimeToMinutes = (timeEntered) => {
+
+  // * https://stackoverflow.com/questions/32885682/convert-hhmmss-into-minute-using-javascript -- 11/27/2023
+  // * timeEntered must be a string in HH:MM format. -- 09/18/2023
+
+  let newTime = timeEntered.split(':');
+
+  let minutes = (+newTime[0]) * 60 + (+newTime[1]);
+
+  return minutes;
+
+};
+
+
+export const generateHoursInterval = (startHourInMinutes, endHourInMinutes, interval) => {
+
+  // * https://gist.github.com/indexzero/6261ad9292c78cf3c5aa69265e2422bf?permalink_comment_id=4003346#gistcomment-4003346 -- 11/20/2023
+
+  let timesArray = [];
+
+  if (isEmpty(startHourInMinutes) === false && isWholeNumber(startHourInMinutes) === true) {
+
+    for (let i = 0; startHourInMinutes < 24 * 60; i++) {
+
+      if (startHourInMinutes > endHourInMinutes) {
+
+        break;
+
+      } else {
+
+        // * Get hours of day in 0-24 format. -- 11/20/2023
+        let hh = Math.floor(startHourInMinutes / 60);
+
+        // * Get minutes of the hour in 0-55 format. -- 11/20/2023
+        let mm = startHourInMinutes % 60;
+
+        timesArray[i] = { timeID: i, time: convertMilitaryTimeToStandardTime(("0" + (hh % 24)).slice(-2) + ":" + ("0" + mm).slice(-2)) };
+
+        startHourInMinutes = startHourInMinutes + interval;
+
+      };
+
+    };
+
+  };
+
+  return timesArray;
 
 };

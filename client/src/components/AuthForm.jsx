@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { noFunctionAvailable, isEmpty, getDateTime } from "../utilities/sharedFunctions";
-import { setAccessToken, setCurrentUser, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import FormInput from './common/FormInput';
+import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
+import FormInput from './template/FormInput';
 import { jwtDecode } from "../utilities/jwtDecode";
 
-const StyledLogin = styled.form`
+const StyledAuthForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -20,13 +20,13 @@ const StyledLogin = styled.form`
   }
 `;
 
-const Login = (props) => {
+const AuthForm = (props) => {
 
   // * Available props: -- 01/29/2024 JH
   // * Properties: currentUser
   // * Functions: setCurrentUser, setIsFormOpen
 
-  let componentName = "Login";
+  let componentName = "AuthForm";
 
   const dispatch = useDispatch();
 
@@ -35,7 +35,6 @@ const Login = (props) => {
 
   let formType = isEmpty(props) === false && isEmpty(props.formType) === false ? props.formType : null;
 
-  let setIsFormOpen = isEmpty(props.setIsFormOpen) === false ? props.setIsFormOpen : noFunctionAvailable;
   let setFormType = isEmpty(props.setFormType) === false ? props.setFormType : noFunctionAvailable;
 
   const [txtUsername, setTxtUsername] = useState("");
@@ -135,7 +134,8 @@ const Login = (props) => {
 
   const closeForm = () => {
 
-    setIsFormOpen(false);
+    // setIsFormOpen(false);
+    dispatch(setComponentToLoad(""));
     setFormType("");
 
     setTxtUsername("");
@@ -145,7 +145,7 @@ const Login = (props) => {
 
 
   return (
-    <StyledLogin>
+    <StyledAuthForm>
 
       <h2>{formType}</h2>
 
@@ -169,8 +169,8 @@ const Login = (props) => {
         <button type="button" className="btn btn-light-gray" onClick={() => { closeForm(); }}>Cancel</button>
       </div>
 
-    </StyledLogin>
+    </StyledAuthForm>
   );
 };
 
-export default Login;
+export default AuthForm;

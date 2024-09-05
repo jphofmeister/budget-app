@@ -1,12 +1,17 @@
-@import "./utilities/_variables.css";
-@import "./utilities/_utilities.css";
+@import "./utilities/Variables.css";
+@import "./utilities/Utilities.css";
 
-@import "./vendor/_fontAwesome.css";
+@import "./vendor/FontAwesome.css";
 
-@import "./layout/_base.css";
+@import "./layout/Base.css";
+@import "./layout/Header.css";
+@import "./layout/SectionBlock.css";
+@import "./layout/Table.css";
 
-@import "./components/_alertPopup.css";
-@import "./components/_buttons.css";
-@import "./components/_form.css";
-@import "./components/_buttonDropdown.css";
-@import "./components/_calendar.css";
+@import "./components/Buttons.css";
+@import "./components/Form.css";
+@import "./components/AlertPopup.css";
+@import "./components/Tabs.css";
+@import "./components/Modal.css";
+@import "./components/Spinner.css";
+@import "./components/Tooltip.css";

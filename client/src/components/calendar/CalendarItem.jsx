@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { noFunctionAvailable, isEmpty, displayDate } from "shared-functions";
+import { noFunctionAvailable, isEmpty, displayDate } from "../../utilities/sharedFunctions";
 import { calculateDate } from "./DateFunctions";
 import CalendarItemPopover from "./CalendarItemPopover";
 
 const CalendarItem = (props) => {
 
-  // * Available props: -- 06/23/2023 MF
-  // * Properties: eventItem, eventClasses, eventItemStyles, eventItemContainerStyles -- 06/23/2023 MF
-  // * Functions: getStatus -- 06/23/2023 MF
+  // * Available props: -- 06/23/2023
+  // * Properties: eventItem, eventClasses, eventItemStyles, eventItemContainerStyles -- 06/23/2023
+  // * Functions: getStatus -- 06/23/2023
 
   let componentName = "CalendarItem";
 

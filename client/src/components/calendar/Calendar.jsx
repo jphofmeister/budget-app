@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import classnames from "classnames";
-import { noFunctionAvailable, isEmpty, displayDate, formatToString, isNonEmptyArray } from "shared-functions";
+import { noFunctionAvailable, isEmpty, displayDate, formatToString, isNonEmptyArray } from "../../utilities/sharedFunctions";
 import { calculateDate, displayMonthName, getStartOfMonth, getEndOfMonth, getEachDayOfInterval, displayDay, checkIsSameDay } from "./DateFunctions";
 import CalendarCell from "./CalendarCell";
 

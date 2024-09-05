@@ -1,0 +1,22 @@
+.spinner-container {
+  width: 100%;
+  max-width: 640px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+  border-radius: 10px;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.loading-spinner {
+  width: 100%;
+  /* max-width: 200px; */
+}
+
+.section-block .spinner-container {
+  box-shadow: none;
+  margin: 0 auto;
+}

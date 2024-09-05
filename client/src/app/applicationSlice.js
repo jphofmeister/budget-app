@@ -6,6 +6,10 @@ const componentName = "applicationSlice";
 const initialState = {
   accessToken: null,
   currentUser: {},
+
+  componentToLoad: "",
+  currentBill: {},
+
   informationMessage: "",
   successMessage: "",
   warningMessage: "",
@@ -25,6 +29,12 @@ const applicationSlice = createSlice({
     },
     setCurrentUser(state, action) {
       state.currentUser = action.payload;
+    },
+    setComponentToLoad(state, action) {
+      state.componentToLoad = action.payload;
+    },
+    setCurrentBill(state, action) {
+      state.currentBill = action.payload;
     },
     addInformationMessage(state, action) {
 
@@ -186,6 +196,6 @@ const applicationSlice = createSlice({
   }
 });
 
-export const { setAccessToken, setCurrentUser, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } = applicationSlice.actions;
+export const { setAccessToken, setCurrentUser, setComponentToLoad, setCurrentBill, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } = applicationSlice.actions;
 
 export default applicationSlice.reducer;

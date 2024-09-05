@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { isEmpty, getDateTime } from "../utilities/sharedFunctions";
 import { parse } from "../utilities/applicationFunctions";
 import { addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import AlertPopup from "./common/AlertPopup";
+import AlertPopup from "./template/AlertPopup";
 
 const Messages = () => {
 

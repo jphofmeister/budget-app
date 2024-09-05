@@ -47,6 +47,10 @@ h1, h2, h3, h4, h5, h6, p {
   margin-top: 0;
 }
 
+.number-column {
+  text-align: center;
+}
+
 footer {
   margin-top: 4rem;
   border-top: 1px solid #aaa;
@@ -55,51 +59,3 @@ footer {
   padding: 2rem;
   color: rgba(0,0,0,.7);
 }
-
-.ul-no-bullets {
-  list-style-type: none;
-  margin: 0 0 2rem 0;
-  padding: 0;
-
-  li {
-    margin-bottom: .5rem;
-  }
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: .5rem;
-  width: 100%;
-
-  &.justify-end {
-    justify-content: flex-end;
-  }
-
-  &.justify-center {
-    justify-content: center;
-  }
-
-  &.space-between {
-    justify-content: space-between;
-  }
-
-  &.align-center {
-    align-items: center;
-  }
-
-  &.align-end {
-    align-items: flex-end;
-  }
-}
-
-/* .btn.save-color-button {
-  width: 200px;
-  border-radius: 0 0 10px 10px;
-}
-
-.rcp-root.rcp {
-  border-radius: 10px 10px 0 0;
-} */

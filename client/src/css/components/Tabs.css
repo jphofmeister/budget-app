@@ -1,0 +1,73 @@
+/* Default Tab Styles
+======================================== */
+
+.tabs {
+  display: flex;
+  gap: .25rem;
+  width: 100%;
+  max-width: 1632px;
+  padding: 1rem 1rem 0 1rem;
+  overflow-x: auto;
+
+  &.tabs--with-divider {
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      height: 1px;
+      background-color: #aaa;
+      width: 100%;
+      margin-left: -1rem;
+    }
+
+    .tabs__tab-item.active, 
+    button.tabs__tab-item.active {
+      border: 1px solid #aaa;
+      border-bottom: 1px solid #fff;
+    }
+  }
+
+  &.extra-large {
+    width: calc(100% - 4rem);
+    max-width: unset;
+    margin: 0 2rem;
+  }
+
+  .tabs__tab-item, 
+  button.tabs__tab-item {
+    display: block;
+    color: var(--darkBlue);
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    border-bottom: 1px solid #fff;
+    border-radius: 6px 6px 0 0;
+    padding: 10px 12px;
+    align-self: unset;
+  
+    &:hover {
+      background-color: #aaa;
+      border: 1px solid #aaa;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &.active {
+      background-color: #fff;
+      border: 1px solid rgba(0,0,0,.1);
+      border-bottom: none;
+      position: relative;
+      z-index: 3;
+
+      &:hover {
+        background-color: #aaa;
+        border-color: #aaa;
+      }
+    }
+  }
+}
+
+.tab-content {
+  width: 100%;
+}

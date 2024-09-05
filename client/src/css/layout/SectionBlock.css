@@ -1,0 +1,38 @@
+.section-block {
+  position: relative;
+  margin: 0;
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1114px;
+}
+
+.section-block.large {
+  margin: 1rem 2rem;
+  width: 100%;
+  max-width: 1632px;
+}
+
+.transparent-section {
+  width: 100%;
+  margin: 0 0 0 2rem;
+  max-width: 1632px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .section-block,
+  .section-block.large  {
+    width: 100%;
+    border-radius: 0;
+    margin: 0;
+    padding: 1rem;
+  }
+}

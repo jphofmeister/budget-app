@@ -1,4 +1,7 @@
+/* CSS Variables for Corporate Colors */
 :root {
+  /* Orbis Colors
+  ==========================================================*/
 
   /* primary colors */
 
@@ -19,6 +22,7 @@
   --primaryBlue_05: rgba(53, 97, 181, .5);
   --primaryBlue_03: rgba(53, 97, 181, .3);
   --primaryBlue_01: rgba(53, 97, 181, .1);
+
 
   /* secondary colors */
 
@@ -69,14 +73,21 @@
   --red_03: rgba(204, 54, 68, .3);
   --red_01: rgba(204, 54, 68, .1);
 
-  /* #af343e */
+/* #af343e */
   --darkerRed: rgba(175, 52, 63, 1);
   --darkerRed_05: rgba(175, 52, 63, .5);
   --darkerRed_03: rgba(175, 52, 63, .3);
   --darkerRed_01: rgba(175, 52, 63, .1);
 
+  /* new, non-Orbis colors */
+  /* #cc3645 */
   --yellow: rgba(255, 165, 8, 1);
 
+  /* Orbis Fonts */
+  /*==========================================================*/
+  --serif: "Book Antiqua";
+  --sansSerif: "Franklin Gothic";
+  --defaultFonts: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
   /* utilities */
   /*==========================================================*/

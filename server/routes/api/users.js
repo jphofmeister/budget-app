@@ -67,7 +67,6 @@ router.post("/add", (request, response) => {
     .then((hashedPassword) => {
       pool.query("INSERT INTO users (user_name, user_password, created_on, active) VALUES ($1, $2, $3, $4) RETURNING *", [request.body.userName, hashedPassword, newTimestamp, true])
         .then((results) => {
-          console.log("results.rows[0]", results.rows[0]);
 
           // * Create jwt tokens -- 04/18/2024 JH
           let tokens = jwtTokens(results.rows[0]);
@@ -77,6 +76,7 @@ router.post("/add", (request, response) => {
           response.cookie('refresh_token', tokens.refreshToken, { domain: cookieDomain, httpOnly: true, sameSite: 'none', secure: true });
 
           response.json({ transactionSuccess: true, errorOccurred: false, ...tokens });
+
         })
         .catch((error) => {
           if (error) {

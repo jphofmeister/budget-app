@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import { noFunctionAvailable, isEmpty, isNonEmptyArray } from "shared-functions";
+import { noFunctionAvailable, isEmpty, isNonEmptyArray } from "../../utilities/sharedFunctions";
 import { calculateDate, getEachDayOfInterval, displayDay, checkIsSameDay } from "./DateFunctions";
 import CalendarItem from "./CalendarItem";
 

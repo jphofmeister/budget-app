@@ -1,3 +1,66 @@
+.ul-no-bullets {
+  list-style-type: none;
+  margin: 0 0 2rem 0;
+  padding: 0;
+
+  li {
+    margin-bottom: .5rem;
+  }
+}
+
+/* ? No longer needed? -- 07/21/2023 */
+/* .horizontal-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  gap: 1rem;
+
+  strong {
+    display: block;
+    margin-bottom: .5rem;
+  }
+
+  li {
+    border-right: 1px solid #777;
+    padding-right: 1rem;
+
+    &:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+} */
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: .5rem;
+  width: 100%;
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
+
+  &.justify-center {
+    justify-content: center;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.align-end {
+    align-items: flex-end;
+  }
+}
+
 /* hidden content for screen readers */
 .sr-only {
   position: absolute;
@@ -13,11 +76,23 @@
 
 /* * copying the way bootstrap does things by adding !important to utility classes -- 10/19/2023 JH */
 
-.hide-element {
+.display-block {
+  display: block !important;
+}
+
+.display-inline-block {
+  display: inline-block !important;
+}
+
+/* * display-none matches the pattern of the classes above better -- 09/03/2024 JH */
+.hide-element, 
+.display-none {
   display: none !important;
 }
 
-.no-visibility {
+/* * visibility-hidden matches the pattern of the classes above better -- 09/03/2024 JH */
+.no-visibility,
+.visibility-hidden {
   visibility: hidden !important;
 }
 
@@ -53,6 +128,9 @@
   width: 100% !important;
 }
 
+.opacity-50 {
+  opacity: .5 !important;
+}
 
 /* margin utilities copied from bootstrap */
 /*==========================================================*/
@@ -123,12 +201,40 @@
   margin-bottom: calc(var(--spacer) * 3) !important;
 }
 
-/* TODO remove -- 11/21/2023 JH */
-.mt-1rem {
-  margin-top: 1rem !important;
+.ml-0 {
+  margin-left: 0 !important;
+}
+.ml-1 {
+  margin-left: calc(var(--spacer) * .25) !important;
+}
+.ml-2 {
+  margin-left: calc(var(--spacer) * .5) !important;
+}
+.ml-3 {
+  margin-left: var(--spacer) !important;
+}
+.ml-4 {
+  margin-left: calc(var(--spacer) * 1.5) !important;
+}
+.ml-5 {
+  margin-left: calc(var(--spacer) * 3) !important;
 }
 
-/* TODO remove -- 11/21/2023 JH */
-.mb-1rem {
-  margin-bottom: 1rem !important;
+.mr-0 {
+  margin-right: 0 !important;
+}
+.mr-1 {
+  margin-right: calc(var(--spacer) * .25) !important;
+}
+.mr-2 {
+  margin-right: calc(var(--spacer) * .5) !important;
+}
+.mr-3 {
+  margin-right: var(--spacer) !important;
+}
+.mr-4 {
+  margin-right: calc(var(--spacer) * 1.5) !important;
+}
+.mr-5 {
+  margin-right: calc(var(--spacer) * 3) !important;
 }
