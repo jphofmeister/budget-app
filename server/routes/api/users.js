@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { jwtTokens } = require('../../utilities/jwtHelpers.js');
 const { authenticateToken } = require('../../middleware/authorization.js');
+const { isEmpty, isNonEmptyArray } = require("../../utilities/sharedFunctions");
 
 const dbUsername = require("../../config/keys").dbUsername;
 const dbPassword = require("../../config/keys").dbPassword;
@@ -66,8 +67,16 @@ router.post("/add", (request, response) => {
     .then((hashedPassword) => {
       pool.query("INSERT INTO users (user_name, user_password, created_on, active) VALUES ($1, $2, $3, $4) RETURNING *", [request.body.userName, hashedPassword, newTimestamp, true])
         .then((results) => {
-          console.log("results", results);
-          response.json(jwtTokens(results.rows[0]));
+          console.log("results.rows[0]", results.rows[0]);
+
+          // * Create jwt tokens -- 04/18/2024 JH
+          let tokens = jwtTokens(results.rows[0]);
+
+          let cookieDomain = isEmpty(process.env.COOKIE_DOMAIN) === false ? process.env.COOKIE_DOMAIN : "";
+
+          response.cookie('refresh_token', tokens.refreshToken, { domain: cookieDomain, httpOnly: true, sameSite: 'none', secure: true });
+
+          response.json({ transactionSuccess: true, errorOccurred: false, ...tokens });
         })
         .catch((error) => {
           if (error) {
