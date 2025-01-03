@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isEmpty } from "./utilities/sharedFunctions";
 import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "./app/applicationSlice";
+import { jwtDecode } from "./utilities/jwtDecode";
 import AuthForm from "./components/AuthForm";
 import Messages from "./components/Messages";
 import BillForm from "./components/BillForm";
@@ -22,9 +23,14 @@ const App = () => {
   let baseUrl = "/api";
 
 
-  const getRefreshToken = (event) => {
+  useEffect(() => {
 
-    event.preventDefault();
+    getRefreshToken();
+
+  }, []);
+
+
+  const getRefreshToken = () => {
 
     let url = `${baseUrl}/auth/refresh_token`;
 
@@ -90,8 +96,6 @@ const App = () => {
       })
       .then(results => {
         if (isEmpty(results) === false) {
-
-          console.log("results", results);
 
           dispatch(setAccessToken(null));
           dispatch(setCurrentUser({}));

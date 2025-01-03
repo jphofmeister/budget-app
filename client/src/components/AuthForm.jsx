@@ -37,8 +37,8 @@ const AuthForm = (props) => {
 
   let setFormType = isEmpty(props.setFormType) === false ? props.setFormType : noFunctionAvailable;
 
-  const [txtUsername, setTxtUsername] = useState("");
-  const [txtPassword, setTxtPassword] = useState("");
+  const [txtUsername, setTxtUsername] = useState("testuser");
+  const [txtPassword, setTxtPassword] = useState("test");
 
   // let baseUrl = "http://localhost:3001/api";
   let baseUrl = "/api";
@@ -95,9 +95,11 @@ const AuthForm = (props) => {
 
         if (isEmpty(results) === false && results.transactionSuccess === true && isEmpty(results.accessToken) === false) {
 
-          let newAccessToken = results.accessToken;
-          dispatch(setAccessToken(newAccessToken));
+          let newRefreshToken = results.refreshToken;
+          // localStorage.setItem("refreshToken", newRefreshToken);
+          dispatch(setAccessToken(newRefreshToken));
 
+          let newAccessToken = results.accessToken;
           let jwtDecoded = jwtDecode(newAccessToken);
 
           if (isEmpty(jwtDecoded.user_id) === false && isEmpty(jwtDecoded.user_name) === false) {
