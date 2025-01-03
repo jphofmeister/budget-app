@@ -17,7 +17,7 @@ const pool = new Pool({
 // * get all bills -- 09/04/2024 JH
 router.get("/", (request, response) => {
 
-  pool.query("SELECT * FROM bills ORDER BY id ASC")
+  pool.query("SELECT * FROM bills ORDER BY bill_id ASC")
     .then((results) => {
       console.log("get bills: results.rows", results.rows);
       response.json(results.rows);
@@ -54,8 +54,8 @@ router.get("/:billID", (request, response) => {
 router.post("/add", (request, response) => {
 
   pool.query(
-    "INSERT INTO bills (bill_name, bill_amount, bill_date, created_on, active) VALUES ($1, $2, $3, $4, $5)",
-    [request.body.billName, request.body.billAmount, request.body.billDate, new Date(), true]
+    "INSERT INTO bills (bill_name, bill_amount, bill_date, bill_url, bill_description, created_on, active) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+    [request.body.billName, request.body.billAmount, request.body.billDate, request.body.billUrl, request.body.billDescription, new Date(), true]
   )
     .then((results) => {
       console.log("add bill: results.rows", results.rows);
@@ -75,8 +75,8 @@ router.post("/add", (request, response) => {
 router.put("/update/:billID", (request, response) => {
 
   pool.query(
-    "UPDATE bills SET bill_name = $1, bill_amount = $2, bill_date = $3, updated_on = $4 WHERE bill_id = $5",
-    [request.body.billName, request.body.billAmount, request.body.billDate, new Date(), request.params.billID]
+    "UPDATE bills SET bill_name = $1, bill_amount = $2, bill_date = $3, bill_url = $4, bill_description =$5, updated_on = $6 WHERE bill_id = $7",
+    [request.body.billName, request.body.billAmount, request.body.billDate, request.body.billUrl, request.body.billDescription, new Date(), request.params.billID]
   )
     .then((results) => {
       console.log("update bill: results.rows", results.rows);

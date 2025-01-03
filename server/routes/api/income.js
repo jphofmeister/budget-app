@@ -17,7 +17,7 @@ const pool = new Pool({
 // * get all income -- 09/04/2024 JH
 router.get("/", (request, response) => {
 
-  pool.query("SELECT * FROM income ORDER BY id ASC")
+  pool.query("SELECT * FROM income ORDER BY income_id ASC")
     .then((results) => {
       console.log("get all income: results.rows", results.rows);
       response.json(results.rows);

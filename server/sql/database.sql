@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS public.bills
     bill_name character varying(30) COLLATE pg_catalog."default" NOT NULL,
     bill_amount numeric NOT NULL,
     bill_date timestamp without time zone NOT NULL,
+    bill_url character varying(255) COLLATE pg_catalog."default",
+    bill_description character varying(2000) COLLATE pg_catalog."default",
     created_on timestamp without time zone NOT NULL,
     updated_on timestamp without time zone,
     active boolean,
