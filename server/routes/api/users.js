@@ -38,11 +38,11 @@ router.get("/", /*authenticateToken,*/(request, response) => {
 });
 
 
-// // * GET api/users/:userID
+// // * GET api/users/:userId
 // // * get a user by id -- 12/09/2022 JH
-// router.get("/:userID", (request, response) => {
+// router.get("/:userId", (request, response) => {
 
-//   pool.query("SELECT * FROM users WHERE user_id = $1", [request.params.userID])
+//   pool.query("SELECT * FROM users WHERE user_id = $1", [request.params.userId])
 //     .then((results) => {
 //       console.log("results.rows", results.rows);
 //       response.json(results.rows);
@@ -96,11 +96,11 @@ router.post("/add", (request, response) => {
 
 
 // * update a user by id -- 12/09/2022 JH
-router.put("/update/:userID", (request, response) => {
+router.put("/update/:userId", (request, response) => {
 
   let newTimestamp = new Date();
 
-  pool.query("UPDATE users SET user_name = $1, user_password = $2, updated_on = $3 WHERE user_id = $4 RETURNING *", [request.body.userName, request.body.userPassword, newTimestamp, request.params.userID])
+  pool.query("UPDATE users SET user_name = $1, user_password = $2, updated_on = $3 WHERE user_id = $4 RETURNING *", [request.body.userName, request.body.userPassword, newTimestamp, request.params.userId])
     .then((results) => {
       console.log("results.rows", results.rows);
       response.json(results.rows);
@@ -116,9 +116,9 @@ router.put("/update/:userID", (request, response) => {
 
 
 // * soft delete a user by id
-router.put("/softDelete/:userID", (request, response) => {
+router.put("/softDelete/:userId", (request, response) => {
 
-  pool.query("UPDATE users SET active = false WHERE user_id = $1 RETURNING *", [request.params.userID])
+  pool.query("UPDATE users SET active = false WHERE user_id = $1 RETURNING *", [request.params.userId])
     .then((results) => {
       console.log("results.rows", results.rows);
       response.json(results.rows);
@@ -134,9 +134,9 @@ router.put("/softDelete/:userID", (request, response) => {
 
 
 // * hard delete a user by id -- 12/09/2022 JH
-router.delete("/delete/:userID", (request, response) => {
+router.delete("/delete/:userId", (request, response) => {
 
-  pool.query('DELETE FROM users WHERE user_id = $1', [request.params.userID])
+  pool.query('DELETE FROM users WHERE user_id = $1', [request.params.userId])
     .then((results) => {
       response.json({ message: "deleted user successfully" });
     })

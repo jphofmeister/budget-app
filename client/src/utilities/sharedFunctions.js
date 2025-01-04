@@ -1959,7 +1959,7 @@ export const generateHoursInterval = (startHourInMinutes, endHourInMinutes, inte
         // * Get minutes of the hour in 0-55 format. -- 11/20/2023
         let mm = startHourInMinutes % 60;
 
-        timesArray[i] = { timeID: i, time: convertMilitaryTimeToStandardTime(("0" + (hh % 24)).slice(-2) + ":" + ("0" + mm).slice(-2)) };
+        timesArray[i] = { timeId: i, time: convertMilitaryTimeToStandardTime(("0" + (hh % 24)).slice(-2) + ":" + ("0" + mm).slice(-2)) };
 
         startHourInMinutes = startHourInMinutes + interval;
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { isEmpty, isNonEmptyArray } = require("../../utilities/sharedFunctions");
 
 const dbUsername = require("../../config/keys").dbUsername;
 const dbPassword = require("../../config/keys").dbPassword;
@@ -19,32 +20,80 @@ router.get("/", (request, response) => {
 
   pool.query("SELECT * FROM bills ORDER BY bill_id ASC")
     .then((results) => {
-      console.log("get bills: results.rows", results.rows);
-      response.json(results.rows);
+
+      if (isNonEmptyArray(results.rows) === true) {
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retreived records.", records: results.rows });
+
+      } else {
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
     })
     .catch((error) => {
-      if (error) {
-        console.log("get bills: error", error);
-        response.status(500).send(error);
+
+      console.error("get / error", error);
+
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
+    });
+
+});
+
+
+// * get all bills from user -- 09/04/2024 JH
+router.get("/:userId", (request, response) => {
+
+  pool.query("SELECT * FROM bills WHERE user_id = $1", [request.params.userId])
+    .then((results) => {
+
+      if (isNonEmptyArray(results.rows) === true) {
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retreived records.", records: results.rows });
+
+      } else {
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
       };
+
+    })
+    .catch((error) => {
+
+      console.error("get /:userId error", error);
+
+      response.status(500).json({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
     });
 
 });
 
 
 // * get a bill by id -- 09/04/2024 JH
-router.get("/:billID", (request, response) => {
+router.get("/:billId", (request, response) => {
 
-  pool.query("SELECT * FROM bills WHERE bill_id = $1", [request.params.billID])
+  pool.query("SELECT * FROM bills WHERE bill_id = $1", [request.params.billId])
     .then((results) => {
-      console.log("get bill: results.rows", results.rows);
-      response.json(results.rows);
+
+      if (isNonEmptyArray(results.rows) === true) {
+
+        response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully retreived records.", records: results.rows });
+
+      } else {
+
+        response.status(200).json({ transactionSuccess: false, errorOccurred: false, message: "No records found." });
+
+      };
+
     })
     .catch((error) => {
-      if (error) {
-        console.error("get bill: error", error);
-        response.status(500).send(error);
-      };
+
+      console.error("get /:billId error", error);
+
+      response.status(500).send({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
     });
 
 });
@@ -53,79 +102,91 @@ router.get("/:billID", (request, response) => {
 // * create a bill -- 09/04/2024 JH
 router.post("/add", (request, response) => {
 
+  let { billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, userId } = request.body;
+
   pool.query(
-    "INSERT INTO bills (bill_name, bill_amount, bill_date, bill_url, bill_description, created_on, active) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-    [request.body.billName, request.body.billAmount, request.body.billDate, request.body.billUrl, request.body.billDescription, new Date(), true]
+    "INSERT INTO bills (bill_name, bill_amount, bill_url, bill_description, frequency_interval, frequency_type, frequency_day, frequency_start_date, created_on, active, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+    [billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, new Date(), true, userId]
   )
     .then((results) => {
-      console.log("add bill: results.rows", results.rows);
-      response.json(results.rows);
+
+      response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully added bill." });
+
     })
     .catch((error) => {
-      if (error) {
-        console.error("add bill: error", error);
-        response.status(500).send(error);
-      };
+
+      console.error("post /add error", error);
+
+      response.status(500).send({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
     });
 
 });
 
 
 // * update a bill by id -- 09/04/2024 JH
-router.put("/update/:billID", (request, response) => {
+router.put("/update/:billId/:userId", (request, response) => {
+
+  let { billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate } = request.body;
 
   pool.query(
-    "UPDATE bills SET bill_name = $1, bill_amount = $2, bill_date = $3, bill_url = $4, bill_description =$5, updated_on = $6 WHERE bill_id = $7",
-    [request.body.billName, request.body.billAmount, request.body.billDate, request.body.billUrl, request.body.billDescription, new Date(), request.params.billID]
+    "UPDATE bills SET bill_name = $1, bill_amount = $2, bill_url = $3, bill_description = $4, frequency_interval = $5, frequency_type = $6, frequency_day = $7, frequency_start_date = $8, updated_on = $9 WHERE bill_id = $10 AND user_id = $11",
+    [billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, new Date(), request.params.billId, request.params.userId]
   )
     .then((results) => {
-      console.log("update bill: results.rows", results.rows);
-      response.json(results.rows);
+
+      response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully updated bill." });
+
     })
     .catch((error) => {
-      if (error) {
-        console.error("update bill: error", error);
-        response.status(500).send(error);
-      };
+
+      console.error("put /update/:billId/:userId error", error);
+
+      response.status(500).send({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
     });
 
 });
 
 
 // * soft delete a bill by id -- 09/04/2024 JH
-router.put("/softDelete/:billID", (request, response) => {
+router.put("/softDelete/:billId/:userId", (request, response) => {
 
   pool.query(
-    "UPDATE bills SET active = false, updated_on = $1 WHERE bill_id = $2",
-    [new Date(), request.params.billID]
+    "UPDATE bills SET active = false, updated_on = $1 WHERE bill_id = $2 AND user_id = $3",
+    [new Date(), request.params.billId, request.params.userId]
   )
     .then((results) => {
-      console.log("soft delete bill: results.rows", results.rows);
-      response.json(results.rows);
+
+      response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully deleted bill." });
+
     })
     .catch((error) => {
-      if (error) {
-        console.error("soft delete bill: error", error);
-        response.status(500).send(error);
-      };
+
+      console.error("put /softDelete/:billId/:userId error", error);
+
+      response.status(500).send({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
     });
 
 });
 
 
 // * hard delete a bill by id -- 09/04/2024 JH
-router.delete("/delete/:billID", (request, response) => {
+router.delete("/delete/:billId/:userId", (request, response) => {
 
-  pool.query("DELETE FROM bills WHERE bill_id = $1", [request.params.billID])
+  pool.query("DELETE FROM bills WHERE bill_id = $1 AND user_id = $2", [request.params.billId, request.params.userId])
     .then((results) => {
-      console.log("delete bill: results.rows", results.rows);
-      response.json(results.rows);
+
+      response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully deleted bill." });
+
     })
     .catch((error) => {
-      if (error) {
-        console.error("delete bill: error", error);
-        response.status(500).send(error);
-      };
+
+      console.error("delete /delete/:billId/:userId error", error);
+
+      response.status(500).send({ transactionSuccess: false, errorOccurred: true, message: "No records found." });
+
     });
 
 });

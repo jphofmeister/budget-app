@@ -33,9 +33,9 @@ router.get("/", (request, response) => {
 
 
 // * get an income by id -- 09/04/2024 JH
-router.get("/:incomeID", (request, response) => {
+router.get("/:incomeId", (request, response) => {
 
-  pool.query("SELECT * FROM income WHERE income_id = $1", [request.params.incomeID])
+  pool.query("SELECT * FROM income WHERE income_id = $1", [request.params.incomeId])
     .then((results) => {
       console.log("get income: results.rows", results.rows);
       response.json(results.rows);
@@ -72,11 +72,11 @@ router.post("/add", (request, response) => {
 
 
 // * update an income by id -- 09/04/2024 JH
-router.put("/update/:incomeID", (request, response) => {
+router.put("/update/:incomeId", (request, response) => {
 
   pool.query(
     "UPDATE income SET income_name = $1, income_amount = $2, updated_on = $3 WHERE income_id = $4",
-    [request.body.incomeName, request.body.incomeAmount, new Date(), request.params.incomeID]
+    [request.body.incomeName, request.body.incomeAmount, new Date(), request.params.incomeId]
   )
     .then((results) => {
       console.log("updated income: results.rows", results.rows);
@@ -93,11 +93,11 @@ router.put("/update/:incomeID", (request, response) => {
 
 
 // * soft delete an income by id -- 09/04/2024 JH
-router.put("/softDelete/:incomeID", (request, response) => {
+router.put("/softDelete/:incomeId", (request, response) => {
 
   pool.query(
     "UPDATE income SET active = false, updated_on = $1 WHERE income_id = $2",
-    [new Date(), request.params.incomeID]
+    [new Date(), request.params.incomeId]
   )
     .then((results) => {
       console.log("soft delete income: results.rows", results.rows);
@@ -114,9 +114,9 @@ router.put("/softDelete/:incomeID", (request, response) => {
 
 
 // * hard delete an income by id -- 09/04/2024 JH
-router.delete("/delete/:incomeID", (request, response) => {
+router.delete("/delete/:incomeId", (request, response) => {
 
-  pool.query("DELETE FROM income WHERE income_id = $1", [request.params.incomeID])
+  pool.query("DELETE FROM income WHERE income_id = $1", [request.params.incomeId])
     .then((results) => {
       console.log("delete income: results.rows", results.rows);
       response.json(results.rows);

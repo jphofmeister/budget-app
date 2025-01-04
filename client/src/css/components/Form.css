@@ -58,6 +58,7 @@ form {
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%;
+    background-color: #fff;
   }
 
   select {
@@ -147,7 +148,7 @@ form {
 input[type="time"], input[type="date"] {
   font-family: var(--defaultFonts);
   height: 40.5px;
-  max-width: 150px;
+  max-width: 175px;
 
   &:placeholder {
     color: #777;

@@ -33,9 +33,9 @@ router.get("/", (request, response) => {
 
 
 // * get all bills from a user by id -- 09/25/2023 JH
-router.get("/:userID", (request, response) => {
+router.get("/:userId", (request, response) => {
 
-  pool.query("SELECT * FROM user_bills WHERE user_id = $1", [request.params.userID])
+  pool.query("SELECT * FROM user_bills WHERE user_id = $1", [request.params.userId])
     .then((results) => {
       console.log("get bills by user_id: results.rows", results.rows);
       response.json(results.rows);
@@ -51,11 +51,11 @@ router.get("/:userID", (request, response) => {
 
 
 // * get a user_bill by both ids -- 09/25/2023 JH
-router.get("/:userID/:billID", (request, response) => {
+router.get("/:userId/:billId", (request, response) => {
 
   pool.query(
     "SELECT * FROM user_bills WHERE user_id = $1 AND bill_id = $2",
-    [request.params.userID, request.params.billID]
+    [request.params.userId, request.params.billId]
   )
     .then((results) => {
       console.log("get a user_bill by both ids: results.rows", results.rows);
@@ -78,7 +78,7 @@ router.post("/add", (request, response) => {
 
   pool.query(
     "INSERT INTO user_bills (user_id, bill_id, created_on, active) VALUES ($1, $2, $3, $4)",
-    [request.body.userID, request.body.billID, createdOnTimestamp, true]
+    [request.body.userId, request.body.billId, createdOnTimestamp, true]
   )
     .then((results) => {
       console.log("add bill to user: results.rows", results.rows);
@@ -95,11 +95,11 @@ router.post("/add", (request, response) => {
 
 
 // * hard delete a bill from user -- 09/25/2023 JH
-router.delete("/delete/:userID/:billID", (request, response) => {
+router.delete("/delete/:userId/:billId", (request, response) => {
 
   pool.query(
     "DELETE FROM user_bills WHERE user_id = $1 AND bill_id = $2",
-    [request.params.userID, request.params.billID]
+    [request.params.userId, request.params.billId]
   )
     .then((results) => {
       console.log("delete bill from user: results.rows", results.rows);

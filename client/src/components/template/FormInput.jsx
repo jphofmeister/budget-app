@@ -5,12 +5,12 @@ import { noFunctionAvailable, isEmpty, getDateTime, parse } from "../../utilitie
 const FormInput = (props) => {
 
   // * Available props: -- 06/21/2023
-  // * Properties: formInputID, labelText, srOnly, isRequired, inputType, placeholderText, inputValue, inputDisabled, inputHint, textareaRows, textareaColumns, inputMin, inputMax, inputStep -- 06/21/2023
+  // * Properties: formInputId, labelText, srOnly, isRequired, inputType, placeholderText, inputValue, inputDisabled, inputHint, textareaRows, textareaColumns, inputMin, inputMax, inputStep -- 06/21/2023
   // * Functions: onChange -- 06/21/2023
 
   const componentName = "FormInput";
 
-  let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
+  let formInputId = isEmpty(props) === false && isEmpty(props.formInputId) === false ? props.formInputId : "";
   let labelText = isEmpty(props) === false && isEmpty(props.labelText) === false ? props.labelText : "";
   let srOnly = isEmpty(props) === false && isEmpty(props.srOnly) === false ? props.srOnly : "";
   let isRequired = isEmpty(props) === false && isEmpty(props.isRequired) === false ? props.isRequired : false;
@@ -74,7 +74,7 @@ const FormInput = (props) => {
   return (
     <div className={formGroupClasses}>
 
-      <label htmlFor={formInputID} className={labelClasses}>
+      <label htmlFor={formInputId} className={labelClasses}>
 
         {labelText}
 
@@ -86,21 +86,21 @@ const FormInput = (props) => {
 
       {inputType === "textarea" ?
 
-        <textarea id={formInputID} name={formInputID} placeholder={placeholderText} rows={textareaRows} /* cols={textareaColumns} */ value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} />
+        <textarea id={formInputId} name={formInputId} placeholder={placeholderText} rows={textareaRows} /* cols={textareaColumns} */ value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} />
 
         : null}
 
       {/* // TODO add other input types -- 08/07/2023 JH */}
       {inputType !== "textarea" && inputType !== "toggle" && inputType !== "password" && inputType !== "color" ?
 
-        <input type={inputType} id={formInputID} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} min={inputMin} max={inputMax} step={inputStep} list={datalistName} />
+        <input type={inputType} id={formInputId} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} min={inputMin} max={inputMax} step={inputStep} list={datalistName} />
 
         : null}
 
       {inputType === "color" ?
 
         <div className="color-input-container">
-          <input type={inputType} id={formInputID} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} />
+          <input type={inputType} id={formInputId} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} />
           {inputValue}
         </div>
 
@@ -110,7 +110,7 @@ const FormInput = (props) => {
 
         <div className="form-group__password-input-group">
 
-          <input type={showPassword} id={formInputID} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} min={inputMin} max={inputMax} step={inputStep} />
+          <input type={showPassword} id={formInputId} placeholder={placeholderText} value={inputValue} disabled={inputDisabled} onChange={(event) => handleOnChange(event)} min={inputMin} max={inputMax} step={inputStep} />
 
           <div className="form-group__password-input-group__password-addon" onMouseOver={(event) => { setShowPassword("text"); }} onMouseOut={(event) => { setShowPassword("password"); }} title="Hover to show password.">
             <i className="fas fa-eye"></i>

@@ -21,10 +21,10 @@ const CalendarItemPopover = (props) => {
   let currentRequestEquipment = isEmpty(currentEvent) === false && isEmpty(currentEvent.extendedProps) === false && isNonEmptyArray(currentEvent.extendedProps.currentRequestEquipment) === true ? currentEvent.extendedProps.currentRequestEquipment : null;
   let eventColor = isEmpty(currentEvent.extendedProps) === false && isEmpty(currentEvent.extendedProps.eventColor) === false ? currentEvent.extendedProps.eventColor : "#1c1b1e";
 
-  let infoEventIDSplit = isEmpty(currentEvent) === false && isEmpty(currentEvent.calendarID) === false ? currentEvent.calendarID.split('-') : [];
+  let infoEventIdSplit = isEmpty(currentEvent) === false && isEmpty(currentEvent.calendarId) === false ? currentEvent.calendarId.split('-') : [];
 
-  let eventRequestType = isNonEmptyArray(infoEventIDSplit) === true ? infoEventIDSplit[0] : "";
-  // let eventRequestID = isNonEmptyArray(infoEventIDSplit) === true ? infoEventIDSplit[1] : "";
+  let eventRequestType = isNonEmptyArray(infoEventIdSplit) === true ? infoEventIdSplit[0] : "";
+  // let eventRequestId = isNonEmptyArray(infoEventIdSplit) === true ? infoEventIdSplit[1] : "";
 
   let simulationDatesUI = "";
   let simulationSubheadingUI = "";

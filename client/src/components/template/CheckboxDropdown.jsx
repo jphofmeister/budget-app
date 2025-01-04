@@ -6,14 +6,14 @@ import { useNativeClickListener } from "../../utilities/useNativeClickListener";
 const CheckboxDropdown = (props) => {
 
   // * Available props: -- 06/21/2023
-  // * Properties: formInputID, legendText, srOnly, isRequired, inputDisabled, isCollapsible, startCollapsed, optionData, optionID, optionText, inputValue, inputHint -- 06/21/2023
+  // * Properties: formInputId, legendText, srOnly, isRequired, inputDisabled, isCollapsible, startCollapsed, optionData, optionId, optionText, inputValue, inputHint -- 06/21/2023
   // * Functions: updateValue -- 06/21/2023
 
   const componentName = "CheckboxDropdown";
 
   const dropdownRef = useRef(null);
 
-  let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
+  let formInputId = isEmpty(props) === false && isEmpty(props.formInputId) === false ? props.formInputId : "";
   let legendText = isEmpty(props) === false && isEmpty(props.legendText) === false ? props.legendText : "";
   let srOnly = isEmpty(props) === false && isEmpty(props.srOnly) === false ? props.srOnly : "";
   let placeholderText = isEmpty(props) === false && isEmpty(props.placeholderText) === false ? props.placeholderText : "Select Value";
@@ -21,7 +21,7 @@ const CheckboxDropdown = (props) => {
   let inputDisabled = isEmpty(props) === false && isEmpty(props.inputDisabled) === false ? props.inputDisabled : false;
 
   let optionData = isEmpty(props) === false && isEmpty(props.optionData) === false ? props.optionData : null;
-  let optionID = isEmpty(props) === false && isEmpty(props.optionID) === false ? props.optionID : "";
+  let optionId = isEmpty(props) === false && isEmpty(props.optionId) === false ? props.optionId : "";
   let optionText = isEmpty(props) === false && isEmpty(props.optionText) === false ? props.optionText : [];
   let inputValue = isEmpty(props) === false && isEmpty(props.inputValue) === false ? props.inputValue : [];
   let inputHint = isEmpty(props) === false && isEmpty(props.inputHint) === false ? props.inputHint : "";
@@ -109,7 +109,7 @@ const CheckboxDropdown = (props) => {
 
             {isEmpty(inputHint) === false ? <p className="input-hint">{parse(inputHint)}</p> : null}
 
-            {isNonEmptyArray(optionData) === true && isEmpty(optionID) === false && isNonEmptyArray(optionText) === true ?
+            {isNonEmptyArray(optionData) === true && isEmpty(optionId) === false && isNonEmptyArray(optionText) === true ?
 
               <React.Fragment>
 
@@ -117,7 +117,7 @@ const CheckboxDropdown = (props) => {
 
                   if (optionDataItem.active === true || isEmpty(optionDataItem.active) === true) {
 
-                    let filterInputValue = inputValue.filter(value => value === formatToString(optionDataItem[optionID]));
+                    let filterInputValue = inputValue.filter(value => value === formatToString(optionDataItem[optionId]));
 
                     let isChecked = isNonEmptyArray(filterInputValue) === true ? true : false;
 
@@ -126,7 +126,7 @@ const CheckboxDropdown = (props) => {
 
                         <label>
 
-                          <input type="checkbox" id={formInputID} value={optionDataItem[optionID]} checked={isChecked} disabled={inputDisabled} onChange={(event) => { handleOnChange(event); }} />
+                          <input type="checkbox" id={formInputId} value={optionDataItem[optionId]} checked={isChecked} disabled={inputDisabled} onChange={(event) => { handleOnChange(event); }} />
 
                           <span className="checkbox-label-text">
 

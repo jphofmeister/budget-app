@@ -7,6 +7,7 @@ import { jwtDecode } from "./utilities/jwtDecode";
 import AuthForm from "./components/AuthForm";
 import Messages from "./components/Messages";
 import BillForm from "./components/BillForm";
+import BillsList from "./components/BillsList";
 
 const App = () => {
 
@@ -59,7 +60,7 @@ const App = () => {
           if (isEmpty(jwtDecoded.user_id) === false && isEmpty(jwtDecoded.user_name) === false) {
 
             let newCurrentUser = {
-              userID: jwtDecoded.user_id,
+              userId: jwtDecoded.user_id,
               userName: jwtDecoded.user_name
             };
 
@@ -137,9 +138,15 @@ const App = () => {
 
         : null}
 
-      {componentToLoad === "BillForm" ?
+      {componentToLoad === "BillForm" && isEmpty(currentUser) === false ?
 
         <BillForm />
+
+        : null}
+
+      {isEmpty(currentUser) === false ?
+
+        <BillsList />
 
         : null}
 

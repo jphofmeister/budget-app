@@ -18,8 +18,8 @@ const CalendarItem = (props) => {
 
   let request = isEmpty(eventItem) === false && isEmpty(eventItem.extendedProps) === false ? eventItem.extendedProps : null;
 
-  // let requestID = isEmpty(request) === false && isEmpty(request.requestID) === false ? request.requestID : null;
-  // let demonstrationRequestID = isEmpty(request) === false && isEmpty(request.demonstrationRequestID) === false ? request.demonstrationRequestID : null;
+  // let requestId = isEmpty(request) === false && isEmpty(request.requestId) === false ? request.requestId : null;
+  // let demonstrationRequestId = isEmpty(request) === false && isEmpty(request.demonstrationRequestId) === false ? request.demonstrationRequestId : null;
   let partnerName = isEmpty(request) === false && isEmpty(request.partnerName) === false ? request.partnerName : null;
   let partnerSiteName = isEmpty(request) === false && isEmpty(request.partnerSiteName) === false ? request.partnerSiteName : null;
   let simulationName = isEmpty(request) === false && isEmpty(request.simulationName) === false ? request.simulationName : null;

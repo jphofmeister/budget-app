@@ -5,12 +5,12 @@ import { noFunctionAvailable, isEmpty, getDateTime, isNonEmptyArray, formatToStr
 const CheckboxGroup = (props) => {
 
   // * Available props: -- 06/21/2023
-  // * Properties: formInputID, legendText, srOnly, isRequired, inputDisabled, isCollapsible, startCollapsed, optionData, optionID, optionText, inputValue, inputHint -- 06/21/2023
+  // * Properties: formInputId, legendText, srOnly, isRequired, inputDisabled, isCollapsible, startCollapsed, optionData, optionId, optionText, inputValue, inputHint -- 06/21/2023
   // * Functions: updateValue -- 06/21/2023
 
   const componentName = "CheckboxGroup";
 
-  let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
+  let formInputId = isEmpty(props) === false && isEmpty(props.formInputId) === false ? props.formInputId : "";
   let legendText = isEmpty(props) === false && isEmpty(props.legendText) === false ? props.legendText : "";
   let srOnly = isEmpty(props) === false && isEmpty(props.srOnly) === false ? props.srOnly : "";
   let isRequired = isEmpty(props) === false && isEmpty(props.isRequired) === false ? props.isRequired : false;
@@ -19,7 +19,7 @@ const CheckboxGroup = (props) => {
   let startCollapsed = isEmpty(props) === false && isEmpty(props.startCollapsed) === false ? props.startCollapsed : true;
 
   let optionData = isEmpty(props) === false && isEmpty(props.optionData) === false ? props.optionData : null;
-  let optionID = isEmpty(props) === false && isEmpty(props.optionID) === false ? props.optionID : "";
+  let optionId = isEmpty(props) === false && isEmpty(props.optionId) === false ? props.optionId : "";
   let optionText = isEmpty(props) === false && isEmpty(props.optionText) === false ? props.optionText : [];
   let inputValue = isEmpty(props) === false && isEmpty(props.inputValue) === false ? props.inputValue : [];
   let inputHint = isEmpty(props) === false && isEmpty(props.inputHint) === false ? props.inputHint : "";
@@ -143,7 +143,7 @@ const CheckboxGroup = (props) => {
 
         {isEmpty(inputHint) === false ? <p className="input-hint">{parse(inputHint)}</p> : null}
 
-        {isNonEmptyArray(optionData) === true && isEmpty(optionID) === false && isNonEmptyArray(optionText) === true ?
+        {isNonEmptyArray(optionData) === true && isEmpty(optionId) === false && isNonEmptyArray(optionText) === true ?
 
           <React.Fragment>
 
@@ -151,7 +151,7 @@ const CheckboxGroup = (props) => {
 
               if (optionDataItem.active === true || isEmpty(optionDataItem.active) === true) {
 
-                let filterInputValue = inputValue.filter(value => value === formatToString(optionDataItem[optionID]));
+                let filterInputValue = inputValue.filter(value => value === formatToString(optionDataItem[optionId]));
 
                 let isChecked = isNonEmptyArray(filterInputValue) === true ? true : false;
 
@@ -160,7 +160,7 @@ const CheckboxGroup = (props) => {
 
                     <label>
 
-                      <input type="checkbox" id={formInputID} value={optionDataItem[optionID]} checked={isChecked} disabled={inputDisabled} onChange={(event) => { handleOnChange(event); }} />
+                      <input type="checkbox" id={formInputId} value={optionDataItem[optionId]} checked={isChecked} disabled={inputDisabled} onChange={(event) => { handleOnChange(event); }} />
 
                       <span className="checkbox-label-text">
 

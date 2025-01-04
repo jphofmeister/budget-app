@@ -5,12 +5,12 @@ import { noFunctionAvailable, isEmpty, getDateTime, isNonEmptyArray, formatToStr
 const FormRadioGroup = (props) => {
 
   // * Available props: -- 06/21/2023
-  // * Properties: formInputID, legendText, srOnly, placeholderText,isRequired, inputDisabled, optionData, optionID, optionText, inputValue, inputHint, formColumns -- 06/21/2023
+  // * Properties: formInputId, legendText, srOnly, placeholderText,isRequired, inputDisabled, optionData, optionId, optionText, inputValue, inputHint, formColumns -- 06/21/2023
   // * Functions: updateValue -- 06/21/2023
 
   const componentName = "FormRadioGroup";
 
-  let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
+  let formInputId = isEmpty(props) === false && isEmpty(props.formInputId) === false ? props.formInputId : "";
   let legendText = isEmpty(props) === false && isEmpty(props.legendText) === false ? props.legendText : "";
   let srOnly = isEmpty(props) === false && isEmpty(props.srOnly) === false ? props.srOnly : "";
   let isRequired = isEmpty(props) === false && isEmpty(props.isRequired) === false ? props.isRequired : false;
@@ -19,7 +19,7 @@ const FormRadioGroup = (props) => {
   let startCollapsed = isEmpty(props) === false && isEmpty(props.startCollapsed) === false ? props.startCollapsed : true;
 
   let optionData = isEmpty(props) === false && isEmpty(props.optionData) === false ? props.optionData : null;
-  let optionID = isEmpty(props) === false && isEmpty(props.optionID) === false ? props.optionID : "";
+  let optionId = isEmpty(props) === false && isEmpty(props.optionId) === false ? props.optionId : "";
   let optionText = isEmpty(props) === false && isEmpty(props.optionText) === false ? props.optionText : [];
   let inputValue = isEmpty(props) === false && isEmpty(props.inputValue) === false ? props.inputValue : "";
   let inputHint = isEmpty(props) === false && isEmpty(props.inputHint) === false ? props.inputHint : "";
@@ -124,7 +124,7 @@ const FormRadioGroup = (props) => {
 
         {isEmpty(inputHint) === false ? <p className="input-hint">{parse(inputHint)}</p> : null}
 
-        {isNonEmptyArray(optionData) === true && isEmpty(optionID) === false && isNonEmptyArray(optionText) === true ?
+        {isNonEmptyArray(optionData) === true && isEmpty(optionId) === false && isNonEmptyArray(optionText) === true ?
 
           <React.Fragment>
 
@@ -142,10 +142,10 @@ const FormRadioGroup = (props) => {
                 };
 
                 return (
-                  <li key={optionDataItem[optionID]}>
+                  <li key={optionDataItem[optionId]}>
                     <label>
 
-                      <input type="radio" id={formInputID} value={optionDataItem[optionID]} checked={formatToString(optionDataItem[optionID]) === formatToString(newInputValue)} disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }} />
+                      <input type="radio" id={formInputId} value={optionDataItem[optionId]} checked={formatToString(optionDataItem[optionId]) === formatToString(newInputValue)} disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }} />
 
                       {optionText.map((optionTextItem, index) => {
 

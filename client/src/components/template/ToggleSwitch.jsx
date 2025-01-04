@@ -5,12 +5,12 @@ import { noFunctionAvailable, isEmpty, getDateTime, parse } from "../../utilitie
 const FormInput = (props) => {
 
   // * Available props: -- 06/21/2023
-  // * Properties: formInputID, labelText, srOnly, isRequired, inputValue, inputDisabled, inputHint, trueValue, falseValue -- 06/21/2023
+  // * Properties: formInputId, labelText, srOnly, isRequired, inputValue, inputDisabled, inputHint, trueValue, falseValue -- 06/21/2023
   // * Functions: updateValue -- 06/21/2023
 
   const componentName = "FormInput";
 
-  let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
+  let formInputId = isEmpty(props) === false && isEmpty(props.formInputId) === false ? props.formInputId : "";
   let labelText = isEmpty(props) === false && isEmpty(props.labelText) === false ? props.labelText : "";
   let srOnly = isEmpty(props) === false && isEmpty(props.srOnly) === false ? props.srOnly : "";
   let isRequired = isEmpty(props) === false && isEmpty(props.isRequired) === false ? props.isRequired : false;
@@ -31,7 +31,7 @@ const FormInput = (props) => {
   return (
     <fieldset className="form-group toggle-switch-container">
 
-      <legend htmlFor={formInputID} className={labelClasses}>
+      <legend htmlFor={formInputId} className={labelClasses}>
 
         {labelText}
 
@@ -49,7 +49,7 @@ const FormInput = (props) => {
 
         <label className="sr-only">
 
-          <input type="radio" id={formInputID} checked={inputValue !== true} value="false" disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }} />
+          <input type="radio" id={formInputId} checked={inputValue !== true} value="false" disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }} />
 
           {falseValue}
 
@@ -57,7 +57,7 @@ const FormInput = (props) => {
 
         <label className="sr-only">
 
-          <input type="radio" id={formInputID} checked={inputValue === true} value="true" disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }} />
+          <input type="radio" id={formInputId} checked={inputValue === true} value="true" disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }} />
 
           {trueValue}
 

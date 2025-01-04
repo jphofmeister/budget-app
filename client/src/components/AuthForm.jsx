@@ -105,7 +105,7 @@ const AuthForm = (props) => {
           if (isEmpty(jwtDecoded.user_id) === false && isEmpty(jwtDecoded.user_name) === false) {
 
             let newCurrentUser = {
-              userID: jwtDecoded.user_id,
+              userId: jwtDecoded.user_id,
               userName: jwtDecoded.user_name
             };
 
@@ -152,14 +152,14 @@ const AuthForm = (props) => {
       <h2>{formType}</h2>
 
       <FormInput
-        formInputID="txtUsername"
+        formInputId="txtUsername"
         labelText="Username"
         inputValue={txtUsername}
         updateValue={setTxtUsername}
       />
 
       <FormInput
-        formInputID="txtPassword"
+        formInputId="txtPassword"
         labelText="Password"
         inputType="password"
         inputValue={txtPassword}

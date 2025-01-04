@@ -88,7 +88,7 @@ const EventCalendarDay = (props) => {
 
               eventWidth = (calendarWidth / 7) * daysToMultiplyBy;
 
-              let eventOfThisWeekIndex = thisWeeksEvents.findIndex((weekEvent) => weekEvent.calendarID === eventItem.calendarID);
+              let eventOfThisWeekIndex = thisWeeksEvents.findIndex((weekEvent) => weekEvent.calendarId === eventItem.calendarId);
 
               let eventColor = isEmpty(eventItem.extendedProps) === false && isEmpty(eventItem.extendedProps.eventColor) === false ? eventItem.extendedProps.eventColor : "#1c1b1e";
 
@@ -110,7 +110,7 @@ const EventCalendarDay = (props) => {
 
               return (
                 <CalendarItem
-                  key={eventItem.calendarID}
+                  key={eventItem.calendarId}
                   eventItem={eventItem}
                   eventClasses={eventClasses}
                   eventItemStyles={eventItemStyles}

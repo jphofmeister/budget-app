@@ -5,12 +5,12 @@ import { noFunctionAvailable, isEmpty, getDateTime, isNonEmptyArray, parse } fro
 const FormDropdown = (props) => {
 
   // * Available props: -- 06/21/2023
-  // * Properties: formInputID, labelText, srOnly, placeholderText,isRequired, inputDisabled, optionData, optionID, optionText, inputValue, inputHint -- 06/21/2023
+  // * Properties: formInputId, labelText, srOnly, placeholderText,isRequired, inputDisabled, optionData, optionId, optionText, inputValue, inputHint -- 06/21/2023
   // * Functions: updateValue -- 06/21/2023
 
   const componentName = "FormDropdown";
 
-  let formInputID = isEmpty(props) === false && isEmpty(props.formInputID) === false ? props.formInputID : "";
+  let formInputId = isEmpty(props) === false && isEmpty(props.formInputId) === false ? props.formInputId : "";
   let labelText = isEmpty(props) === false && isEmpty(props.labelText) === false ? props.labelText : "";
   let srOnly = isEmpty(props) === false && isEmpty(props.srOnly) === false ? props.srOnly : "";
   let placeholderText = isEmpty(props) === false && isEmpty(props.placeholderText) === false ? props.placeholderText : "Select Value";
@@ -20,7 +20,7 @@ const FormDropdown = (props) => {
 
   let emptyOption = isEmpty(props) === false && isEmpty(props.emptyOption) === false ? props.emptyOption : false;
   let optionData = isEmpty(props) === false && isEmpty(props.optionData) === false ? props.optionData : null;
-  let optionID = isEmpty(props) === false && isEmpty(props.optionID) === false ? props.optionID : "";
+  let optionId = isEmpty(props) === false && isEmpty(props.optionId) === false ? props.optionId : "";
   let optionText = isEmpty(props) === false && isEmpty(props.optionText) === false ? props.optionText : [];
   let inputValue = isEmpty(props) === false && isEmpty(props.inputValue) === false ? props.inputValue : "";
   let inputHint = isEmpty(props) === false && isEmpty(props.inputHint) === false ? props.inputHint : "";
@@ -44,7 +44,7 @@ const FormDropdown = (props) => {
   return (
     <div className={formGroupClasses}>
 
-      <label htmlFor={formInputID} className={labelClasses}>
+      <label htmlFor={formInputId} className={labelClasses}>
 
         {labelText}
 
@@ -54,18 +54,18 @@ const FormDropdown = (props) => {
 
       {isEmpty(inputHint) === false ? <p className="input-hint">{parse(inputHint)}</p> : null}
 
-      <select className="form-control" id={formInputID} value={inputValue} disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }}>
+      <select className="form-control" id={formInputId} value={inputValue} disabled={inputDisabled} onChange={(event) => { updateValue(event.target.value); }}>
 
         {emptyOption !== true ? <option value="">{placeholderText}</option> : null}
 
-        {isNonEmptyArray(optionData) === true && isEmpty(optionID) === false && isNonEmptyArray(optionText) === true ?
+        {isNonEmptyArray(optionData) === true && isEmpty(optionId) === false && isNonEmptyArray(optionText) === true ?
 
           <React.Fragment>
 
             {optionData.map((optionDataItem) => {
 
               return (
-                <option key={optionDataItem[optionID]} value={optionDataItem[optionID]}>
+                <option key={optionDataItem[optionId]} value={optionDataItem[optionId]}>
 
                   {optionText.map((optionTextItem, index) => {
 

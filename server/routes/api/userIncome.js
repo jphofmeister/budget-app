@@ -33,9 +33,9 @@ router.get("/", (request, response) => {
 
 
 // * get all incomes from a user by id -- 09/25/2023 JH
-router.get("/:userID", (request, response) => {
+router.get("/:userId", (request, response) => {
 
-  pool.query("SELECT * FROM user_income WHERE user_id = $1", [request.params.userID])
+  pool.query("SELECT * FROM user_income WHERE user_id = $1", [request.params.userId])
     .then((results) => {
       console.log("get incomes by user_id: results.rows", results.rows);
       response.json(results.rows);
@@ -51,11 +51,11 @@ router.get("/:userID", (request, response) => {
 
 
 // * get a user_income by both ids -- 09/25/2023 JH
-router.get("/:userID/:incomeID", (request, response) => {
+router.get("/:userId/:incomeId", (request, response) => {
 
   pool.query(
     "SELECT * FROM user_income WHERE user_id = $1 AND income_id = $2",
-    [request.params.userID, request.params.incomeID]
+    [request.params.userId, request.params.incomeId]
   )
     .then((results) => {
       console.log("get a user_income by both ids: results.rows", results.rows);
@@ -78,7 +78,7 @@ router.post("/add", (request, response) => {
 
   pool.query(
     "INSERT INTO user_income (user_id, income_id, created_on, active) VALUES ($1, $2, $3, $4)",
-    [request.body.userID, request.body.incomeID, createdOnTimestamp, true]
+    [request.body.userId, request.body.incomeId, createdOnTimestamp, true]
   )
     .then((results) => {
       console.log("add income to user: results.rows", results.rows);
@@ -95,11 +95,11 @@ router.post("/add", (request, response) => {
 
 
 // * hard delete an income from user -- 09/25/2023 JH
-router.delete("/delete/:userID/:incomeID", (request, response) => {
+router.delete("/delete/:userId/:incomeId", (request, response) => {
 
   pool.query(
     "DELETE FROM user_income WHERE user_id = $1 AND income_id = $2",
-    [request.params.userID, request.params.incomeID]
+    [request.params.userId, request.params.incomeId]
   )
     .then((results) => {
       console.log("delete income from user: results.rows", results.rows);
