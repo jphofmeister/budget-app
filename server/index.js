@@ -12,8 +12,6 @@ const auth = require("./routes/api/auth");
 const users = require("./routes/api/users");
 const bills = require("./routes/api/bills");
 const income = require("./routes/api/income");
-const userBills = require("./routes/api/userBills");
-const userIncome = require("./routes/api/userIncome");
 
 const app = express();
 
@@ -40,8 +38,6 @@ app.use('/api/auth', auth);
 app.use('/api/users', users);
 app.use('/api/bills', bills);
 app.use('/api/income', income);
-app.use('/api/userBills', userBills);
-app.use('/api/userIncome', userIncome);
 
 // * serve static assets in production
 // if (process.env.NODE_ENV === 'production') {

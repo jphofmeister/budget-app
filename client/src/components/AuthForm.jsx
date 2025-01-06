@@ -96,7 +96,7 @@ const AuthForm = (props) => {
         if (isEmpty(results) === false && results.transactionSuccess === true && isEmpty(results.accessToken) === false) {
 
           let newRefreshToken = results.refreshToken;
-          // localStorage.setItem("refreshToken", newRefreshToken);
+
           dispatch(setAccessToken(newRefreshToken));
 
           let newAccessToken = results.accessToken;
