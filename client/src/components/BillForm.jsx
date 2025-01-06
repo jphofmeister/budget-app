@@ -326,7 +326,7 @@ const BillForm = () => {
         </StyledFrequencyRow>
 
         <FormInput
-          formInputID="txtFrequencyStartDate"
+          formInputId="txtFrequencyStartDate"
           inputType="date"
           labelText="Frequency Start Date"
           inputHint="The frequency will start calculating from this date."

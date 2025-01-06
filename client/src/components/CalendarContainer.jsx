@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { isEmpty } from "../utilities/sharedFunctions";
+import { format, addMonths, subMonths } from "date-fns";
+import { isEmpty, isNonEmptyArray } from "../utilities/sharedFunctions";
 import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
 import { calculateDate, displayMonthName } from "./calendar/DateFunctions";
 import Calendar from "./calendar/Calendar";
@@ -16,69 +17,127 @@ const CalendarContainer = () => {
   const [currentRangeStart, setCurrentRangeStart] = useState(new Date().toLocaleDateString("en-US"));
   const [calendarEvents, setCalendarEvents] = useState([]);
 
+  const [bills, setBills] = useState([]);
 
-  const createCalendarEvents = (requestsToMap, requestTypeName) => {
+  // let baseUrl = "http://localhost:3001/api";
+  let baseUrl = "/api";
 
-    let newCalendarEvents = requestsToMap.map(request => {
 
-      let calendarID = "";
-      let calendarStartDate = "";
-      let calendarEndDate = "";
-      let currentTravelTeam = [];
-      let currentRequestEquipment = [];
+  useEffect(() => {
 
-      if (isEmpty(request.startDate) === false) {
+    if (isEmpty(currentUser) === false) {
 
-        calendarStartDate = calculateDate(request.startDate, "day", -1);
+      getBills(currentUser.userId);
 
-      };
+    };
 
-      if (isEmpty(request.endDate) === false) {
+  }, [currentUser]);
 
-        calendarEndDate = calculateDate(request.endDate, "day", 1);
 
-      };
+  useEffect(() => {
 
-      if (isEmpty(request.preferredDate) === false) {
+    if (isNonEmptyArray(bills) === true) {
 
-        calendarStartDate = calculateDate(request.preferredDate, "day", -1);
-        calendarEndDate = calculateDate(request.preferredDate, "day", 1);
+      let newCalendarEvents = createCalendarEvents(bills);
 
-      };
+      setCalendarEvents(newCalendarEvents);
 
-      if (isEmpty(request.requestID) === false) {
+    };
 
-        calendarID = `${requestTypeName}-${request.requestID}`;
+  }, [bills, currentRangeStart]);
 
-      };
 
-      if (isEmpty(request.otherRequestID) === false) {
+  const getBills = (userId) => {
 
-        calendarID = `${requestTypeName}-${request.otherRequestID}`;
+    let url = `${baseUrl}/bills/${userId}`;
+    let operationValue = "Get Bills";
 
-      };
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((results) => {
 
-      if (isNonEmptyArray(travelTeams) === true) {
+        if (results.ok !== true) {
 
-        currentTravelTeam = travelTeams.filter(travelTeam => travelTeam.requestID === request.requestID && travelTeam.requestTypeName === requestTypeName && (travelTeam.confirmed === true || travelTeam.confirmed === 1));
+          // throw Error(`${results.status} ${results.statusText} ${results.url}`)
 
-      };
+        } else {
 
-      if (isNonEmptyArray(requestEquipment) === true) {
+          if (results.status === 200) {
 
-        currentRequestEquipment = requestEquipment.filter(requestEquipment => requestEquipment.requestID === request.requestID && requestEquipment.requestTypeName === requestTypeName);
+            return results.json();
+
+          } else {
+
+            return results.status;
+
+          };
+
+        };
+
+      })
+      .then((results) => {
+
+        // console.log("results", results);
+
+        if (isEmpty(results) === false) {
+
+          if (results.transactionSuccess === true && isEmpty(results.records) === false) {
+
+            setBills(results.records);
+
+          } else {
+
+            console.log(`${operationValue} -- transactionSuccess: ${results.transactionSuccess}. ${results.message}`);
+            // dispatch(addErrorMessage(`${operationValue}: ${results.message}`));
+
+          };
+
+        } else {
+
+          dispatch(addErrorMessage(`${operationValue}: No results returned.`));
+
+        };
+
+      })
+      .catch((error) => {
+
+        console.error("error", error);
+
+        dispatch(addErrorMessage(`${operationValue}: ${error.message}`));
+
+      });
+
+  };
+
+
+  const createCalendarEvents = (billsToMap) => {
+
+    let newCalendarEvents = billsToMap.map(bill => {
+
+      console.log("bill", bill);
+
+      let calendarDate = "";
+
+      if (bill.frequency_type === "month" && parseInt(bill.frequency_interval) === 1) {
+
+        let calculateCalendarDate = new Date(currentRangeStart).setDate(bill.frequency_day);
+
+        // calculateCalendarDate = format(calculateCalendarDate, "MM/dd/yyyy");
+        calculateCalendarDate = new Date(calculateCalendarDate).toLocaleDateString("en-US");
+
+        calendarDate = calculateDate(calculateCalendarDate, "day");
 
       };
 
       return {
-        calendarID: calendarID,
-        calendarStartDate: calendarStartDate,
-        calendarEndDate: calendarEndDate,
-        request: {
-          ...request,
-          currentTravelTeam: currentTravelTeam,
-          currentRequestEquipment: currentRequestEquipment
-        }
+        calendarId: bill.bill_id,
+        calendarStartDate: calendarDate,
+        calendarEndDate: calendarDate,
+        bill: { ...bill }
       };
 
     });
@@ -88,12 +147,34 @@ const CalendarContainer = () => {
   };
 
 
+  const changeMonth = (currentMonth, action) => {
+
+    let newMonth = new Date(currentMonth);
+
+    if (action === "sub") newMonth = subMonths(newMonth, 1);
+    if (action === "add") newMonth = addMonths(newMonth, 1);
+
+    newMonth = new Date(newMonth).toLocaleDateString("en-US");
+
+    setCurrentRangeStart(newMonth);
+
+  };
+
+
   return (
     <div>
 
-      <h2>{displayMonthName(calculateDate(currentRangeStart))} {calculateDate(currentRangeStart).getFullYear()}</h2>
+      <div className="flex-row space-between">
+        <div className="flex-row">
+          <h2>{displayMonthName(calculateDate(currentRangeStart))} {calculateDate(currentRangeStart).getFullYear()}</h2>
+        </div>
 
-      {/* <button type="button" className="btn btn-primary" onClick={(event) => { setCurrentRangeStart(new Date().toLocaleDateString("en-US")); }}>This Month</button> */}
+        <div className="flex-row justify-end">
+          <button type="button" className="btn btn-primary" onClick={(event) => { changeMonth(currentRangeStart, "sub"); }}><i className="fa fa-chevron-left"></i><span className="sr-only">Previous Month</span></button>
+          <button type="button" className="btn btn-primary" onClick={(event) => { setCurrentRangeStart(new Date().toLocaleDateString("en-US")); }}>This Month</button>
+          <button type="button" className="btn btn-primary" onClick={(event) => { changeMonth(currentRangeStart, "add"); }}><i className="fa fa-chevron-right"></i><span className="sr-only">Next Month</span></button>
+        </div>
+      </div>
 
       <Calendar currentRangeStart={currentRangeStart} calendarEvents={calendarEvents} />
 

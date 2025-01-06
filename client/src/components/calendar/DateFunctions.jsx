@@ -5,12 +5,12 @@ const componentName = "DateFunctions";
 // ? Add functions to shared-functions? Or to application template? -- 06/13/2024 JH
 
 
-// * Add or subtract days, months, or years -- 06/13/2024 JH
+// * Add or subtract days, months, or years. -- 06/13/2024 JH
 export const calculateDate = (date, dateType, amount) => {
 
   let newDate = "";
 
-  // * formatFloat is throwing an error: "value.replaceAll is not a function" -- 06/12/2024 JH
+  // * formatFloat is throwing an error: "value.replaceAll is not a function". -- 06/12/2024 JH
   // let amountToAdd = isEmpty(amount) === false ? formatFloat(amount) : 0;
   let amountToAdd = isEmpty(amount) === false ? parseFloat(amount) : 0;
 
@@ -18,7 +18,7 @@ export const calculateDate = (date, dateType, amount) => {
 
     newDate = new Date(date);
 
-    // * adjust date by timezone offset -- 06/19/2024 JH
+    // * Adjust date by timezone offset. -- 06/19/2024 JH
     newDate.setMinutes(newDate.getMinutes() + newDate.getTimezoneOffset());
 
     if (dateType === "day") {
@@ -48,7 +48,7 @@ export const calculateDate = (date, dateType, amount) => {
 
 export const displayMonthName = (dateToDisplay) => {
 
-  // ? Not sure how to check if dateToDisplay isEmpty. When dateToDisplay is a Date type, it returns true to isEmpty -- 06/13/2024 JH
+  // ? Not sure how to check if dateToDisplay isEmpty. When dateToDisplay is a Date type, it returns true to isEmpty. -- 06/13/2024 JH
   // let newDisplayDate = dateToDisplay;
   let newDisplayDate = new Date(dateToDisplay);
 
@@ -95,7 +95,7 @@ export const getEachDayOfInterval = (startInterval, endInterval) => {
   let startDate = new Date(startInterval);
   let endDate = new Date(endInterval);
 
-  // * plus sign converts date into a number: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus -- 07/01/2024 JH
+  // * Plus sign converts date into a number: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus -- 07/01/2024 JH
   let endTime = +endDate;
 
   let currentDate = startDate;
@@ -116,6 +116,7 @@ export const getEachDayOfInterval = (startInterval, endInterval) => {
 
 };
 
+
 // * date-fns isSameDay: https://github.com/date-fns/date-fns/blob/ddb34e083/src/isSameDay/index.ts#L33 -- 07/01/2024 JH
 export const checkIsSameDay = (date1, date2) => {
 
@@ -131,7 +132,7 @@ export const displayDay = (dateToDisplay, removeLeadingZeroes) => {
 
   let newDisplayDate = "";
 
-  let formattedDate = dateToDisplay.toLocaleDateString("en-CA");
+  let formattedDate = dateToDisplay.toLocaleDateString("en-US");
 
   if (isEmpty(formattedDate) === false) {
 

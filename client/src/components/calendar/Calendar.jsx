@@ -80,7 +80,7 @@ const Calendar = (props) => {
 
       let daysToSubtract = startDayIndex * -1;
 
-      let convertedStartDate = startOfMonth.toLocaleDateString("en-CA");
+      let convertedStartDate = startOfMonth.toLocaleDateString("en-US");
 
       startOfMonth = calculateDate(convertedStartDate, "day", daysToSubtract);
 
@@ -91,7 +91,7 @@ const Calendar = (props) => {
 
       let daysToAdd = 6 - endDayIndex;
 
-      let convertedEndDate = endOfMonth.toLocaleDateString("en-CA");
+      let convertedEndDate = endOfMonth.toLocaleDateString("en-US");
 
       endOfMonth = calculateDate(convertedEndDate, "day", daysToAdd);
 

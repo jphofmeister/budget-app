@@ -100,14 +100,14 @@ const CalendarWeekEvents = (props) => {
 
             };
 
-            let eventOfThisWeekIndex = thisWeeksEvents.findIndex((weekEvent) => weekEvent.calendarID === eventItem.calendarID);
+            let eventOfThisWeekIndex = thisWeeksEvents.findIndex((weekEvent) => weekEvent.calendarId === eventItem.calendarId);
 
             let eventColor = isEmpty(eventItem.request) === false && isEmpty(eventItem.request.eventColor) === false ? eventItem.request.eventColor : "#1c1b1e";
 
             let eventItemContainerStyles = {
               borderColor: `${eventColor}`,
               gridColumn: `${gridColumnStart} / ${gridColumnEnd}`,
-              gridRow: eventOfThisWeekIndex + 1
+              // gridRow: eventOfThisWeekIndex + 1
             };
 
             let eventItemStyles = {
@@ -121,7 +121,7 @@ const CalendarWeekEvents = (props) => {
             });
 
             return (
-              <CalendarItem key={eventItem.calendarID} eventItem={eventItem} eventClasses={eventClasses} eventItemStyles={eventItemStyles} eventItemContainerStyles={eventItemContainerStyles} />
+              <CalendarItem key={eventItem.calendarId} eventItem={eventItem} eventClasses={eventClasses} eventItemStyles={eventItemStyles} eventItemContainerStyles={eventItemContainerStyles} />
             );
 
           })}

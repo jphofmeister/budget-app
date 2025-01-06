@@ -10,6 +10,20 @@ import BillForm from "./components/BillForm";
 import BillsList from "./components/BillsList";
 import CalendarContainer from "./components/CalendarContainer";
 
+const StyledMainGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  width: 100%;
+  padding: 1rem 2rem;
+`;
+
+const StyledNavBar = styled.nav`
+  background-color: #fff;
+  padding: .5rem 1rem;
+  background-color: 0 2px 4px 0 rgba(0,0,0,.2);
+`;
+
 const App = () => {
 
   const dispatch = useDispatch();
@@ -117,19 +131,10 @@ const App = () => {
 
       {isEmpty(currentUser) === true ?
 
-        <div className="flex-row justify-end mb-3">
+        <StyledNavBar className="flex-row justify-end mb-3">
           <button type="button" className="btn btn-transparent" onClick={() => { dispatch(setComponentToLoad("AuthForm")); setFormType("Login"); }}>Login</button>
           <button type="button" className="btn btn-transparent" onClick={() => { dispatch(setComponentToLoad("AuthForm")); setFormType("Sign Up"); }}>Sign Up</button>
-        </div>
-
-        : null}
-
-      {isEmpty(accessToken) === false && isEmpty(currentUser) === false ?
-
-        <div className="flex-row justify-end mb-3">
-          <button type="button" className="btn btn-transparent" onClick={(event) => { dispatch(setComponentToLoad("BillForm")); }}>Add Bill</button>
-          <button type="button" className="btn btn-transparent" onClick={(event) => { deleteRefreshToken(event); }}>Log Out</button>
-        </div>
+        </StyledNavBar>
 
         : null}
 
@@ -147,13 +152,21 @@ const App = () => {
 
       {isEmpty(currentUser) === false ?
 
-        <BillsList />
+        <StyledMainGrid>
+
+          <CalendarContainer />
+
+          <BillsList />
+
+        </StyledMainGrid>
 
         : null}
 
       {isEmpty(currentUser) === false ?
 
-        <CalendarContainer />
+        <footer>
+          <button type="button" className="btn btn-transparent" onClick={(event) => { deleteRefreshToken(event); }}>Log Out</button>
+        </footer>
 
         : null}
 

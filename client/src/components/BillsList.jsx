@@ -8,12 +8,12 @@ const BillsList = () => {
 
   const dispatch = useDispatch();
 
-  // let baseUrl = "http://localhost:3001/api";
-  let baseUrl = "/api";
-
   const currentUser = useSelector(state => state.application.currentUser);
 
   const [bills, setBills] = useState([]);
+
+  // let baseUrl = "http://localhost:3001/api";
+  let baseUrl = "/api";
 
 
   useEffect(() => {
@@ -163,9 +163,16 @@ const BillsList = () => {
 
   return (
     <div>
-      <h2>Bills</h2>
+
+      <div className="flex-row space-between">
+        <h2>Bills</h2>
+        <button type="button" className="btn btn-success" onClick={(event) => { dispatch(setComponentToLoad("BillForm")); }}><i className="fa fa-plus"></i> Add Bill</button>
+      </div>
+
       {isNonEmptyArray(bills) === true ?
+
         <ul>
+
           {bills.map((bill) => {
 
             if (bill.active === true) {

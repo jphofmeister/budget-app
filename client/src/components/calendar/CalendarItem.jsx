@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { noFunctionAvailable, isEmpty, displayDate } from "../../utilities/sharedFunctions";
+import { isEmpty, getDateTime, isNonEmptyArray, displayDate } from "../../utilities/sharedFunctions";
 import { calculateDate } from "./DateFunctions";
 import CalendarItemPopover from "./CalendarItemPopover";
+import { format, getDate, isSameDay } from "date-fns";
 
 const CalendarItem = (props) => {
 
   // * Available props: -- 06/23/2023
   // * Properties: eventItem, eventClasses, eventItemStyles, eventItemContainerStyles -- 06/23/2023
-  // * Functions: getStatus -- 06/23/2023
 
   let componentName = "CalendarItem";
 
@@ -16,62 +16,18 @@ const CalendarItem = (props) => {
   let eventItemStyles = isEmpty(props.eventItemStyles) === false ? props.eventItemStyles : {};
   let eventItemContainerStyles = isEmpty(props.eventItemContainerStyles) === false ? props.eventItemContainerStyles : {};
 
-  let request = isEmpty(eventItem) === false && isEmpty(eventItem.extendedProps) === false ? eventItem.extendedProps : null;
+  let bill = isEmpty(eventItem) === false && isEmpty(eventItem.bill) === false ? eventItem.bill : null;
+  // let startDate = isEmpty(eventItem) === false && isEmpty(eventItem.calendarStartDate) === false ? eventItem.calendarStartDate : null;
+  // let endDate = isEmpty(eventItem) === false && isEmpty(eventItem.calendarStartDate) === false ? eventItem.calendarStartDate : null;
 
-  // let requestId = isEmpty(request) === false && isEmpty(request.requestId) === false ? request.requestId : null;
-  // let demonstrationRequestId = isEmpty(request) === false && isEmpty(request.demonstrationRequestId) === false ? request.demonstrationRequestId : null;
-  let partnerName = isEmpty(request) === false && isEmpty(request.partnerName) === false ? request.partnerName : null;
-  let partnerSiteName = isEmpty(request) === false && isEmpty(request.partnerSiteName) === false ? request.partnerSiteName : null;
-  let simulationName = isEmpty(request) === false && isEmpty(request.simulationName) === false ? request.simulationName : null;
-  let simulations = isEmpty(request) === false && isEmpty(request.simulations) === false ? request.simulations : null;
-  let submissionApproved = isEmpty(request) === false && isEmpty(request.submissionApproved) === false ? request.submissionApproved : null;
-  let startDate = isEmpty(request) === false && isEmpty(request.startDate) === false ? request.startDate : null;
-  let endDate = isEmpty(request) === false && isEmpty(request.endDate) === false ? request.endDate : null;
-  let preferredDate = isEmpty(request) === false && isEmpty(request.preferredDate) === false ? request.preferredDate : null;
+  let { calendarStartDate, calendarEndDate } = props.eventItem;
 
-  let getStatus = isEmpty(props) === false && isEmpty(props.getStatus) === false ? props.getStatus : noFunctionAvailable;
+  console.log("calendarStartDate", calendarStartDate);
 
   const [isEventPanelOpen, setIsEventPanelOpen] = useState(false);
 
-  let travelStartDate = "";
-  let travelEndDate = "";
 
-  if (isEmpty(startDate) === false) {
-
-    travelStartDate = calculateDate(startDate, "day", -1).toLocaleDateString("en-CA");
-
-  };
-
-  if (isEmpty(endDate) === false) {
-
-    travelEndDate = calculateDate(endDate, "day", 1).toLocaleDateString("en-CA");
-
-  };
-
-  if (isEmpty(preferredDate) === false) {
-
-    travelStartDate = calculateDate(preferredDate, "day", -1).toLocaleDateString("en-CA");
-    travelEndDate = calculateDate(preferredDate, "day", 1).toLocaleDateString("en-CA");
-
-  };
-
-  let simulationUI = "";
-
-  if (isEmpty(simulationName) === false) {
-
-    simulationUI = <React.Fragment><strong>Simulation</strong>: {simulationName}</React.Fragment>;
-
-  };
-
-  if (isEmpty(simulations) === false) {
-
-    // simulationUI = <React.Fragment><strong>Demonstration</strong>: {simulations}</React.Fragment>;
-    simulationUI = <React.Fragment><strong>Demonstration</strong></React.Fragment>;
-
-  };
-
-
-  // * Open side panel when clicking on an event -- 06/13/2024 JH
+  // * Open side panel when clicking on an event. -- 06/13/2024 JH
   const handleMouseEvent = (event) => {
 
     if (event.type === "mouseenter" && isEventPanelOpen !== true) {
@@ -93,20 +49,27 @@ const CalendarItem = (props) => {
       <div className={eventClasses} style={eventItemStyles}>
 
         <div className="event-item__title">
-          <strong>{partnerName}</strong> <em>({partnerSiteName})</em> - {simulationUI}, <strong>Status:</strong> {getStatus(submissionApproved, endDate)}, <strong>Travel Dates:</strong> {displayDate(travelStartDate)} to {displayDate(travelEndDate)}
+
+          <strong>{bill.bill_name}</strong>
+
+          {/* {isSameDay(calendarStartDate, calendarEndDate) ?
+
+            <div>
+              Due: {getDate(calendarStartDate)}
+            </div>
+
+            : null} */}
+
         </div>
 
-        {/* <div className="event-item__info">
-          <strong>Status:</strong> {getStatus(submissionApproved, endDate)}, <strong>Travel Dates:</strong> {displayDate(travelStartDate)} to {displayDate(travelEndDate)}
-        </div> */}
 
       </div>
 
-      {isEventPanelOpen === true ?
+      {/* {isEventPanelOpen === true ?
 
-        <CalendarItemPopover currentEvent={eventItem} getStatus={getStatus} />
+        <CalendarItemPopover currentEvent={eventItem} />
 
-        : null}
+        : null} */}
 
     </div>
   );
