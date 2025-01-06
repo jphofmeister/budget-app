@@ -129,9 +129,11 @@ router.put("/update/:billId/:userId", (request, response) => {
 
   let { billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate } = request.body;
 
+  let { billId, userId } = request.params;
+
   pool.query(
     "UPDATE bills SET bill_name = $1, bill_amount = $2, bill_url = $3, bill_description = $4, frequency_interval = $5, frequency_type = $6, frequency_day = $7, frequency_start_date = $8, updated_on = $9 WHERE bill_id = $10 AND user_id = $11",
-    [billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, new Date(), request.params.billId, request.params.userId]
+    [billName, billAmount, billUrl, billDescription, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, new Date(), billId, userId]
   )
     .then((results) => {
 
@@ -152,9 +154,11 @@ router.put("/update/:billId/:userId", (request, response) => {
 // * soft delete a bill by id -- 09/04/2024 JH
 router.put("/softDelete/:billId/:userId", (request, response) => {
 
+  let { billId, userId } = request.params;
+
   pool.query(
     "UPDATE bills SET active = false, updated_on = $1 WHERE bill_id = $2 AND user_id = $3",
-    [new Date(), request.params.billId, request.params.userId]
+    [new Date(), billId, userId]
   )
     .then((results) => {
 
@@ -175,7 +179,9 @@ router.put("/softDelete/:billId/:userId", (request, response) => {
 // * hard delete a bill by id -- 09/04/2024 JH
 router.delete("/delete/:billId/:userId", (request, response) => {
 
-  pool.query("DELETE FROM bills WHERE bill_id = $1 AND user_id = $2", [request.params.billId, request.params.userId])
+  let { billId, userId } = request.params;
+
+  pool.query("DELETE FROM bills WHERE bill_id = $1 AND user_id = $2", [billId, userId])
     .then((results) => {
 
       response.status(200).json({ transactionSuccess: true, errorOccurred: false, message: "Successfully deleted bill." });

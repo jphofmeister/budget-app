@@ -8,6 +8,7 @@ import AuthForm from "./components/AuthForm";
 import Messages from "./components/Messages";
 import BillForm from "./components/BillForm";
 import BillsList from "./components/BillsList";
+import CalendarContainer from "./components/CalendarContainer";
 
 const App = () => {
 
@@ -147,6 +148,12 @@ const App = () => {
       {isEmpty(currentUser) === false ?
 
         <BillsList />
+
+        : null}
+
+      {isEmpty(currentUser) === false ?
+
+        <CalendarContainer />
 
         : null}
 

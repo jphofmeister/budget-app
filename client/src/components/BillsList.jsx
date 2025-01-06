@@ -61,7 +61,7 @@ const BillsList = () => {
       })
       .then((results) => {
 
-        console.log("results", results);
+        // console.log("results", results);
 
         if (isEmpty(results) === false) {
 

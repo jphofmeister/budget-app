@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
-import classnames from "classnames";
+import React, { useState, useEffect, useRef } from "react";
+// import classnames from "classnames";
 import { noFunctionAvailable, isEmpty, displayDate, formatToString, isNonEmptyArray } from "../../utilities/sharedFunctions";
 import { calculateDate, displayMonthName, getStartOfMonth, getEndOfMonth, getEachDayOfInterval, displayDay, checkIsSameDay } from "./DateFunctions";
 import CalendarCell from "./CalendarCell";
@@ -201,6 +201,8 @@ const Calendar = (props) => {
 
           {/* // * This is mapping through an array of arrays -- 07/10/2024 JH */}
           {weeksInMonth.map((week, index) => {
+
+            console.log("weeksInMonth", weeksInMonth);
 
             // * Need a flat array of the unique events in this week -- 07/25/2024 JH
             let thisWeeksEvents = week.flatMap(day => {
