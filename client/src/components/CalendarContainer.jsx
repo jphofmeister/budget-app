@@ -13,11 +13,11 @@ const CalendarContainer = () => {
 
   const accessToken = useSelector(state => state.application.accessToken);
   const currentUser = useSelector(state => state.application.currentUser);
+  const bills = useSelector(state => state.application.bills);
+  const allIncome = useSelector(state => state.application.allIncome);
 
   const [currentRangeStart, setCurrentRangeStart] = useState(new Date().toLocaleDateString("en-US"));
   const [calendarEvents, setCalendarEvents] = useState([]);
-
-  const [bills, setBills] = useState([]);
 
   // let baseUrl = "http://localhost:3001/api";
   let baseUrl = "/api";
@@ -25,106 +25,51 @@ const CalendarContainer = () => {
 
   useEffect(() => {
 
-    if (isEmpty(currentUser) === false) {
-
-      getBills(currentUser.userId);
-
-    };
-
-  }, [currentUser]);
-
-
-  useEffect(() => {
+    let newCalendarEvents = [];
 
     if (isNonEmptyArray(bills) === true) {
 
-      let newCalendarEvents = createCalendarEvents(bills);
+      let billCalendarEvents = createCalendarEvents(bills, "bill");
 
-      setCalendarEvents(newCalendarEvents);
+      if (isNonEmptyArray(billCalendarEvents) === true) newCalendarEvents.push(...billCalendarEvents);
 
     };
 
-  }, [bills, currentRangeStart]);
+    if (isNonEmptyArray(allIncome) === true) {
+
+      let incomeCalendarEvents = createCalendarEvents(allIncome, "income");
+
+      if (isNonEmptyArray(incomeCalendarEvents) === true) newCalendarEvents.push(...incomeCalendarEvents);
+
+    };
+
+    setCalendarEvents(newCalendarEvents);
+
+  }, [bills, allIncome, currentRangeStart]);
 
 
-  const getBills = (userId) => {
+  const createCalendarEvents = (items, eventType) => {
 
-    let url = `${baseUrl}/bills/${userId}`;
-    let operationValue = "Get Bills";
-
-    fetch(url, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((results) => {
-
-        if (results.ok !== true) {
-
-          // throw Error(`${results.status} ${results.statusText} ${results.url}`)
-
-        } else {
-
-          if (results.status === 200) {
-
-            return results.json();
-
-          } else {
-
-            return results.status;
-
-          };
-
-        };
-
-      })
-      .then((results) => {
-
-        // console.log("results", results);
-
-        if (isEmpty(results) === false) {
-
-          if (results.transactionSuccess === true && isEmpty(results.records) === false) {
-
-            setBills(results.records);
-
-          } else {
-
-            console.log(`${operationValue} -- transactionSuccess: ${results.transactionSuccess}. ${results.message}`);
-            // dispatch(addErrorMessage(`${operationValue}: ${results.message}`));
-
-          };
-
-        } else {
-
-          dispatch(addErrorMessage(`${operationValue}: No results returned.`));
-
-        };
-
-      })
-      .catch((error) => {
-
-        console.error("error", error);
-
-        dispatch(addErrorMessage(`${operationValue}: ${error.message}`));
-
-      });
-
-  };
-
-
-  const createCalendarEvents = (billsToMap) => {
-
-    let newCalendarEvents = billsToMap.map(bill => {
-
-      console.log("bill", bill);
+    let newCalendarEvents = items.map(item => {
 
       let calendarDate = "";
 
-      if (bill.frequency_type === "month" && parseInt(bill.frequency_interval) === 1) {
+      let idName = "";
+      let eventColor = "";
 
-        let calculateCalendarDate = new Date(currentRangeStart).setDate(bill.frequency_day);
+      if (eventType === "bill") {
+        idName = "bill_id";
+        eventColor = "red";
+      };
+
+      if (eventType === "income") {
+        idName = "income_id";
+        eventColor = "green";
+      };
+
+      if (item.frequency_type === "month" && parseInt(item.frequency_interval) === 1) {
+
+        let calculateCalendarDate = new Date(currentRangeStart).setDate(item.frequency_day);
 
         // calculateCalendarDate = format(calculateCalendarDate, "MM/dd/yyyy");
         calculateCalendarDate = new Date(calculateCalendarDate).toLocaleDateString("en-US");
@@ -133,11 +78,18 @@ const CalendarContainer = () => {
 
       };
 
+      if (item.frequency_type === "week") {
+
+        // TODO do something!
+
+      };
+
       return {
-        calendarId: bill.bill_id,
+        calendarId: `${eventType}-${item[idName]}`,
         calendarStartDate: calendarDate,
         calendarEndDate: calendarDate,
-        bill: { ...bill }
+        eventColor: eventColor,
+        additionalProps: { ...item }
       };
 
     });
@@ -162,7 +114,7 @@ const CalendarContainer = () => {
 
 
   return (
-    <div>
+    <div className="calendar-container">
 
       <div className="flex-row space-between">
         <div className="flex-row">

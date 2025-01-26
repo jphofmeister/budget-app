@@ -1,22 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isEmpty } from "./utilities/sharedFunctions";
-import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "./app/applicationSlice";
+import { setAccessToken, setCurrentUser, setComponentToLoad, setBills, setAllIncome, addSuccessMessage } from "./app/applicationSlice";
 import { jwtDecode } from "./utilities/jwtDecode";
 import AuthForm from "./components/AuthForm";
 import Messages from "./components/Messages";
 import BillForm from "./components/BillForm";
-import BillsList from "./components/BillsList";
-import CalendarContainer from "./components/CalendarContainer";
-
-const StyledMainGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 2rem;
-  width: 100%;
-  padding: 1rem 2rem;
-`;
+import IncomeForm from "./components/IncomeForm";
+import Dashboard from "./components/Dashboard";
 
 const StyledNavBar = styled.nav`
   background-color: #fff;
@@ -28,7 +20,7 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const accessToken = useSelector(state => state.application.accessToken);
+  // const accessToken = useSelector(state => state.application.accessToken);
   const currentUser = useSelector(state => state.application.currentUser);
 
   const componentToLoad = useSelector(state => state.application.componentToLoad);
@@ -44,6 +36,18 @@ const App = () => {
     getRefreshToken();
 
   }, []);
+
+
+  useEffect(() => {
+
+    if (isEmpty(currentUser) === false) {
+
+      getAllIncome(currentUser.userId);
+      getBills(currentUser.userId);
+
+    };
+
+  }, [currentUser]);
 
 
   const getRefreshToken = () => {
@@ -124,9 +128,140 @@ const App = () => {
   };
 
 
-  return (
-    <main>
+  const getBills = (userId) => {
 
+    let url = `${baseUrl}/bills/${userId}`;
+    let operationValue = "Get Bills";
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((results) => {
+
+        if (results.ok !== true) {
+
+          // throw Error(`${results.status} ${results.statusText} ${results.url}`)
+
+        } else {
+
+          if (results.status === 200) {
+
+            return results.json();
+
+          } else {
+
+            return results.status;
+
+          };
+
+        };
+
+      })
+      .then((results) => {
+
+        // console.log("results", results);
+
+        if (isEmpty(results) === false) {
+
+          if (results.transactionSuccess === true && isEmpty(results.records) === false) {
+
+            dispatch(setBills(results.records));
+
+          } else {
+
+            console.log(`${operationValue} -- transactionSuccess: ${results.transactionSuccess}. ${results.message}`);
+            // dispatch(addErrorMessage(`${operationValue}: ${results.message}`));
+
+          };
+
+        } else {
+
+          dispatch(addErrorMessage(`${operationValue}: No results returned.`));
+
+        };
+
+      })
+      .catch((error) => {
+
+        console.error("error", error);
+
+        dispatch(addErrorMessage(`${operationValue}: ${error.message}`));
+
+      });
+
+  };
+
+
+  const getAllIncome = (userId) => {
+
+    let url = `${baseUrl}/income/${userId}`;
+    let operationValue = "Get All Income";
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((results) => {
+
+        if (results.ok !== true) {
+
+          // throw Error(`${results.status} ${results.statusText} ${results.url}`)
+
+        } else {
+
+          if (results.status === 200) {
+
+            return results.json();
+
+          } else {
+
+            return results.status;
+
+          };
+
+        };
+
+      })
+      .then((results) => {
+
+        if (isEmpty(results) === false) {
+
+          if (results.transactionSuccess === true && isEmpty(results.records) === false) {
+
+            dispatch(setAllIncome(results.records));
+
+          } else {
+
+            console.log(`${operationValue} -- transactionSuccess: ${results.transactionSuccess}. ${results.message}`);
+            // dispatch(addErrorMessage(`${operationValue}: ${results.message}`));
+
+          };
+
+        } else {
+
+          // dispatch(addErrorMessage(`${operationValue}: No results returned.`));
+
+        };
+
+      })
+      .catch((error) => {
+
+        console.error("error", error);
+
+        dispatch(addErrorMessage(`${operationValue}: ${error.message}`));
+
+      });
+
+  };
+
+
+  return (
+    <>
       <Messages />
 
       {isEmpty(currentUser) === true ?
@@ -138,39 +273,26 @@ const App = () => {
 
         : null}
 
-      {componentToLoad === "AuthForm" ?
-
-        <AuthForm formType={formType} setFormType={setFormType} />
-
-        : null}
-
-      {componentToLoad === "BillForm" && isEmpty(currentUser) === false ?
-
-        <BillForm />
-
-        : null}
+      {componentToLoad === "AuthForm" ? <AuthForm formType={formType} setFormType={setFormType} /> : null}
 
       {isEmpty(currentUser) === false ?
 
-        <StyledMainGrid>
+        <>
+          <main>
+            {componentToLoad === "BillForm" ? <BillForm /> : null}
 
-          <CalendarContainer />
+            {componentToLoad === "IncomeForm" ? <IncomeForm /> : null}
 
-          <BillsList />
+            {componentToLoad === "" ? <Dashboard /> : null}
+          </main>
 
-        </StyledMainGrid>
-
-        : null}
-
-      {isEmpty(currentUser) === false ?
-
-        <footer>
-          <button type="button" className="btn btn-transparent" onClick={(event) => { deleteRefreshToken(event); }}>Log Out</button>
-        </footer>
+          <footer>
+            <button type="button" className="btn btn-transparent" onClick={(event) => { deleteRefreshToken(event); }}>Log Out</button>
+          </footer>
+        </>
 
         : null}
-
-    </main>
+    </>
   );
 };
 

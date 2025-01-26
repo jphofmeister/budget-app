@@ -16,13 +16,11 @@ const CalendarItem = (props) => {
   let eventItemStyles = isEmpty(props.eventItemStyles) === false ? props.eventItemStyles : {};
   let eventItemContainerStyles = isEmpty(props.eventItemContainerStyles) === false ? props.eventItemContainerStyles : {};
 
-  let bill = isEmpty(eventItem) === false && isEmpty(eventItem.bill) === false ? eventItem.bill : null;
+  let additionalProps = isEmpty(eventItem) === false && isEmpty(eventItem.additionalProps) === false ? eventItem.additionalProps : null;
   // let startDate = isEmpty(eventItem) === false && isEmpty(eventItem.calendarStartDate) === false ? eventItem.calendarStartDate : null;
   // let endDate = isEmpty(eventItem) === false && isEmpty(eventItem.calendarStartDate) === false ? eventItem.calendarStartDate : null;
 
   let { calendarStartDate, calendarEndDate } = props.eventItem;
-
-  console.log("calendarStartDate", calendarStartDate);
 
   const [isEventPanelOpen, setIsEventPanelOpen] = useState(false);
 
@@ -50,7 +48,13 @@ const CalendarItem = (props) => {
 
         <div className="event-item__title">
 
-          <strong>{bill.bill_name}</strong>
+          {isEmpty(additionalProps.bill_name) === false ?
+            <strong>{additionalProps.bill_name}</strong>
+            : null}
+
+          {isEmpty(additionalProps.income_name) === false ?
+            <strong>{additionalProps.income_name}</strong>
+            : null}
 
           {/* {isSameDay(calendarStartDate, calendarEndDate) ?
 

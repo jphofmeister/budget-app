@@ -102,7 +102,7 @@ const CalendarWeekEvents = (props) => {
 
             let eventOfThisWeekIndex = thisWeeksEvents.findIndex((weekEvent) => weekEvent.calendarId === eventItem.calendarId);
 
-            let eventColor = isEmpty(eventItem.request) === false && isEmpty(eventItem.request.eventColor) === false ? eventItem.request.eventColor : "#1c1b1e";
+            let eventColor = isEmpty(eventItem.eventColor) === false && isEmpty(eventItem.eventColor) === false ? eventItem.eventColor : "#1c1b1e";
 
             let eventItemContainerStyles = {
               borderColor: `${eventColor}`,

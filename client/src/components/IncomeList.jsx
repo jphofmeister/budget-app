@@ -3,21 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { isEmpty, isNonEmptyArray } from "../utilities/sharedFunctions";
 import { setComponentToLoad, addSuccessMessage, addErrorMessage } from "../app/applicationSlice";
 
-const BillsList = () => {
+const IncomeList = () => {
 
   const dispatch = useDispatch();
 
   const currentUser = useSelector(state => state.application.currentUser);
-  const bills = useSelector(state => state.application.bills);
+  const allIncome = useSelector(state => state.application.allIncome);
 
   // let baseUrl = "http://localhost:3001/api";
   let baseUrl = "/api";
 
 
-  const deleteBill = (billId) => {
+  const deleteIncome = (incomeId) => {
 
-    let url = `${baseUrl}/bills/softDelete/${billId}`;
-    let operationValue = "Delete Bill";
+    let url = `${baseUrl}/income/softDelete/${incomeId}`;
+    let operationValue = "Delete Income";
 
     fetch(url, {
       method: "PUT",
@@ -50,7 +50,7 @@ const BillsList = () => {
 
         console.log("results", results);
 
-        dispatch(addSuccessMessage("Successfully deleted bill."));
+        dispatch(addSuccessMessage("Successfully deleted income."));
 
         if (isEmpty(results) === false) {
 
@@ -83,43 +83,43 @@ const BillsList = () => {
 
 
   return (
-    <div className="bills-list-container">
+    <div className="income-list-container">
 
       <div className="flex-row space-between">
-        <h2 className="mb-0">Bills</h2>
-        <button type="button" className="btn btn-success" onClick={(event) => { dispatch(setComponentToLoad("BillForm")); }}><i className="fa fa-plus"></i> Add Bill</button>
+        <h2 className="mb-0">Income</h2>
+        <button type="button" className="btn btn-success" onClick={(event) => { dispatch(setComponentToLoad("IncomeForm")); }}><i className="fa fa-plus"></i> Add Income</button>
       </div>
 
       <div className="table-container">
         <table>
           <thead>
             <tr>
-              <th>Bill</th>
+              <th>Income</th>
               <th>Amount</th>
               <th><span className="sr-only">Actions</span></th>
             </tr>
           </thead>
 
-          {isNonEmptyArray(bills) === true ?
+          {isNonEmptyArray(allIncome) === true ?
 
             <tbody>
 
-              {bills.map((bill) => {
+              {allIncome.map((income) => {
 
-                if (bill.active === true) {
+                if (income.active === true) {
 
                   return (
-                    <tr key={bill.bill_id}>
+                    <tr key={income.income_id}>
                       <td>
-                        {bill.bill_name}
+                        {income.income_name}
                       </td>
 
                       <td>
-                        ${bill.bill_amount}
+                        ${income.income_amount}
                       </td>
 
                       <td>
-                        <button type="button" className="btn btn-transparent" onClick={(event) => { deleteBill(bill.bill_id); }}>
+                        <button type="button" className="btn btn-transparent" onClick={(event) => { deleteIncome(income.income_id); }}>
                           <i className="fa fa-trash red-text"></i>
                           <span className="sr-only">Delete</span>
                         </button>
@@ -142,4 +142,4 @@ const BillsList = () => {
   );
 };
 
-export default BillsList;
+export default IncomeList;

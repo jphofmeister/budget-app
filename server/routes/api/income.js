@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { isEmpty, isNonEmptyArray } = require("../../utilities/sharedFunctions");
 
 const dbUsername = require("../../config/keys").dbUsername;
 const dbPassword = require("../../config/keys").dbPassword;
@@ -101,11 +102,11 @@ router.get("/:incomeId", (request, response) => {
 // * create an income -- 09/04/2024 JH
 router.post("/add", (request, response) => {
 
-  let { incomeName, incomeAmount, userId } = request.body;
+  let { incomeName, incomeAmount, userId, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate } = request.body;
 
   pool.query(
-    "INSERT INTO income (income_name, income_amount, created_on, active, user_id) VALUES ($1, $2, $3, $4, $5)",
-    [incomeName, incomeAmount, new Date(), true, userId]
+    "INSERT INTO income (income_name, income_amount, frequency_interval, frequency_type, frequency_day, frequency_start_date, created_on, active, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+    [incomeName, incomeAmount, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, new Date(), true, userId]
   )
     .then((results) => {
 
@@ -126,13 +127,13 @@ router.post("/add", (request, response) => {
 // * update an income by id -- 09/04/2024 JH
 router.put("/update/:incomeId/:userId", (request, response) => {
 
-  let { incomeName, incomeAmount } = request.body;
+  let { incomeName, incomeAmount, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate } = request.body;
 
   let { incomeId, userId } = request.params;
 
   pool.query(
-    "UPDATE income SET income_name = $1, income_amount = $2, updated_on = $3 WHERE income_id = $4 AND user_id = $5",
-    [incomeName, incomeAmount, new Date(), incomeId, userId]
+    "UPDATE income SET income_name = $1, income_amount = $2, frequency_interval = $3, frequency_type = $4, frequency_day = $5, frequency_start_date = $6, updated_on = $7 WHERE bill_id = $8 AND user_id = $9",
+    [incomeName, incomeAmount, frequencyInterval, frequencyType, frequencyDay, frequencyStartDate, new Date(), incomeId, userId]
   )
     .then((results) => {
 

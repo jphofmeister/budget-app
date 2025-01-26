@@ -6,7 +6,7 @@ import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages }
 import FormInput from "./template/FormInput";
 import FormDropdown from "./template/FormDropdown";
 
-const StyledBillForm = styled.form`
+const StyledIncomeForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -62,19 +62,17 @@ const StyledFrequencyRow = styled.fieldset`
   }
 `;
 
-const BillForm = () => {
+const IncomeForm = () => {
 
-  const componentName = "BillForm";
+  const componentName = "IncomeForm";
 
   const dispatch = useDispatch();
 
   const currentUser = useSelector(state => state.application.currentUser);
-  const currentBill = useSelector(state => state.application.currentBill);
+  const currentIncome = useSelector(state => state.application.currentIncome);
 
-  const [txtBillName, setTxtBillName] = useState("");
-  const [txtBillAmount, setTxtBillAmount] = useState("");
-  const [txtBillUrl, setTxtBillUrl] = useState("");
-  const [txtBillDescription, setTxtBillDescription] = useState("");
+  const [txtIncomeName, setTxtIncomeName] = useState("");
+  const [txtIncomeAmount, setTxtIncomeAmount] = useState("");
 
   const [txtFrequencyInterval, setTxtFrequencyInterval] = useState(1);
   const [ddFrequencyType, setDdFrequencyType] = useState("month");
@@ -101,8 +99,8 @@ const BillForm = () => {
 
     if (isEmpty(currentUser?.userId) === false) {
 
-      let url = `${baseUrl}/bills/add`;
-      let operationValue = "Add Bill";
+      let url = `${baseUrl}/income/add`;
+      let operationValue = "Add Income";
 
       let frequencyDay = "";
 
@@ -115,16 +113,16 @@ const BillForm = () => {
       };
 
       let recordObject = {
-        billName: txtBillName,
-        billAmount: txtBillAmount,
-        billUrl: txtBillUrl,
-        billDescription: txtBillDescription,
+        incomeName: txtIncomeName,
+        incomeAmount: txtIncomeAmount,
         frequencyInterval: txtFrequencyInterval,
         frequencyType: ddFrequencyType,
         frequencyDay: frequencyDay,
         frequencyStartDate: txtFrequencyStartDate,
         userId: currentUser.userId
       };
+
+      console.log("recordObject", recordObject);
 
       fetch(url, {
         method: "POST",
@@ -153,7 +151,7 @@ const BillForm = () => {
         })
         .then((results) => {
 
-          // console.log("results", results);
+          console.log("results", results);
 
           if (isEmpty(results) === false && results.transactionSuccess === true) {
 
@@ -184,10 +182,8 @@ const BillForm = () => {
 
     dispatch(setComponentToLoad(""));
 
-    setTxtBillName("");
-    setTxtBillAmount("");
-    setTxtBillUrl("");
-    setTxtBillDescription("");
+    setTxtIncomeName("");
+    setTxtIncomeAmount("");
     setTxtFrequencyInterval(1);
     setDdFrequencyType("month");
     setTxtFrequencyDay(1);
@@ -201,44 +197,26 @@ const BillForm = () => {
   return (
     <div>
 
-      {isEmpty(currentBill) === false ? <h2>Edit Bill</h2> : <h2>Add Bill</h2>}
+      {isEmpty(currentIncome) === false ? <h2>Edit Income</h2> : <h2>Add Income</h2>}
 
-      <StyledBillForm onSubmit={(event) => { event.preventDefault(); }}>
+      <StyledIncomeForm onSubmit={(event) => { event.preventDefault(); }}>
 
         <FormInput
-          formInputId="txtBillName"
+          formInputId="txtIncomeName"
           labelText="Name"
           isRequired={true}
-          inlineError={inlineErrors.txtBillName}
-          inputValue={txtBillName}
-          updateValue={setTxtBillName}
+          inlineError={inlineErrors.txtIncomeName}
+          inputValue={txtIncomeName}
+          updateValue={setTxtIncomeName}
         />
 
         <FormInput
-          formInputId="txtBillAmount"
+          formInputId="txtIncomeAmount"
           labelText="Amount"
           isRequired={true}
-          inlineError={inlineErrors.txtBillAmount}
-          inputValue={txtBillAmount}
-          updateValue={setTxtBillAmount}
-        />
-
-        <FormInput
-          formInputId="txtBillUrl"
-          labelText="URL"
-          inlineError={inlineErrors.txtBillUrl}
-          inputValue={txtBillUrl}
-          updateValue={setTxtBillUrl}
-        />
-
-        <FormInput
-          formInputId="txtBillDescription"
-          inputType="textarea"
-          textareaRows="5"
-          labelText="Description"
-          inlineError={inlineErrors.txtBillDescription}
-          inputValue={txtBillDescription}
-          updateValue={setTxtBillDescription}
+          inlineError={inlineErrors.txtIncomeAmount}
+          inputValue={txtIncomeAmount}
+          updateValue={setTxtIncomeAmount}
         />
 
         <StyledFrequencyRow>
@@ -339,10 +317,10 @@ const BillForm = () => {
           <button type="button" className="btn btn-light-gray" onClick={() => { closeForm(); }}>Cancel</button>
         </div>
 
-      </StyledBillForm>
+      </StyledIncomeForm>
 
     </div >
   );
 };
 
-export default BillForm;
+export default IncomeForm;

@@ -8,7 +8,12 @@ const initialState = {
   currentUser: {},
 
   componentToLoad: "",
+
+  bills: [],
   currentBill: {},
+
+  allIncome: [],
+  currentIncome: {},
 
   informationMessage: "",
   successMessage: "",
@@ -33,8 +38,17 @@ const applicationSlice = createSlice({
     setComponentToLoad(state, action) {
       state.componentToLoad = action.payload;
     },
+    setBills(state, action) {
+      state.bills = action.payload;
+    },
     setCurrentBill(state, action) {
       state.currentBill = action.payload;
+    },
+    setAllIncome(state, action) {
+      state.allIncome = action.payload;
+    },
+    setCurrentIncome(state, action) {
+      state.currentIncome = action.payload;
     },
     addInformationMessage(state, action) {
 
@@ -196,6 +210,6 @@ const applicationSlice = createSlice({
   }
 });
 
-export const { setAccessToken, setCurrentUser, setComponentToLoad, setCurrentBill, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } = applicationSlice.actions;
+export const { setAccessToken, setCurrentUser, setComponentToLoad, setBills, setCurrentBill, setAllIncome, setCurrentIncome, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } = applicationSlice.actions;
 
 export default applicationSlice.reducer;
