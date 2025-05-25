@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isEmpty, isNonEmptyArray } from "../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage } from "../app/applicationSlice";
+import { isEmpty, isNonEmptyArray } from "../../utilities/sharedFunctions";
+import { setComponentToLoad, setCurrentBill, addSuccessMessage, addErrorMessage } from "../../app/applicationSlice";
 
 const BillsList = () => {
 
@@ -82,12 +82,27 @@ const BillsList = () => {
   };
 
 
+  const handleEditBill = (bill) => {
+
+    dispatch(setCurrentBill(bill));
+
+    dispatch(setComponentToLoad("BillForm"));
+
+  };
+
+
   return (
     <div className="bills-list-container">
 
       <div className="flex-row space-between">
         <h2 className="mb-0">Bills</h2>
-        <button type="button" className="btn btn-success" onClick={(event) => { dispatch(setComponentToLoad("BillForm")); }}><i className="fa fa-plus"></i> Add Bill</button>
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={() => { dispatch(setComponentToLoad("BillForm")); }}
+        >
+          <i className="fa fa-plus"></i> Add Bill
+        </button>
       </div>
 
       <div className="table-container">
@@ -100,13 +115,13 @@ const BillsList = () => {
             </tr>
           </thead>
 
-          {isNonEmptyArray(bills) === true ?
+          {isNonEmptyArray(bills) ?
 
             <tbody>
 
               {bills.map((bill) => {
 
-                if (bill.active === true) {
+                if (bill.active) {
 
                   return (
                     <tr key={bill.bill_id}>
@@ -118,9 +133,22 @@ const BillsList = () => {
                         ${bill.bill_amount}
                       </td>
 
-                      <td>
-                        <button type="button" className="btn btn-transparent" onClick={(event) => { deleteBill(bill.bill_id); }}>
-                          <i className="fa fa-trash red-text"></i>
+                      <td className="flex-row">
+                        <button
+                          type="button"
+                          className="btn btn-transparent"
+                          onClick={() => { handleEditBill(bill); }}
+                        >
+                          <i className="fa fa-pen" />
+                          <span className="sr-only">Edit</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btn btn-transparent"
+                          onClick={() => { deleteBill(bill.bill_id); }}
+                        >
+                          <i className="fa fa-trash red-text" />
                           <span className="sr-only">Delete</span>
                         </button>
                       </td>

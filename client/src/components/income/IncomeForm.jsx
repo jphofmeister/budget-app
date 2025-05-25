@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { isEmpty } from "../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import FormInput from "./template/FormInput";
-import FormDropdown from "./template/FormDropdown";
+import { isEmpty } from "../../utilities/sharedFunctions";
+import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages } from "../../app/applicationSlice";
+import FormInput from "../common/FormInput";
+import FormDropdown from "../common/FormDropdown";
 
 const StyledIncomeForm = styled.form`
   display: flex;

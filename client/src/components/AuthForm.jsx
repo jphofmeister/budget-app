@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { noFunctionAvailable, isEmpty, getDateTime } from "../utilities/sharedFunctions";
 import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import FormInput from './template/FormInput';
+import FormInput from './common/FormInput';
 import { jwtDecode } from "../utilities/jwtDecode";
 
 const StyledAuthForm = styled.form`

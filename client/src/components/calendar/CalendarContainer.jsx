@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { format, addMonths, subMonths } from "date-fns";
-import { isEmpty, isNonEmptyArray } from "../utilities/sharedFunctions";
-import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import { calculateDate, displayMonthName } from "./calendar/DateFunctions";
-import Calendar from "./calendar/Calendar";
+import { isEmpty, isNonEmptyArray } from "../../utilities/sharedFunctions";
+import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../../app/applicationSlice";
+import { calculateDate, displayMonthName } from "./DateFunctions";
+import Calendar from "./Calendar";
 
 const CalendarContainer = () => {
 

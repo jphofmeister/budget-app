@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { isEmpty } from "../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import FormInput from "./template/FormInput";
-import FormDropdown from "./template/FormDropdown";
+import { isEmpty } from "../../utilities/sharedFunctions";
+import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages } from "../../app/applicationSlice";
+import FormInput from "../common/FormInput";
+import FormDropdown from "../common/FormDropdown";
+import { format } from "date-fns";
 
 const StyledBillForm = styled.form`
   display: flex;
@@ -93,16 +94,78 @@ const BillForm = () => {
   let baseUrl = "/api";
 
 
+  // * set data in form if editing -- 05/25/2025 JH
+  useEffect(() => {
+
+    if (!isEmpty(currentBill)) {
+
+      setTxtBillName(currentBill.bill_name);
+      setTxtBillAmount(currentBill.bill_amount);
+      setTxtBillUrl(currentBill.bill_url);
+      setTxtBillDescription(currentBill.bill_description);
+      setTxtFrequencyInterval(currentBill.frequency_interval);
+      setDdFrequencyType(currentBill.frequency_type);
+
+      if (currentBill.frequency_type === "month") {
+
+        setTxtFrequencyDay(currentBill.frequency_day);
+
+        if (currentBill.frequency_day === "last") {
+          setCbxLast(true);
+        };
+
+      };
+
+      if (currentBill.frequency_type === "week") {
+        setDdFrequencyDayOfWeek(currentBill.frequency_day);
+      };
+
+      setTxtFrequencyStartDate(format(currentBill.frequency_start_date, "yyyy-dd-MM"));
+
+    } else {
+
+      setTxtBillName("");
+      setTxtBillAmount("");
+      setTxtBillUrl("");
+      setTxtBillDescription("");
+      setTxtFrequencyInterval(1);
+      setDdFrequencyType("month");
+      setTxtFrequencyDay(1);
+      setDdFrequencyDayOfWeek("Sunday");
+      setCbxLast(false);
+      setTxtFrequencyStartDate("");
+
+    };
+
+  }, [currentBill]);
+
+
   const handleSubmit = (event) => {
 
     event.preventDefault();
 
     dispatch(clearMessages());
 
-    if (isEmpty(currentUser?.userId) === false) {
+    if (!isEmpty(currentUser?.userId)) {
 
-      let url = `${baseUrl}/bills/add`;
-      let operationValue = "Add Bill";
+      let url = "";
+      let operationValue = "";
+      let method = "";
+
+      // ? check currentUser.userId === currentBill.user_id earlier in the process? -- 05/25/2025 JH
+      if (!isEmpty(currentBill) && currentUser.userId === currentBill.user_id) {
+
+        url = `${baseUrl}/bills/update/${currentBill.bill_id}/${currentUser.userId}`;
+        operationValue = "Edit Bill";
+        method = "PUT";
+
+      } else {
+
+        url = `${baseUrl}/bills/add`;
+        operationValue = "Add Bill";
+        method = "POST";
+
+      };
 
       let frequencyDay = "";
 
@@ -127,7 +190,7 @@ const BillForm = () => {
       };
 
       fetch(url, {
-        method: "POST",
+        method: method,
         credentials: 'include',
         cache: 'no-cache',
         headers: {
@@ -201,9 +264,9 @@ const BillForm = () => {
   return (
     <div>
 
-      {isEmpty(currentBill) === false ? <h2>Edit Bill</h2> : <h2>Add Bill</h2>}
+      {!isEmpty(currentBill) ? <h2>Edit Bill</h2> : <h2>Add Bill</h2>}
 
-      <StyledBillForm onSubmit={(event) => { event.preventDefault(); }}>
+      <StyledBillForm onSubmit={(event) => { handleSubmit(event); }}>
 
         <FormInput
           formInputId="txtBillName"
@@ -290,7 +353,12 @@ const BillForm = () => {
                   <span>or</span>
 
                   <label htmlFor="cbxLast">
-                    <input type="checkbox" id="cbxLast" checked={cbxLast} onChange={(event) => { setCbxLast(!cbxLast); }} />
+                    <input
+                      type="checkbox"
+                      id="cbxLast"
+                      checked={cbxLast}
+                      onChange={() => { setCbxLast(!cbxLast); }}
+                    />
                     Last
                   </label>
 
@@ -335,7 +403,7 @@ const BillForm = () => {
           updateValue={setTxtFrequencyStartDate} />
 
         <div className="flex-row justify-center mt-3">
-          <button type="submit" className="btn btn-primary" onClick={(event) => { handleSubmit(event); }}>Submit</button>
+          <button type="submit" className="btn btn-primary">Submit</button>
           <button type="button" className="btn btn-light-gray" onClick={() => { closeForm(); }}>Cancel</button>
         </div>
 

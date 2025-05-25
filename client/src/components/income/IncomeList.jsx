@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isEmpty, isNonEmptyArray } from "../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage } from "../app/applicationSlice";
+import { isEmpty, isNonEmptyArray } from "../../utilities/sharedFunctions";
+import { setComponentToLoad, addSuccessMessage, addErrorMessage } from "../../app/applicationSlice";
 
 const IncomeList = () => {
 

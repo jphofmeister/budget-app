@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import BillsList from "./BillsList";
-import IncomeList from "./IncomeList";
-import CalendarContainer from "./CalendarContainer";
+import BillsList from "./bills/BillsList";
+import IncomeList from "./income/IncomeList";
+import CalendarContainer from "./calendar/CalendarContainer";
 
 const StyledMainGrid = styled.div`
   display: grid;

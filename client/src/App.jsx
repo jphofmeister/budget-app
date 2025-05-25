@@ -6,8 +6,8 @@ import { setAccessToken, setCurrentUser, setComponentToLoad, setBills, setAllInc
 import { jwtDecode } from "./utilities/jwtDecode";
 import AuthForm from "./components/AuthForm";
 import Messages from "./components/Messages";
-import BillForm from "./components/BillForm";
-import IncomeForm from "./components/IncomeForm";
+import BillForm from "./components/bills/BillForm";
+import IncomeForm from "./components/income/IncomeForm";
 import Dashboard from "./components/Dashboard";
 
 const StyledNavBar = styled.nav`

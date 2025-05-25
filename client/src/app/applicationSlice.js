@@ -206,7 +206,6 @@ const applicationSlice = createSlice({
       state.errorMessageVisible = false;
 
     }
-
   }
 });
 
