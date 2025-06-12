@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { isEmpty } from "../../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages } from "../../app/applicationSlice";
+import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages, setCurrentBill } from "../../app/applicationSlice";
 import FormInput from "../common/FormInput";
 import FormDropdown from "../common/FormDropdown";
 import { format } from "date-fns";
@@ -97,30 +97,37 @@ const BillForm = () => {
   // * set data in form if editing -- 05/25/2025 JH
   useEffect(() => {
 
-    if (!isEmpty(currentBill)) {
+    resetBillForm(currentBill);
 
-      setTxtBillName(currentBill.bill_name);
-      setTxtBillAmount(currentBill.bill_amount);
-      setTxtBillUrl(currentBill.bill_url);
-      setTxtBillDescription(currentBill.bill_description);
-      setTxtFrequencyInterval(currentBill.frequency_interval);
-      setDdFrequencyType(currentBill.frequency_type);
+  }, [currentBill]);
 
-      if (currentBill.frequency_type === "month") {
 
-        setTxtFrequencyDay(currentBill.frequency_day);
+  const resetBillForm = (bill) => {
 
-        if (currentBill.frequency_day === "last") {
+    if (!isEmpty(bill)) {
+
+      setTxtBillName(bill.bill_name);
+      setTxtBillAmount(bill.bill_amount);
+      setTxtBillUrl(bill.bill_url);
+      setTxtBillDescription(bill.bill_description);
+      setTxtFrequencyInterval(bill.frequency_interval);
+      setDdFrequencyType(bill.frequency_type);
+
+      if (bill.frequency_type === "month") {
+
+        setTxtFrequencyDay(bill.frequency_day);
+
+        if (bill.frequency_day === "last") {
           setCbxLast(true);
         };
 
       };
 
-      if (currentBill.frequency_type === "week") {
-        setDdFrequencyDayOfWeek(currentBill.frequency_day);
+      if (bill.frequency_type === "week") {
+        setDdFrequencyDayOfWeek(bill.frequency_day);
       };
 
-      setTxtFrequencyStartDate(format(currentBill.frequency_start_date, "yyyy-dd-MM"));
+      setTxtFrequencyStartDate(format(bill.frequency_start_date, "yyyy-dd-MM"));
 
     } else {
 
@@ -137,7 +144,17 @@ const BillForm = () => {
 
     };
 
-  }, [currentBill]);
+  };
+
+
+  const closeForm = () => {
+
+    dispatch(setComponentToLoad(""));
+    dispatch(setCurrentBill({}));
+
+    resetBillForm();
+
+  };
 
 
   const handleSubmit = (event) => {
@@ -239,24 +256,6 @@ const BillForm = () => {
       dispatch(addErrorMessage("Please login first."));
 
     };
-
-  };
-
-
-  const closeForm = () => {
-
-    dispatch(setComponentToLoad(""));
-
-    setTxtBillName("");
-    setTxtBillAmount("");
-    setTxtBillUrl("");
-    setTxtBillDescription("");
-    setTxtFrequencyInterval(1);
-    setDdFrequencyType("month");
-    setTxtFrequencyDay(1);
-    setDdFrequencyDayOfWeek("Sunday");
-    setCbxLast(false);
-    setTxtFrequencyStartDate("");
 
   };
 

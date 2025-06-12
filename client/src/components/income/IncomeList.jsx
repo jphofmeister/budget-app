@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty, isNonEmptyArray } from "../../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage } from "../../app/applicationSlice";
+import { setComponentToLoad, addSuccessMessage, addErrorMessage, setCurrentIncome } from "../../app/applicationSlice";
 
 const IncomeList = () => {
 
@@ -82,6 +82,15 @@ const IncomeList = () => {
   };
 
 
+  const handleEditIncome = (income) => {
+
+    dispatch(setCurrentIncome(income));
+
+    dispatch(setComponentToLoad("IncomeForm"));
+
+  };
+
+
   return (
     <div className="income-list-container">
 
@@ -119,7 +128,20 @@ const IncomeList = () => {
                       </td>
 
                       <td>
-                        <button type="button" className="btn btn-transparent" onClick={(event) => { deleteIncome(income.income_id); }}>
+                        <button
+                          type="button"
+                          className="btn btn-transparent"
+                          onClick={() => { handleEditIncome(income); }}
+                        >
+                          <i className="fa fa-pen" />
+                          <span className="sr-only">Edit</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btn btn-transparent"
+                          onClick={() => { deleteIncome(income.income_id); }}
+                        >
                           <i className="fa fa-trash red-text"></i>
                           <span className="sr-only">Delete</span>
                         </button>

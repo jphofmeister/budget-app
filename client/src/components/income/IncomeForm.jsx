@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { format } from "date-fns";
 import { isEmpty } from "../../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages } from "../../app/applicationSlice";
+import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages, setCurrentIncome } from "../../app/applicationSlice";
 import FormInput from "../common/FormInput";
 import FormDropdown from "../common/FormDropdown";
 
@@ -91,6 +92,64 @@ const IncomeForm = () => {
   let baseUrl = "/api";
 
 
+  useEffect(() => {
+
+    resetIncomeForm(currentIncome);
+
+  }, [currentIncome]);
+
+
+  const resetIncomeForm = (income) => {
+
+    if (!isEmpty(income)) {
+
+      setTxtIncomeName(income.income_name);
+      setTxtIncomeAmount(income.income_amount);
+      setTxtFrequencyInterval(income.frequency_interval);
+      setDdFrequencyType(income.frequency_type);
+
+      if (income.frequency_type === "month") {
+
+        setTxtFrequencyDay(income.frequency_day);
+
+        if (income.frequency_day === "last") {
+          setCbxLast(true);
+        };
+
+      };
+
+      if (income.frequency_type === "week") {
+        setDdFrequencyDayOfWeek(income.frequency_day);
+      };
+
+      setTxtFrequencyStartDate(format(income.frequency_start_date, "yyyy-dd-MM"));
+
+    } else {
+
+      setTxtIncomeName("");
+      setTxtIncomeAmount("");
+      setTxtFrequencyInterval(1);
+      setDdFrequencyType("month");
+      setTxtFrequencyDay(1);
+      setDdFrequencyDayOfWeek("Sunday");
+      setCbxLast(false);
+      setTxtFrequencyStartDate("");
+
+    };
+
+  };
+
+
+  const closeForm = () => {
+
+    dispatch(setComponentToLoad(""));
+    dispatch(setCurrentIncome({}));
+
+    resetIncomeForm();
+
+  };
+
+
   const handleSubmit = (event) => {
 
     event.preventDefault();
@@ -174,22 +233,6 @@ const IncomeForm = () => {
       dispatch(addErrorMessage("Please login first."));
 
     };
-
-  };
-
-
-  const closeForm = () => {
-
-    dispatch(setComponentToLoad(""));
-
-    setTxtIncomeName("");
-    setTxtIncomeAmount("");
-    setTxtFrequencyInterval(1);
-    setDdFrequencyType("month");
-    setTxtFrequencyDay(1);
-    setDdFrequencyDayOfWeek("Sunday");
-    setCbxLast(false);
-    setTxtFrequencyStartDate("");
 
   };
 
