@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import { format } from "date-fns";
 import { isEmpty } from "../../utilities/sharedFunctions";
 import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages, setCurrentBill } from "../../app/applicationSlice";
 import FormInput from "../common/FormInput";
 import FormDropdown from "../common/FormDropdown";
-import { format } from "date-fns";
 
 const StyledBillForm = styled.form`
   display: flex;
@@ -102,6 +102,17 @@ const BillForm = () => {
   }, [currentBill]);
 
 
+  useEffect(() => {
+
+    console.log("cbxLast", cbxLast);
+
+    if (cbxLast === true) {
+      setTxtFrequencyDay(null);
+    }
+
+  }, [cbxLast]);
+
+
   const resetBillForm = (bill) => {
 
     if (!isEmpty(bill)) {
@@ -118,6 +129,7 @@ const BillForm = () => {
         setTxtFrequencyDay(bill.frequency_day);
 
         if (bill.frequency_day === "last") {
+          setTxtFrequencyDay("");
           setCbxLast(true);
         };
 
@@ -341,7 +353,7 @@ const BillForm = () => {
                   inputType="number"
                   labelText="Frequency Day"
                   srOnly={true}
-                  disabled={cbxLast}
+                  disabled={cbxLast === true}
                   inlineError={inlineErrors.txtFrequencyDay}
                   inputValue={txtFrequencyDay}
                   updateValue={setTxtFrequencyDay}
@@ -403,7 +415,7 @@ const BillForm = () => {
 
         <div className="flex-row justify-center mt-3">
           <button type="submit" className="btn btn-primary">Submit</button>
-          <button type="button" className="btn btn-light-gray" onClick={() => { closeForm(); }}>Cancel</button>
+          <button type="button" className="btn btn-light-gray" onClick={closeForm}>Cancel</button>
         </div>
 
       </StyledBillForm>
