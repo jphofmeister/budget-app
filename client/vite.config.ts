@@ -3,14 +3,15 @@ import {
   defineConfig
   // loadEnv
 } from "vite";
-import type { ConfigEnv } from "vite";
+// import type { ConfigEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { readFileSync } from "fs";
 
 // Read version and copyrightYear from package.json
 const packageJson = JSON.parse(readFileSync("./package.json", "utf-8"));
 
-export default defineConfig(({ mode }: ConfigEnv) => {
+// export default defineConfig(({ mode }: ConfigEnv) => {
+export default defineConfig(() => {
   // * Load env file based on `mode` in the current working directory.
   // * Set the third parameter to "" to load all env regardless of the
   // * `VITE_` prefix.
