@@ -1,0 +1,36 @@
+# Prettier ignore file
+# Ignore build output
+build/
+dist/
+coverage/
+resources/
+public/instructor/
+public/projectFiles/
+public/webGL/
+**/*.loader.js
+**/*.data
+**/*.data.*
+**/*.wasm
+**/*.wasm.*
+**/*.framework.js
+**/*.framework.js.*
+
+# Ignore dependencies
+node_modules/
+
+# Ignore package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore log files
+*.log
+logs
+
+# Ignore generated files
+.DS_Store
+*.min.js
+*.min.css
+
+# Format JSON files with a different formater -- 04/07/2026 MF
+*.json
