@@ -1,20 +1,26 @@
-// @ts-nocheck
-import React, { useState, useEffect } from "react";
-import { isEmpty } from "../utilities/sharedFunctions";
+import { useState, useEffect, RefObject } from "react";
 
-export const useNativeClickListener = (element, initialState) => {
-  const [isActive, setIsActive] = useState(initialState);
+export type UseNativeClickListener = (
+  element: RefObject<HTMLElement | null>,
+  initialState: boolean
+) => [boolean, (isActive: boolean) => void];
+
+export const useNativeClickListener: UseNativeClickListener = (element, initialState) => {
+  const [isActive, setIsActive] = useState<boolean>(initialState);
 
   useEffect(() => {
-    const globalClickHandler = event => {
-      if (isEmpty(element.current) === false && !element.current.contains(event.target)) {
+    const globalClickHandler = (event: Event) => {
+      // if (!isEmpty(element.current) && !element.current.contains(event.target)) {
+      if (
+        element.current &&
+        event.target instanceof Node &&
+        !element.current.contains(event.target)
+      ) {
         setIsActive(!isActive);
       }
     };
 
-    if (isActive === true) {
-      window.addEventListener("click", globalClickHandler);
-    }
+    if (isActive) window.addEventListener("click", globalClickHandler);
 
     return () => {
       window.removeEventListener("click", globalClickHandler);
@@ -23,3 +29,5 @@ export const useNativeClickListener = (element, initialState) => {
 
   return [isActive, setIsActive];
 };
+
+export default useNativeClickListener;

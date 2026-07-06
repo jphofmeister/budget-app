@@ -11,8 +11,8 @@ import {
   clearMessages,
   setCurrentIncome
 } from "../../app/applicationSlice";
-import FormInput from "../common/FormInput";
-import FormDropdown from "../common/FormDropdown";
+import FormInput from "../common/form/FormInput";
+import FormDropdown from "../common/form/FormDropdown";
 
 const StyledIncomeForm = styled.form`
   display: flex;

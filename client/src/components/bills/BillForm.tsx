@@ -11,8 +11,8 @@ import {
   clearMessages,
   setCurrentBill
 } from "../../app/applicationSlice";
-import FormInput from "../common/FormInput";
-import FormDropdown from "../common/FormDropdown";
+import FormInput from "../common/form/FormInput";
+import FormDropdown from "../common/form/FormDropdown";
 
 const StyledBillForm = styled.form`
   display: flex;

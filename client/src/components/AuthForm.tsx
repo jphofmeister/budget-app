@@ -13,7 +13,7 @@ import {
   addErrorMessage,
   clearMessages
 } from "../app/applicationSlice";
-import FormInput from "./common/FormInput";
+import FormInput from "./common/form/FormInput";
 import { jwtDecode } from "../utilities/jwtDecode";
 
 const StyledAuthForm = styled.form`
