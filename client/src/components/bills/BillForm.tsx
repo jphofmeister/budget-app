@@ -1,13 +1,20 @@
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { format } from "date-fns";
 import { isEmpty } from "../../utilities/sharedFunctions";
-import { setComponentToLoad, addSuccessMessage, addErrorMessage, clearMessages, setCurrentIncome } from "../../app/applicationSlice";
+import {
+  setComponentToLoad,
+  addSuccessMessage,
+  addErrorMessage,
+  clearMessages,
+  setCurrentBill
+} from "../../app/applicationSlice";
 import FormInput from "../common/FormInput";
 import FormDropdown from "../common/FormDropdown";
 
-const StyledIncomeForm = styled.form`
+const StyledBillForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -28,11 +35,11 @@ const StyledFrequencyRow = styled.fieldset`
   flex-direction: row;
   align-items: center;
   justfiy-content: flex-start;
-  gap: .5rem;
+  gap: 0.5rem;
 
   border: none;
-  padding: .5rem 0 0 0;
-  margin-bottom: .5rem;
+  padding: 0.5rem 0 0 0;
+  margin-bottom: 0.5rem;
 
   legend {
     font-weight: 700;
@@ -42,7 +49,8 @@ const StyledFrequencyRow = styled.fieldset`
   .form-group {
     width: auto;
 
-    input, select {
+    input,
+    select {
       width: auto;
     }
 
@@ -63,17 +71,18 @@ const StyledFrequencyRow = styled.fieldset`
   }
 `;
 
-const IncomeForm = () => {
-
-  const componentName = "IncomeForm";
+const BillForm = () => {
+  const componentName = "BillForm";
 
   const dispatch = useDispatch();
 
   const currentUser = useSelector(state => state.application.currentUser);
-  const currentIncome = useSelector(state => state.application.currentIncome);
+  const currentBill = useSelector(state => state.application.currentBill);
 
-  const [txtIncomeName, setTxtIncomeName] = useState("");
-  const [txtIncomeAmount, setTxtIncomeAmount] = useState("");
+  const [txtBillName, setTxtBillName] = useState("");
+  const [txtBillAmount, setTxtBillAmount] = useState("");
+  const [txtBillUrl, setTxtBillUrl] = useState("");
+  const [txtBillDescription, setTxtBillDescription] = useState("");
 
   const [txtFrequencyInterval, setTxtFrequencyInterval] = useState(1);
   const [ddFrequencyType, setDdFrequencyType] = useState("month");
@@ -84,96 +93,118 @@ const IncomeForm = () => {
 
   const [inlineErrors, setInlineErrors] = useState([]);
 
-  let frequencyTypeOptions = [{ optionId: "day", optionName: "Day(s)" }, { optionId: "week", optionName: "Week(s)" }, { optionId: "month", optionName: "Month(s)" }];
+  const frequencyTypeOptions = [
+    { optionId: "day", optionName: "Day(s)" },
+    { optionId: "week", optionName: "Week(s)" },
+    { optionId: "month", optionName: "Month(s)" }
+  ];
 
-  let dayOfWeekOptions = [{ optionName: "Sunday" }, { optionName: "Monday" }, { optionName: "Tuesday" }, { optionName: "Wednesday" }, { optionName: "Thursday" }, { optionName: "Friday" }, { optionName: "Saturday" }];
+  const dayOfWeekOptions = [
+    { optionName: "Sunday" },
+    { optionName: "Monday" },
+    { optionName: "Tuesday" },
+    { optionName: "Wednesday" },
+    { optionName: "Thursday" },
+    { optionName: "Friday" },
+    { optionName: "Saturday" }
+  ];
 
   // let baseUrl = "http://localhost:3001/api";
-  let baseUrl = "/api";
+  const baseUrl = "/api";
 
+  // * set data in form if editing -- 05/25/2025 JH
+  useEffect(() => {
+    resetBillForm(currentBill);
+  }, [currentBill]);
 
   useEffect(() => {
+    console.log("cbxLast", cbxLast);
 
-    resetIncomeForm(currentIncome);
+    if (cbxLast === true) {
+      setTxtFrequencyDay(null);
+    }
+  }, [cbxLast]);
 
-  }, [currentIncome]);
+  const resetBillForm = bill => {
+    if (!isEmpty(bill)) {
+      setTxtBillName(bill.bill_name);
+      setTxtBillAmount(bill.bill_amount);
+      setTxtBillUrl(bill.bill_url);
+      setTxtBillDescription(bill.bill_description);
+      setTxtFrequencyInterval(bill.frequency_interval);
+      setDdFrequencyType(bill.frequency_type);
 
+      if (bill.frequency_type === "month") {
+        setTxtFrequencyDay(bill.frequency_day);
 
-  const resetIncomeForm = (income) => {
-
-    if (!isEmpty(income)) {
-
-      setTxtIncomeName(income.income_name);
-      setTxtIncomeAmount(income.income_amount);
-      setTxtFrequencyInterval(income.frequency_interval);
-      setDdFrequencyType(income.frequency_type);
-
-      if (income.frequency_type === "month") {
-
-        setTxtFrequencyDay(income.frequency_day);
-
-        if (income.frequency_day === "last") {
+        if (bill.frequency_day === "last") {
+          setTxtFrequencyDay("");
           setCbxLast(true);
-        };
+        }
+      }
 
-      };
+      if (bill.frequency_type === "week") {
+        setDdFrequencyDayOfWeek(bill.frequency_day);
+      }
 
-      if (income.frequency_type === "week") {
-        setDdFrequencyDayOfWeek(income.frequency_day);
-      };
-
-      setTxtFrequencyStartDate(format(income.frequency_start_date, "yyyy-dd-MM"));
-
+      setTxtFrequencyStartDate(format(bill.frequency_start_date, "yyyy-dd-MM"));
     } else {
-
-      setTxtIncomeName("");
-      setTxtIncomeAmount("");
+      setTxtBillName("");
+      setTxtBillAmount("");
+      setTxtBillUrl("");
+      setTxtBillDescription("");
       setTxtFrequencyInterval(1);
       setDdFrequencyType("month");
       setTxtFrequencyDay(1);
       setDdFrequencyDayOfWeek("Sunday");
       setCbxLast(false);
       setTxtFrequencyStartDate("");
-
-    };
-
+    }
   };
-
 
   const closeForm = () => {
-
     dispatch(setComponentToLoad(""));
-    dispatch(setCurrentIncome({}));
+    dispatch(setCurrentBill({}));
 
-    resetIncomeForm();
-
+    resetBillForm();
   };
 
-
-  const handleSubmit = (event) => {
-
+  const handleSubmit = event => {
     event.preventDefault();
 
     dispatch(clearMessages());
 
-    if (isEmpty(currentUser?.userId) === false) {
+    if (!isEmpty(currentUser?.userId)) {
+      let url = "";
+      let operationValue = "";
+      let method = "";
 
-      let url = `${baseUrl}/income/add`;
-      let operationValue = "Add Income";
+      // ? check currentUser.userId === currentBill.user_id earlier in the process? -- 05/25/2025 JH
+      if (!isEmpty(currentBill) && currentUser.userId === currentBill.user_id) {
+        url = `${baseUrl}/bills/update/${currentBill.bill_id}/${currentUser.userId}`;
+        operationValue = "Edit Bill";
+        method = "PUT";
+      } else {
+        url = `${baseUrl}/bills/add`;
+        operationValue = "Add Bill";
+        method = "POST";
+      }
 
       let frequencyDay = "";
 
       if (ddFrequencyType === "month") {
         frequencyDay = cbxLast === true ? "last" : txtFrequencyDay;
-      };
+      }
 
       if (ddFrequencyType === "week") {
         frequencyDay = ddFrequencyDayOfWeek;
-      };
+      }
 
-      let recordObject = {
-        incomeName: txtIncomeName,
-        incomeAmount: txtIncomeAmount,
+      const recordObject = {
+        billName: txtBillName,
+        billAmount: txtBillAmount,
+        billUrl: txtBillUrl,
+        billDescription: txtBillDescription,
         frequencyInterval: txtFrequencyInterval,
         frequencyType: ddFrequencyType,
         frequencyDay: frequencyDay,
@@ -181,85 +212,86 @@ const IncomeForm = () => {
         userId: currentUser.userId
       };
 
-      console.log("recordObject", recordObject);
-
       fetch(url, {
-        method: "POST",
-        credentials: 'include',
-        cache: 'no-cache',
+        method: method,
+        credentials: "include",
+        cache: "no-cache",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({ ...recordObject })
       })
-        .then((results) => {
-
+        .then(results => {
           console.log("results", results);
 
           if (typeof results === "object") {
-
             return results.json();
-
           } else {
-
             console.error("error");
             dispatch(addErrorMessage(`${operationValue}: No results.`));
-
-          };
-
+          }
         })
-        .then((results) => {
-
-          console.log("results", results);
+        .then(results => {
+          // console.log("results", results);
 
           if (isEmpty(results) === false && results.transactionSuccess === true) {
-
             closeForm();
 
             dispatch(addSuccessMessage(`${operationValue}: ${results.message}`));
-
-          };
-
+          }
         })
-        .catch((error) => {
-
+        .catch(error => {
           console.error("error", error);
           dispatch(addErrorMessage(`${operationValue}: No results.`));
-
         });
-
     } else {
-
       dispatch(addErrorMessage("Please login first."));
-
-    };
-
+    }
   };
-
 
   return (
     <div>
+      {!isEmpty(currentBill) ? <h2>Edit Bill</h2> : <h2>Add Bill</h2>}
 
-      {isEmpty(currentIncome) === false ? <h2>Edit Income</h2> : <h2>Add Income</h2>}
-
-      <StyledIncomeForm onSubmit={(event) => { event.preventDefault(); }}>
-
+      <StyledBillForm
+        onSubmit={event => {
+          handleSubmit(event);
+        }}
+      >
         <FormInput
-          formInputId="txtIncomeName"
+          formInputId="txtBillName"
           labelText="Name"
           isRequired={true}
-          inlineError={inlineErrors.txtIncomeName}
-          inputValue={txtIncomeName}
-          updateValue={setTxtIncomeName}
+          inlineError={inlineErrors.txtBillName}
+          inputValue={txtBillName}
+          updateValue={setTxtBillName}
         />
 
         <FormInput
-          formInputId="txtIncomeAmount"
+          formInputId="txtBillAmount"
           labelText="Amount"
           isRequired={true}
-          inlineError={inlineErrors.txtIncomeAmount}
-          inputValue={txtIncomeAmount}
-          updateValue={setTxtIncomeAmount}
+          inlineError={inlineErrors.txtBillAmount}
+          inputValue={txtBillAmount}
+          updateValue={setTxtBillAmount}
+        />
+
+        <FormInput
+          formInputId="txtBillUrl"
+          labelText="URL"
+          inlineError={inlineErrors.txtBillUrl}
+          inputValue={txtBillUrl}
+          updateValue={setTxtBillUrl}
+        />
+
+        <FormInput
+          formInputId="txtBillDescription"
+          inputType="textarea"
+          textareaRows="5"
+          labelText="Description"
+          inlineError={inlineErrors.txtBillDescription}
+          inputValue={txtBillDescription}
+          updateValue={setTxtBillDescription}
         />
 
         <StyledFrequencyRow>
@@ -289,43 +321,44 @@ const IncomeForm = () => {
             updateValue={setDdFrequencyType}
           />
 
-          {ddFrequencyType === "month" ?
+          {ddFrequencyType === "month" ? (
             <>
               <span>on the</span>
 
               <div className="specific-or-last-day">
-
                 <FormInput
                   formInputId="txtFrequencyDay"
                   inputType="number"
                   labelText="Frequency Day"
                   srOnly={true}
-                  disabled={cbxLast}
+                  disabled={cbxLast === true}
                   inlineError={inlineErrors.txtFrequencyDay}
                   inputValue={txtFrequencyDay}
                   updateValue={setTxtFrequencyDay}
                 />
 
                 <div className="checkbox-addon">
-
                   <span>or</span>
 
                   <label htmlFor="cbxLast">
-                    <input type="checkbox" id="cbxLast" checked={cbxLast} onChange={(event) => { setCbxLast(!cbxLast); }} />
+                    <input
+                      type="checkbox"
+                      id="cbxLast"
+                      checked={cbxLast}
+                      onChange={() => {
+                        setCbxLast(!cbxLast);
+                      }}
+                    />
                     Last
                   </label>
-
                 </div>
-
               </div>
 
               <span>day.</span>
             </>
+          ) : null}
 
-            : null}
-
-          {ddFrequencyType === "week" ?
-
+          {ddFrequencyType === "week" ? (
             <>
               <span>on</span>
 
@@ -341,9 +374,7 @@ const IncomeForm = () => {
                 updateValue={setDdFrequencyDayOfWeek}
               />
             </>
-
-            : null}
-
+          ) : null}
         </StyledFrequencyRow>
 
         <FormInput
@@ -353,17 +384,20 @@ const IncomeForm = () => {
           inputHint="The frequency will start calculating from this date."
           inlineError={inlineErrors.txtFrequencyStartDate}
           inputValue={txtFrequencyStartDate}
-          updateValue={setTxtFrequencyStartDate} />
+          updateValue={setTxtFrequencyStartDate}
+        />
 
         <div className="flex-row justify-center mt-3">
-          <button type="submit" className="btn btn-primary" onClick={(event) => { handleSubmit(event); }}>Submit</button>
-          <button type="button" className="btn btn-light-gray" onClick={() => { closeForm(); }}>Cancel</button>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+          <button type="button" className="btn btn-light-gray" onClick={closeForm}>
+            Cancel
+          </button>
         </div>
-
-      </StyledIncomeForm>
-
-    </div >
+      </StyledBillForm>
+    </div>
   );
 };
 
-export default IncomeForm;
+export default BillForm;

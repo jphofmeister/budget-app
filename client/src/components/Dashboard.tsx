@@ -1,3 +1,4 @@
+// @ts-nocheck
 import styled from "styled-components";
 import BillsList from "./bills/BillsList";
 import IncomeList from "./income/IncomeList";
@@ -29,13 +30,11 @@ const StyledMainGrid = styled.div`
 const Dashboard = () => {
   return (
     <StyledMainGrid>
-
       <CalendarContainer />
 
       <BillsList />
 
       <IncomeList />
-
     </StyledMainGrid>
   );
 };

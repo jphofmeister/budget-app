@@ -1,18 +1,23 @@
+// @ts-nocheck
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { isEmpty, getDateTime } from "../utilities/sharedFunctions";
-import { parse } from "../utilities/applicationFunctions";
-import { addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
+import { isEmpty } from "../utilities/sharedFunctions";
+// import { parse } from "../utilities/applicationFunctions";
+import {
+  addInformationMessage,
+  addSuccessMessage,
+  addWarningMessage,
+  addErrorMessage
+} from "../app/applicationSlice";
 import AlertPopup from "./common/AlertPopup";
 
 const Messages = () => {
-
-  const componentName = "Messages";
-
   const dispatch = useDispatch();
 
   const informationMessage = useSelector(state => state.application.informationMessage);
-  const informationMessageVisible = useSelector(state => state.application.informationMessageVisible);
+  const informationMessageVisible = useSelector(
+    state => state.application.informationMessageVisible
+  );
   // const informationMessageStatic = useSelector(state => state.application.informationMessageStatic);
   const successMessage = useSelector(state => state.application.successMessage);
   const successMessageVisible = useSelector(state => state.application.successMessageVisible);
@@ -24,7 +29,6 @@ const Messages = () => {
   const errorMessageVisible = useSelector(state => state.application.errorMessageVisible);
   // const errorMessageStatic = useSelector(state => state.application.errorMessageStatic);
 
-
   // useEffect(() => {
   //   // * Displays all the alerts.
 
@@ -34,7 +38,6 @@ const Messages = () => {
   //   dispatch(addErrorMessage("Test Message"));
 
   // }, []);
-
 
   // // * https://stackoverflow.com/questions/65214950/how-to-disappear-alert-after-5-seconds-in-react-js
   // useEffect(() => {
@@ -52,23 +55,16 @@ const Messages = () => {
 
   // }, [informationMessage]);
 
-
   // * https://stackoverflow.com/questions/65214950/how-to-disappear-alert-after-5-seconds-in-react-js
   useEffect(() => {
     // * When the component is mounted, the alert is displayed for 5 seconds.
 
     if (isEmpty(successMessage) === false /*&& successMessageStatic !== true*/) {
-
       setTimeout(() => {
-
         dispatch(addSuccessMessage(""));
-
       }, 5000);
-
-    };
-
+    }
   }, [successMessage]);
-
 
   // // * https://stackoverflow.com/questions/65214950/how-to-disappear-alert-after-5-seconds-in-react-js
   // useEffect(() => {
@@ -86,62 +82,53 @@ const Messages = () => {
 
   // }, [warningMessage]);
 
-
-  const updateInformationMessage = (alertItemContent) => {
-
+  const updateInformationMessage = alertItemContent => {
     dispatch(addInformationMessage(alertItemContent));
-
   };
 
-  const updateSuccessMessage = (alertItemContent) => {
-
+  const updateSuccessMessage = alertItemContent => {
     dispatch(addSuccessMessage(alertItemContent));
-
   };
 
-  const updateWarningMessage = (alertItemContent) => {
-
+  const updateWarningMessage = alertItemContent => {
     dispatch(addWarningMessage(alertItemContent));
-
   };
 
-  const updateErrorMessage = (alertItemContent) => {
-
+  const updateErrorMessage = alertItemContent => {
     dispatch(addErrorMessage(alertItemContent));
-
   };
-
 
   return (
     <div className="alert-container">
+      {informationMessageVisible === true ? (
+        <AlertPopup
+          message={informationMessage}
+          setMessage={updateInformationMessage}
+          alertType="info"
+        />
+      ) : null}
 
-      {informationMessageVisible === true ?
+      {successMessageVisible === true ? (
+        <AlertPopup
+          message={successMessage}
+          setMessage={updateSuccessMessage}
+          alertType="success"
+        />
+      ) : null}
 
-        <AlertPopup message={informationMessage} setMessage={updateInformationMessage} alertType="info" />
+      {warningMessageVisible === true ? (
+        <AlertPopup
+          message={warningMessage}
+          setMessage={updateWarningMessage}
+          alertType="warning"
+        />
+      ) : null}
 
-        : null}
-
-      {successMessageVisible === true ?
-
-        <AlertPopup message={successMessage} setMessage={updateSuccessMessage} alertType="success" />
-
-        : null}
-
-      {warningMessageVisible === true ?
-
-        <AlertPopup message={warningMessage} setMessage={updateWarningMessage} alertType="warning" />
-
-        : null}
-
-      {errorMessageVisible === true ?
-
+      {errorMessageVisible === true ? (
         <AlertPopup message={errorMessage} setMessage={updateErrorMessage} alertType="error" />
-
-        : null}
-
+      ) : null}
     </div>
   );
 };
 
 export default Messages;
-

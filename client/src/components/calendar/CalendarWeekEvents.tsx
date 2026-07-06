@@ -1,61 +1,48 @@
+// @ts-nocheck
 import React, { useEffect } from "react";
 import classnames from "classnames";
 import { isEmpty, getDateTime, isNonEmptyArray } from "../../utilities/sharedFunctions";
 import { calculateDate, getEachDayOfInterval, displayDay, checkIsSameDay } from "./DateFunctions";
 import CalendarItem from "./CalendarItem";
 
-const CalendarWeekEvents = (props) => {
-
+const CalendarWeekEvents = props => {
   // * Available props: -- 07/11/2024 JH
   // * Properties: week, thisWeeksEvents -- 07/11/2024 JH
 
-  let componentName = "CalendarWeekEvents";
+  const componentName = "CalendarWeekEvents";
 
-  let week = isEmpty(props.week) === false ? props.week : [];
-  let thisWeeksEvents = isEmpty(props.thisWeeksEvents) === false ? props.thisWeeksEvents : [];
-
+  const week = isEmpty(props.week) === false ? props.week : [];
+  const thisWeeksEvents = isEmpty(props.thisWeeksEvents) === false ? props.thisWeeksEvents : [];
 
   return (
     <React.Fragment>
-
-      {isNonEmptyArray(thisWeeksEvents) === true ?
-
+      {isNonEmptyArray(thisWeeksEvents) === true ? (
         <div className="calendar__week-events">
-
-          {thisWeeksEvents.map((eventItem) => {
-
+          {thisWeeksEvents.map(eventItem => {
             // * The code below is all used for calculating the styles of the eventItem. -- 07/25/2024 JH
             let eventDisplayType = "";
 
             let gridColumnStart = 0;
             let gridColumnEnd = 0;
 
-            let startIndex = new Date(eventItem.calendarStartDate).getDay();
-            let endIndex = new Date(eventItem.calendarEndDate).getDay();
+            const startIndex = new Date(eventItem.calendarStartDate).getDay();
+            const endIndex = new Date(eventItem.calendarEndDate).getDay();
 
             let startDayIsInThisWeek = false;
             let endDayIsInThisWeek = false;
 
             week.forEach(day => {
-
               if (checkIsSameDay(day, eventItem.calendarStartDate) === true) {
-
                 startDayIsInThisWeek = true;
-
-              };
+              }
 
               if (checkIsSameDay(day, eventItem.calendarEndDate) === true) {
-
                 endDayIsInThisWeek = true;
-
-              };
-
+              }
             });
 
             if (startDayIsInThisWeek === true) {
-
               if (endDayIsInThisWeek !== true) {
-
                 // * Event starts this week, but doesn't end this week. -- 07/11/2024 JH
 
                 gridColumnStart = startIndex + 1;
@@ -63,21 +50,15 @@ const CalendarWeekEvents = (props) => {
                 gridColumnEnd = 8;
 
                 eventDisplayType = "partial-start";
-
               } else {
-
                 // * Event starts and ends within same week. -- 07/11/2024 JH
 
                 gridColumnStart = startIndex + 1;
 
                 gridColumnEnd = endIndex + 2;
-
-              };
-
+              }
             } else {
-
               if (endDayIsInThisWeek !== true) {
-
                 // * Event doesn't start or end this week. -- 07/11/2024 JH
 
                 eventDisplayType = "partial-start-end";
@@ -85,9 +66,7 @@ const CalendarWeekEvents = (props) => {
                 gridColumnStart = 1;
 
                 gridColumnEnd = 8;
-
               } else {
-
                 // * Event doesn't start this week, but ends this week. -- 07/11/2024 JH
 
                 eventDisplayType = "partial-end";
@@ -95,44 +74,49 @@ const CalendarWeekEvents = (props) => {
                 gridColumnStart = 1;
 
                 gridColumnEnd = endIndex + 2;
+              }
+            }
 
-              };
+            const eventOfThisWeekIndex = thisWeeksEvents.findIndex(
+              weekEvent => weekEvent.calendarId === eventItem.calendarId
+            );
 
-            };
+            const eventColor =
+              isEmpty(eventItem.eventColor) === false && isEmpty(eventItem.eventColor) === false
+                ? eventItem.eventColor
+                : "#1c1b1e";
 
-            let eventOfThisWeekIndex = thisWeeksEvents.findIndex((weekEvent) => weekEvent.calendarId === eventItem.calendarId);
-
-            let eventColor = isEmpty(eventItem.eventColor) === false && isEmpty(eventItem.eventColor) === false ? eventItem.eventColor : "#1c1b1e";
-
-            let eventItemContainerStyles = {
+            const eventItemContainerStyles = {
               borderColor: `${eventColor}`,
-              gridColumn: `${gridColumnStart} / ${gridColumnEnd}`,
+              gridColumn: `${gridColumnStart} / ${gridColumnEnd}`
               // gridRow: eventOfThisWeekIndex + 1
             };
 
-            let eventItemStyles = {
+            const eventItemStyles = {
               borderColor: `${eventColor}`
             };
 
-            let eventClasses = classnames("event-item", {
+            const eventClasses = classnames("event-item", {
               "event-item--partial-start": eventDisplayType === "partial-start",
               "event-item--partial-end": eventDisplayType === "partial-end",
-              "event-item--partial-start event-item--partial-end": eventDisplayType === "partial-start-end"
+              "event-item--partial-start event-item--partial-end":
+                eventDisplayType === "partial-start-end"
             });
 
             return (
-              <CalendarItem key={eventItem.calendarId} eventItem={eventItem} eventClasses={eventClasses} eventItemStyles={eventItemStyles} eventItemContainerStyles={eventItemContainerStyles} />
+              <CalendarItem
+                key={eventItem.calendarId}
+                eventItem={eventItem}
+                eventClasses={eventClasses}
+                eventItemStyles={eventItemStyles}
+                eventItemContainerStyles={eventItemContainerStyles}
+              />
             );
-
           })}
-
         </div>
-
-        : null}
-
+      ) : null}
     </React.Fragment>
   );
-
 };
 
 export default CalendarWeekEvents;

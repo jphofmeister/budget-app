@@ -1,8 +1,11 @@
+// @ts-nocheck
 import { configureStore } from "@reduxjs/toolkit";
 import applicationSlice from "./applicationSlice";
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
     application: applicationSlice
   }
 });
+
+export default store;

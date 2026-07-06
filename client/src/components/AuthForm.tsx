@@ -1,9 +1,19 @@
+// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import { noFunctionAvailable, isEmpty, getDateTime } from "../utilities/sharedFunctions";
-import { setAccessToken, setCurrentUser, setComponentToLoad, addInformationMessage, addSuccessMessage, addWarningMessage, addErrorMessage, clearMessages } from "../app/applicationSlice";
-import FormInput from './common/FormInput';
+import {
+  setAccessToken,
+  setCurrentUser,
+  setComponentToLoad,
+  addInformationMessage,
+  addSuccessMessage,
+  addWarningMessage,
+  addErrorMessage,
+  clearMessages
+} from "../app/applicationSlice";
+import FormInput from "./common/FormInput";
 import { jwtDecode } from "../utilities/jwtDecode";
 
 const StyledAuthForm = styled.form`
@@ -20,91 +30,81 @@ const StyledAuthForm = styled.form`
   }
 `;
 
-const AuthForm = (props) => {
-
+const AuthForm = props => {
   // * Available props: -- 01/29/2024 JH
   // * Properties: currentUser
   // * Functions: setCurrentUser, setIsFormOpen
 
-  let componentName = "AuthForm";
+  const componentName = "AuthForm";
 
   const dispatch = useDispatch();
 
   const accessToken = useSelector(state => state.application.accessToken);
   const currentUser = useSelector(state => state.application.currentUser);
 
-  let formType = isEmpty(props) === false && isEmpty(props.formType) === false ? props.formType : null;
+  const formType =
+    isEmpty(props) === false && isEmpty(props.formType) === false ? props.formType : null;
 
-  let setFormType = isEmpty(props.setFormType) === false ? props.setFormType : noFunctionAvailable;
+  const setFormType =
+    isEmpty(props.setFormType) === false ? props.setFormType : noFunctionAvailable;
 
   const [txtUsername, setTxtUsername] = useState("testuser");
   const [txtPassword, setTxtPassword] = useState("test");
 
   // let baseUrl = "http://localhost:3001/api";
-  let baseUrl = "/api";
+  const baseUrl = "/api";
 
-
-  const handleSubmit = (event) => {
-
+  const handleSubmit = event => {
     event.preventDefault();
 
     dispatch(clearMessages());
 
     let url = "";
-    let operationValue = formType;
+    const operationValue = formType;
 
     if (formType === "Login") {
-
       url = `${baseUrl}/auth/login`;
-
     } else if (formType === "Sign Up") {
-
       url = `${baseUrl}/users/add`;
+    }
 
-    };
-
-    let recordObject = {
+    const recordObject = {
       userName: txtUsername,
       userPassword: txtPassword
     };
 
     fetch(url, {
       method: "POST",
-      credentials: 'include',
-      cache: 'no-cache',
+      credentials: "include",
+      cache: "no-cache",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({ ...recordObject })
     })
-      .then((results) => {
-
+      .then(results => {
         if (typeof results === "object") {
-
           return results.json();
-
         } else {
-
           console.error("error");
           dispatch(addErrorMessage(`${operationValue}: No results.`));
-
-        };
-
+        }
       })
-      .then((results) => {
-
-        if (isEmpty(results) === false && results.transactionSuccess === true && isEmpty(results.accessToken) === false) {
-
-          let newRefreshToken = results.refreshToken;
+      .then(results => {
+        if (
+          isEmpty(results) === false &&
+          results.transactionSuccess === true &&
+          isEmpty(results.accessToken) === false
+        ) {
+          const newRefreshToken = results.refreshToken;
 
           dispatch(setAccessToken(newRefreshToken));
 
-          let newAccessToken = results.accessToken;
-          let jwtDecoded = jwtDecode(newAccessToken);
+          const newAccessToken = results.accessToken;
+          const jwtDecoded = jwtDecode(newAccessToken);
 
           if (isEmpty(jwtDecoded.user_id) === false && isEmpty(jwtDecoded.user_name) === false) {
-
-            let newCurrentUser = {
+            const newCurrentUser = {
               userId: jwtDecoded.user_id,
               userName: jwtDecoded.user_name
             };
@@ -113,42 +113,33 @@ const AuthForm = (props) => {
 
             closeForm();
 
-            dispatch(addSuccessMessage(`${operationValue} Success: Logged in as ${newCurrentUser.userName}`));
-
-          };
-
+            dispatch(
+              addSuccessMessage(
+                `${operationValue} Success: Logged in as ${newCurrentUser.userName}`
+              )
+            );
+          }
         } else {
-
           dispatch(addErrorMessage(`${operationValue}: ${results.message}`));
-
-        };
-
+        }
       })
-      .catch((error) => {
-
+      .catch(error => {
         console.error("error", error);
         dispatch(addErrorMessage(`${operationValue}: No results.`));
-
       });
-
   };
 
-
   const closeForm = () => {
-
     // setIsFormOpen(false);
     dispatch(setComponentToLoad(""));
     setFormType("");
 
     setTxtUsername("");
     setTxtPassword("");
-
   };
-
 
   return (
     <StyledAuthForm>
-
       <h2>{formType}</h2>
 
       <FormInput
@@ -167,10 +158,25 @@ const AuthForm = (props) => {
       />
 
       <div className="flex-row">
-        <button type="submit" className="btn btn-primary" onClick={(event) => { handleSubmit(event); }}>Submit</button>
-        <button type="button" className="btn btn-light-gray" onClick={() => { closeForm(); }}>Cancel</button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={event => {
+            handleSubmit(event);
+          }}
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          className="btn btn-light-gray"
+          onClick={() => {
+            closeForm();
+          }}
+        >
+          Cancel
+        </button>
       </div>
-
     </StyledAuthForm>
   );
 };

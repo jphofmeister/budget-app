@@ -10,19 +10,20 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext .ts, .tsx --fix",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
-    "date-fns": "^4.1.0",
-    "html-react-parser": "^5.1.12",
     "@reduxjs/toolkit": "^2.11.2",
     "classnames": "^2.5.1",
+    "date-fns": "^4.1.0",
+    "html-react-parser": "^5.1.12",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "styled-components": "^6.4.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
